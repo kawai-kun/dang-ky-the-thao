@@ -275,20 +275,32 @@
       .eq-bar-2 { animation: eqBar2 0.7s ease-in-out infinite; }
       .eq-bar-3 { animation: eqBar3 1.1s ease-in-out infinite; }
 
-      /* PRINT OPTIMIZATION */
+      /* PRINT OPTIMIZATION (IN PHIẾU TIẾP NHẬN SẠCH ĐẸP, CHỈ IN DUY NHẤT PHIẾU ĐĂNG KÝ) */
       @media print {
-        header, footer, .no-print, #adminModal, #adminLoginModal, #lookupModal, #quickPasteModal, #sportEditModal, #scheduleModal {
+        header, footer, .no-print, #adminModal, #adminLoginModal, #lookupModal, #quickPasteModal, #sportEditModal, #scheduleModal, .hero-sports-dynamic, .animate-marquee, #ongoingTournamentsSection, #step1Section, #step2Section, #step3ReviewBox {
           display: none !important;
         }
         body {
           background-color: #ffffff !important;
           color: #000000 !important;
+          padding: 0 !important;
+        }
+        main {
+          padding: 0 !important;
+          margin: 0 !important;
+          max-width: 100% !important;
+        }
+        #step3Section, #step3ReceiptBox {
+          display: block !important;
+          margin: 0 auto !important;
+          padding: 0 !important;
         }
         .digital-ticket-wrapper {
           box-shadow: none !important;
-          border: 1px solid #000000 !important;
-          margin: 0 !important;
+          border: 2px solid #06301a !important;
+          margin: 0 auto !important;
           max-width: 100% !important;
+          page-break-inside: avoid;
         }
       }
     </style>

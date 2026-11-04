@@ -33,104 +33,22 @@
         "A": {
           "title": "Bảng A",
           "matchCount": "6 trận",
-          "teams": [
-            {
-              "stt": "1",
-              "code": "A1",
-              "name": "Trường Phổ thông Thực hành Sư phạm",
-              "points": "3đ"
-            },
-            {
-              "stt": "2",
-              "code": "A2",
-              "name": "CLB Bóng Chuyền Trường THPT Vĩnh Cửu",
-              "points": "0đ"
-            },
-            {
-              "stt": "3",
-              "code": "A3",
-              "name": "Trường THPT Trấn Biên",
-              "points": "0đ"
-            },
-            {
-              "stt": "4",
-              "code": "A4",
-              "name": "THPT Nguyễn Hữu Cảnh",
-              "points": "0đ"
-            }
-          ]
+          "teams": []
         },
         "D": {
           "title": "Bảng D",
           "matchCount": "3 trận",
-          "teams": [
-            {
-              "stt": "1",
-              "code": "D3",
-              "name": "Trường THPT Chu Văn An",
-              "points": "3đ"
-            },
-            {
-              "stt": "2",
-              "code": "D2",
-              "name": "CLB Bóng chuyền Chuyên Lương Thế Vinh",
-              "points": "0đ"
-            },
-            {
-              "stt": "3",
-              "code": "D1",
-              "name": "CLB bóng chuyền Lê Hồng Phong",
-              "points": "0đ"
-            }
-          ]
+          "teams": []
         },
         "B": {
           "title": "Bảng B",
           "matchCount": "3 trận",
-          "teams": [
-            {
-              "stt": "1",
-              "code": "B1",
-              "name": "Trường TH - THCS - THPT Lê Quý Đôn Quyết Thắng",
-              "points": "3đ"
-            },
-            {
-              "stt": "2",
-              "code": "B2",
-              "name": "Trường THPT Nguyễn Trãi",
-              "points": "0đ"
-            },
-            {
-              "stt": "3",
-              "code": "B3",
-              "name": "THPT Nam Hà",
-              "points": "0đ"
-            }
-          ]
+          "teams": []
         },
         "C": {
           "title": "Bảng C",
           "matchCount": "3 trận",
-          "teams": [
-            {
-              "stt": "1",
-              "code": "C1",
-              "name": "Trường TH - THCS - THPT Song Ngữ Lạc Hồng",
-              "points": "3đ"
-            },
-            {
-              "stt": "2",
-              "code": "C2",
-              "name": "Trường THPT Lê Quý Đôn - Long Bình Tân",
-              "points": "0đ"
-            },
-            {
-              "stt": "3",
-              "code": "C3",
-              "name": "Trường THPT Tam Hiệp",
-              "points": "0đ"
-            }
-          ]
+          "teams": []
         }
       },
       "semiFinal1": {
@@ -167,80 +85,22 @@
         "A": {
           "title": "Bảng A",
           "matchCount": "4 trận",
-          "teams": [
-            {
-              "stt": "1",
-              "code": "A1",
-              "name": "THPT Long Khánh",
-              "points": "6đ"
-            },
-            {
-              "stt": "2",
-              "code": "A2",
-              "name": "THPT Hoàng Diệu",
-              "points": "3đ"
-            },
-            {
-              "stt": "3",
-              "code": "A3",
-              "name": "THPT Văn Hiến",
-              "points": "0đ"
-            }
-          ]
+          "teams": []
         },
         "D": {
           "title": "Bảng D",
           "matchCount": "3 trận",
-          "teams": [
-            {
-              "stt": "1",
-              "code": "D1",
-              "name": "CLB Thể Thao Suối Tre",
-              "points": "3đ"
-            },
-            {
-              "stt": "2",
-              "code": "D2",
-              "name": "THPT Xuân Lộc",
-              "points": "0đ"
-            }
-          ]
+          "teams": []
         },
         "B": {
           "title": "Bảng B",
           "matchCount": "3 trận",
-          "teams": [
-            {
-              "stt": "1",
-              "code": "B1",
-              "name": "CLB Thanh Niên Bảo Vinh",
-              "points": "3đ"
-            },
-            {
-              "stt": "2",
-              "code": "B2",
-              "name": "THPT Thống Nhất A",
-              "points": "0đ"
-            }
-          ]
+          "teams": []
         },
         "C": {
           "title": "Bảng C",
           "matchCount": "3 trận",
-          "teams": [
-            {
-              "stt": "1",
-              "code": "C1",
-              "name": "Đoàn Khối Doanh Nghiệp LK",
-              "points": "3đ"
-            },
-            {
-              "stt": "2",
-              "code": "C2",
-              "name": "CLB Cựu Học Sinh Long Khánh",
-              "points": "0đ"
-            }
-          ]
+          "teams": []
         }
       },
       "semiFinal1": {
@@ -277,74 +137,22 @@
         "A": {
           "title": "Bảng A",
           "matchCount": "3 trận",
-          "teams": [
-            {
-              "stt": "1",
-              "code": "A1",
-              "name": "THPT Đồng Xoài",
-              "points": "3đ"
-            },
-            {
-              "stt": "2",
-              "code": "A2",
-              "name": "THPT Chuyên Quang Trung",
-              "points": "0đ"
-            }
-          ]
+          "teams": []
         },
         "D": {
           "title": "Bảng D",
           "matchCount": "3 trận",
-          "teams": [
-            {
-              "stt": "1",
-              "code": "D1",
-              "name": "CLB Trẻ Phước Long",
-              "points": "3đ"
-            },
-            {
-              "stt": "2",
-              "code": "D2",
-              "name": "THPT Bình Long",
-              "points": "0đ"
-            }
-          ]
+          "teams": []
         },
         "B": {
           "title": "Bảng B",
           "matchCount": "3 trận",
-          "teams": [
-            {
-              "stt": "1",
-              "code": "B1",
-              "name": "THPT Chơn Thành",
-              "points": "3đ"
-            },
-            {
-              "stt": "2",
-              "code": "B2",
-              "name": "CLB Bóng Chuyền Hớn Quản",
-              "points": "0đ"
-            }
-          ]
+          "teams": []
         },
         "C": {
           "title": "Bảng C",
           "matchCount": "3 trận",
-          "teams": [
-            {
-              "stt": "1",
-              "code": "C1",
-              "name": "Đoàn Cơ Sở Bù Đăng",
-              "points": "3đ"
-            },
-            {
-              "stt": "2",
-              "code": "C2",
-              "name": "THPT Bù Đốp",
-              "points": "0đ"
-            }
-          ]
+          "teams": []
         }
       },
       "semiFinal1": {
@@ -403,7 +211,7 @@
     },
     {
       "id": "BONG_CHUYEN_DA",
-      "status": "IN_PROGRESS",
+      "status": "OPEN",
       "name": "Bóng Chuyền Da (Nam / Nữ)",
       "iconCode": "VOLLEY",
       "cat": "BONG",

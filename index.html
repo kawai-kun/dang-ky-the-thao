@@ -545,8 +545,53 @@
 
     <!-- 5. MAIN CONTENT WRAPPER -->
     <main class="max-w-7xl mx-auto px-4 sm:px-6 py-6 flex-1 w-full">
+      <!-- ================= STEP 1: CHỌN MÔN THI ĐẤU (SHADCN CARD SHOWCASE) ================= -->
+      <section id="step1Section" class="space-y-6">
+        <!-- Section Header & Filter Tabs -->
+        <div class="flex flex-col md:flex-row md:items-end justify-between gap-4 border-b border-[#d6e0d8] pb-4">
+          <div>
+            <div class="text-[11px] font-semibold uppercase tracking-wider text-[#ea580c] mb-1 flex items-center gap-1.5">
+              <span>BƯỚC 1 / 3</span>
+              <span>•</span>
+              <span>HỆ THỐNG MỞ ĐĂNG KÝ</span>
+            </div>
+            <h2 class="text-xl sm:text-2xl font-bold text-[#0e1f14] tracking-tight">
+              Danh Sách Các Môn Thi Đấu
+            </h2>
+            <p class="text-[#6b7f72] text-xs sm:text-sm mt-0.5">
+              Bấm trực tiếp vào môn thi đấu đang mở để xem quy chế số lượng và nộp hồ sơ.
+            </p>
+          </div>
+
+          <!-- Category Filter Tabs (Cổng Thể Thao Style) -->
+          <div class="flex flex-col sm:flex-row items-start sm:items-center gap-2">
+            <!-- Bộ lọc trạng thái môn: Đang Mở vs Đang Thi Đấu -->
+            <div class="flex items-center gap-1 p-1 bg-[#f4f7f5] rounded-[10px] border border-[#d6e0d8] text-xs font-medium">
+              <button onclick="filterSportStatus('ALL')" id="filterStatusALL" class="px-3 py-1.5 rounded-[8px] bg-[#06301a] text-[#8be33a] font-bold shadow-subtle border border-[#8be33a]/30 transition-all">Tất cả</button>
+              <button onclick="filterSportStatus('OPEN')" id="filterStatusOPEN" class="px-3 py-1.5 rounded-[8px] text-emerald-800 hover:bg-emerald-100 font-semibold transition-all">🟢 Đang Mở</button>
+              <button onclick="filterSportStatus('IN_PROGRESS')" id="filterStatusIN_PROGRESS" class="px-3 py-1.5 rounded-[8px] text-rose-800 hover:bg-rose-100 font-semibold transition-all">🔴 Đang Thi Đấu</button>
+              <button onclick="filterSportStatus('LOCKED')" id="filterStatusLOCKED" class="px-3 py-1.5 rounded-[8px] text-zinc-600 hover:bg-zinc-200 font-medium transition-all">🔒 Đang Khóa</button>
+            </div>
+
+            <!-- Bộ lọc thể loại -->
+            <div class="flex flex-wrap items-center gap-1 p-1 bg-[#f4f7f5] rounded-[10px] border border-[#d6e0d8] text-xs font-medium">
+              <button onclick="filterCategory('ALL')" id="filterBtnALL" class="px-2.5 py-1.5 rounded-[8px] bg-[#06301a] text-[#8be33a] font-semibold transition-all">Tất cả (<span id="countCatAll">13</span>)</button>
+              <button onclick="filterCategory('BONG')" id="filterBtnBONG" class="px-2.5 py-1.5 rounded-[8px] text-[#6b7f72] hover:text-[#0e1f14] font-medium transition-all">Môn Bóng</button>
+              <button onclick="filterCategory('VOT')" id="filterBtnVOT" class="px-2.5 py-1.5 rounded-[8px] text-[#6b7f72] hover:text-[#0e1f14] font-medium transition-all">Môn Vợt</button>
+              <button onclick="filterCategory('DIEN_KINH')" id="filterBtnDIEN_KINH" class="px-2.5 py-1.5 rounded-[8px] text-[#6b7f72] hover:text-[#0e1f14] font-medium transition-all">Điền Kinh</button>
+              <button onclick="filterCategory('DAN_GIAN')" id="filterBtnDAN_GIAN" class="px-2.5 py-1.5 rounded-[8px] text-[#6b7f72] hover:text-[#0e1f14] font-medium transition-all">Dân Gian</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Sports Grid (Rendered via JS with Clean Border & High-Craft Cards) -->
+        <div id="sportsGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+          <!-- Dynamically populated -->
+        </div>
+      </section>
+
       <!-- ================= KHU VỰC CÁC GIẢI ĐANG DIỄN RA (CHUẨN 100% THEO THETHAO.THANHDOANDONGNAI.COM) ================= -->
-      <section id="ongoingTournamentsSection" class="space-y-6 mb-10">
+      <section id="ongoingTournamentsSection" class="space-y-6 mt-12 mb-10 hidden">
         <!-- Section Header -->
         <div class="flex flex-col sm:flex-row sm:items-end justify-between gap-2 border-b border-[#d6e0d8] pb-3">
           <div>
@@ -592,40 +637,6 @@
           <div id="liveFixturesContainer" class="space-y-3">
             <!-- Dynamically populated via renderLiveFixtures() -->
           </div>
-        </div>
-      </section>
-
-      <!-- ================= STEP 1: CHỌN MÔN THI ĐẤU (SHADCN CARD SHOWCASE) ================= -->
-      <section id="step1Section" class="space-y-6">
-        <!-- Section Header & Filter Tabs -->
-        <div class="flex flex-col md:flex-row md:items-end justify-between gap-4 border-b border-[#d6e0d8] pb-4">
-          <div>
-            <div class="text-[11px] font-semibold uppercase tracking-wider text-[#ea580c] mb-1 flex items-center gap-1.5">
-              <span>BƯỚC 1 / 3</span>
-              <span>•</span>
-              <span>HỆ THỐNG MỞ ĐĂNG KÝ</span>
-            </div>
-            <h2 class="text-xl sm:text-2xl font-bold text-[#0e1f14] tracking-tight">
-              Danh Sách Các Môn Thi Đấu
-            </h2>
-            <p class="text-[#6b7f72] text-xs sm:text-sm mt-0.5">
-              Bấm trực tiếp vào môn thi đấu đang mở để xem quy chế số lượng và nộp hồ sơ.
-            </p>
-          </div>
-
-          <!-- Category Filter Tabs (Cổng Thể Thao Style) -->
-          <div class="flex flex-wrap items-center gap-1 p-1 bg-[#f4f7f5] rounded-[10px] border border-[#d6e0d8] text-xs font-medium">
-            <button onclick="filterCategory('ALL')" id="filterBtnALL" class="px-3 py-1.5 rounded-[8px] bg-[#06301a] text-[#8be33a] shadow-subtle border border-[#8be33a]/30 transition-all font-semibold">Tất cả (<span id="countCatAll">13</span>)</button>
-            <button onclick="filterCategory('BONG')" id="filterBtnBONG" class="px-3 py-1.5 rounded-[8px] text-[#6b7f72] hover:text-[#0e1f14] transition-all font-medium">Môn Bóng</button>
-            <button onclick="filterCategory('VOT')" id="filterBtnVOT" class="px-3 py-1.5 rounded-[8px] text-[#6b7f72] hover:text-[#0e1f14] transition-all font-medium">Môn Dùng Vợt</button>
-            <button onclick="filterCategory('DIEN_KINH')" id="filterBtnDIEN_KINH" class="px-3 py-1.5 rounded-[8px] text-[#6b7f72] hover:text-[#0e1f14] transition-all font-medium">Điền Kinh</button>
-            <button onclick="filterCategory('DAN_GIAN')" id="filterBtnDAN_GIAN" class="px-3 py-1.5 rounded-[8px] text-[#6b7f72] hover:text-[#0e1f14] transition-all font-medium">Dân Gian & Trí Tuệ</button>
-          </div>
-        </div>
-
-        <!-- Sports Grid (Rendered via JS with Clean Border & High-Craft Cards) -->
-        <div id="sportsGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
-          <!-- Dynamically populated -->
         </div>
       </section>
 
@@ -1374,6 +1385,14 @@
                   >
                     <span>⚡ Xếp Hạng & Vào Bán Kết</span>
                   </button>
+                  <button
+                    type="button"
+                    onclick="resetScheduleGroupsToEmpty()"
+                    class="px-2.5 py-1 rounded-[6px] bg-zinc-100 hover:bg-rose-50 text-rose-700 font-semibold text-[11px] flex items-center gap-1 cursor-pointer border border-zinc-200"
+                    title="Xóa toàn bộ đội trong bảng đấu để làm mới"
+                  >
+                    <span>🗑️ Xóa Trắng Bảng Đấu</span>
+                  </button>
                 </div>
               </div>
 
@@ -1859,8 +1878,9 @@
             <div>
               <label class="block font-medium text-zinc-700 mb-1">Trạng Thái Nhận Đăng Ký</label>
               <select id="editSportStatus" class="w-full px-3 py-2 rounded-[8px] border border-zinc-300 font-semibold text-xs">
-                <option value="OPEN" class="text-emerald-700">🟢 Đang Mở Nhận Đăng Ký (Sáng màu)</option>
-                <option value="LOCKED" class="text-zinc-500">🔒 Đang Khóa / Chưa Mở (Tối màu)</option>
+                <option value="OPEN" class="text-emerald-700 font-bold">🟢 Đang Mở Nhận Đăng Ký</option>
+                <option value="IN_PROGRESS" class="text-rose-700 font-bold">🔴 Đang Thi Đấu (Hết hạn & Hiện Lịch Thi Đấu)</option>
+                <option value="LOCKED" class="text-zinc-500 font-medium">🔒 Đang Khóa / Chưa Mở</option>
               </select>
             </div>
           </div>
@@ -2263,7 +2283,7 @@
       /* ----------------------------------------------------
          2. CẤU HÌNH BAN TỔ CHỨC & LOCALSTORAGE
          ---------------------------------------------------- */
-      var STORAGE_KEY_CONFIG = 'sport_portal_config_v15';
+      var STORAGE_KEY_CONFIG = 'sport_portal_config_v16';
       var STORAGE_KEY_REGS = 'sport_portal_registrations_v15';
 
       var DEFAULT_CONFIG = {
@@ -2306,39 +2326,22 @@
               'A': {
                 title: 'Bảng A',
                 matchCount: '6 trận',
-                teams: [
-                  { stt: '1', code: 'A1', name: 'Trường Phổ thông Thực hành Sư phạm', points: '3đ' },
-                  { stt: '2', code: 'A2', name: 'CLB Bóng Chuyền Trường THPT Vĩnh Cửu', points: '0đ' },
-                  { stt: '3', code: 'A3', name: 'Trường THPT Trấn Biên', points: '0đ' },
-                  { stt: '4', code: 'A4', name: 'THPT Nguyễn Hữu Cảnh', points: '0đ' }
-                ]
+                teams: []
               },
               'D': {
                 title: 'Bảng D',
                 matchCount: '3 trận',
-                teams: [
-                  { stt: '1', code: 'D3', name: 'Trường THPT Chu Văn An', points: '3đ' },
-                  { stt: '2', code: 'D2', name: 'CLB Bóng chuyền Chuyên Lương Thế Vinh', points: '0đ' },
-                  { stt: '3', code: 'D1', name: 'CLB bóng chuyền Lê Hồng Phong', points: '0đ' }
-                ]
+                teams: []
               },
               'B': {
                 title: 'Bảng B',
                 matchCount: '3 trận',
-                teams: [
-                  { stt: '1', code: 'B1', name: 'Trường TH - THCS - THPT Lê Quý Đôn Quyết Thắng', points: '3đ' },
-                  { stt: '2', code: 'B2', name: 'Trường THPT Nguyễn Trãi', points: '0đ' },
-                  { stt: '3', code: 'B3', name: 'THPT Nam Hà', points: '0đ' }
-                ]
+                teams: []
               },
               'C': {
                 title: 'Bảng C',
                 matchCount: '3 trận',
-                teams: [
-                  { stt: '1', code: 'C1', name: 'Trường TH - THCS - THPT Song Ngữ Lạc Hồng', points: '3đ' },
-                  { stt: '2', code: 'C2', name: 'Trường THPT Lê Quý Đôn - Long Bình Tân', points: '0đ' },
-                  { stt: '3', code: 'C3', name: 'Trường THPT Tam Hiệp', points: '0đ' }
-                ]
+                teams: []
               }
             },
             semiFinal1: {
@@ -2375,35 +2378,22 @@
               'A': {
                 title: 'Bảng A',
                 matchCount: '4 trận',
-                teams: [
-                  { stt: '1', code: 'A1', name: 'THPT Long Khánh', points: '6đ' },
-                  { stt: '2', code: 'A2', name: 'THPT Hoàng Diệu', points: '3đ' },
-                  { stt: '3', code: 'A3', name: 'THPT Văn Hiến', points: '0đ' }
-                ]
+                teams: []
               },
               'D': {
                 title: 'Bảng D',
                 matchCount: '3 trận',
-                teams: [
-                  { stt: '1', code: 'D1', name: 'CLB Thể Thao Suối Tre', points: '3đ' },
-                  { stt: '2', code: 'D2', name: 'THPT Xuân Lộc', points: '0đ' }
-                ]
+                teams: []
               },
               'B': {
                 title: 'Bảng B',
                 matchCount: '3 trận',
-                teams: [
-                  { stt: '1', code: 'B1', name: 'CLB Thanh Niên Bảo Vinh', points: '3đ' },
-                  { stt: '2', code: 'B2', name: 'THPT Thống Nhất A', points: '0đ' }
-                ]
+                teams: []
               },
               'C': {
                 title: 'Bảng C',
                 matchCount: '3 trận',
-                teams: [
-                  { stt: '1', code: 'C1', name: 'Đoàn Khối Doanh Nghiệp LK', points: '3đ' },
-                  { stt: '2', code: 'C2', name: 'CLB Cựu Học Sinh Long Khánh', points: '0đ' }
-                ]
+                teams: []
               }
             },
             semiFinal1: {
@@ -2440,34 +2430,22 @@
               'A': {
                 title: 'Bảng A',
                 matchCount: '3 trận',
-                teams: [
-                  { stt: '1', code: 'A1', name: 'THPT Đồng Xoài', points: '3đ' },
-                  { stt: '2', code: 'A2', name: 'THPT Chuyên Quang Trung', points: '0đ' }
-                ]
+                teams: []
               },
               'D': {
                 title: 'Bảng D',
                 matchCount: '3 trận',
-                teams: [
-                  { stt: '1', code: 'D1', name: 'CLB Trẻ Phước Long', points: '3đ' },
-                  { stt: '2', code: 'D2', name: 'THPT Bình Long', points: '0đ' }
-                ]
+                teams: []
               },
               'B': {
                 title: 'Bảng B',
                 matchCount: '3 trận',
-                teams: [
-                  { stt: '1', code: 'B1', name: 'THPT Chơn Thành', points: '3đ' },
-                  { stt: '2', code: 'B2', name: 'CLB Bóng Chuyền Hớn Quản', points: '0đ' }
-                ]
+                teams: []
               },
               'C': {
                 title: 'Bảng C',
                 matchCount: '3 trận',
-                teams: [
-                  { stt: '1', code: 'C1', name: 'Đoàn Cơ Sở Bù Đăng', points: '3đ' },
-                  { stt: '2', code: 'C2', name: 'THPT Bù Đốp', points: '0đ' }
-                ]
+                teams: []
               }
             },
             semiFinal1: {
@@ -2502,7 +2480,7 @@
         sports: [
           Object.assign({ id: 'BONG_DA_7', status: 'OPEN' }, SPORT_PRESETS.BONG_DA_7),
           Object.assign({ id: 'BONG_DA_5', status: 'OPEN' }, SPORT_PRESETS.BONG_DA_5),
-          Object.assign({ id: 'BONG_CHUYEN_DA', status: 'IN_PROGRESS' }, SPORT_PRESETS.BONG_CHUYEN_DA),
+          Object.assign({ id: 'BONG_CHUYEN_DA', status: 'OPEN' }, SPORT_PRESETS.BONG_CHUYEN_DA),
           Object.assign({ id: 'BONG_CHUYEN_HOI', status: 'OPEN' }, SPORT_PRESETS.BONG_CHUYEN_HOI),
           Object.assign({ id: 'CAU_LONG', status: 'OPEN' }, SPORT_PRESETS.CAU_LONG),
           Object.assign({ id: 'BONG_BAN', status: 'OPEN' }, SPORT_PRESETS.BONG_BAN),
@@ -2871,6 +2849,23 @@
          6. BƯỚC 1: RENDER CÁC THẺ MÔN (ATHLETIC CARD TOKENS)
          ---------------------------------------------------- */
       var currentCategory = 'ALL';
+      var currentSportStatusFilter = 'ALL';
+
+      function filterSportStatus(status) {
+        currentSportStatusFilter = status;
+        var btns = ['ALL', 'OPEN', 'IN_PROGRESS', 'LOCKED'];
+        btns.forEach(function(b) {
+          var el = document.getElementById('filterStatus' + b);
+          if (!el) return;
+          if (b === status) {
+            el.className = 'px-3 py-1.5 rounded-[8px] bg-[#06301a] text-[#8be33a] font-bold shadow-subtle border border-[#8be33a]/30 transition-all';
+          } else {
+            var textColor = b === 'OPEN' ? 'text-emerald-800' : (b === 'IN_PROGRESS' ? 'text-rose-800' : 'text-zinc-600');
+            el.className = 'px-3 py-1.5 rounded-[8px] ' + textColor + ' hover:bg-zinc-100 font-medium transition-all';
+          }
+        });
+        renderSportsGrid(currentCategory);
+      }
 
       function filterCategory(cat) {
         currentCategory = cat;
@@ -2914,7 +2909,7 @@
           var vectorSvg = SPORT_VECTOR_ICONS[iconCode] || SPORT_VECTOR_ICONS.SOCCER;
 
           var card = document.createElement('div');
-          var isInProgress = (s.status === 'IN_PROGRESS');
+          var isInProgress = (s.status === 'IN_PROGRESS') || (s.status === 'OPEN' && isDeadlinePassed);
 
           if (isInProgress) {
             // ATHLETIC CARD THEO DESIGN SYSTEM CỔNG THỂ THAO ĐỒNG NAI: ĐANG THI ĐẤU
@@ -5388,42 +5383,27 @@
         var groupKeys = Object.keys(data.groups || {});
         if (groupKeys.length === 0) {
           groupKeys = ['A', 'B', 'C', 'D'];
+          if (!data.groups) data.groups = {};
+          groupKeys.forEach(function(k) {
+            data.groups[k] = { title: 'Bảng ' + k, matchCount: '3 trận', teams: [] };
+          });
         }
 
-        // 1. Lấy danh sách các đội đã nộp hồ sơ
+        // 1. Thu thập danh sách đội thực tế đã nộp hồ sơ (không tự tiện lấy đội giả)
         var regs = loadRegistrations();
         var teamNames = [];
+
         regs.forEach(function(r) {
-          if (r.donVi && !teamNames.includes(r.donVi)) {
-            teamNames.push(r.donVi);
+          var tName = r.donVi || r.teamName || r.tenDoan || (r.thongTinDoan && r.thongTinDoan.tenDoan);
+          if (tName && !teamNames.includes(tName.trim())) {
+            teamNames.push(tName.trim());
           }
         });
 
-        // Bổ sung các đội mẫu phong trào nếu danh sách đăng ký còn ít
-        var fallbackPool = [
-          'Trường THPT Trấn Biên',
-          'CLB Bóng Chuyền Vĩnh Cửu',
-          'Trường Thực hành Sư phạm',
-          'THPT Nguyễn Hữu Cảnh',
-          'THPT Chu Văn An',
-          'CLB Chuyên Lương Thế Vinh',
-          'CLB Lê Hồng Phong',
-          'THPT Lê Quý Đôn Quyết Thắng',
-          'Trường THPT Nguyễn Trãi',
-          'Trường THPT Nam Hà',
-          'Song Ngữ Lạc Hồng',
-          'Lê Quý Đôn Long Bình Tân',
-          'Trường THPT Tam Hiệp',
-          'CLB Thể Thao Tân Triều',
-          'CLB Thể Thao Long Khánh',
-          'Đội Bóng Bình Phước'
-        ];
-
-        fallbackPool.forEach(function(t) {
-          if (teamNames.length < groupKeys.length * 4 && !teamNames.includes(t)) {
-            teamNames.push(t);
-          }
-        });
+        if (teamNames.length === 0) {
+          alert('Hiện chưa có đội nào nộp hồ sơ đăng ký! Ban Tổ Chức có thể nhập trực tiếp tên các đội vào từng ô bảng đấu bên dưới hoặc đợi các đội nộp hồ sơ trực tuyến.');
+          return;
+        }
 
         // 2. Bốc thăm xáo trộn ngẫu nhiên (Fisher-Yates Shuffle)
         for (var i = teamNames.length - 1; i > 0; i--) {
@@ -5433,33 +5413,58 @@
           teamNames[j] = temp;
         }
 
-        // 3. Phân bổ đều các đội vào từng bảng
+        // 3. Phân bổ đều các đội thực tế vào từng bảng
         groupKeys.forEach(function(k) {
-          if (!data.groups[k]) data.groups[k] = { title: 'Bảng ' + k, teams: [] };
+          if (!data.groups[k]) data.groups[k] = { title: 'Bảng ' + k, matchCount: '3 trận', teams: [] };
           data.groups[k].teams = [];
         });
 
-        var teamIdx = 0;
-        var teamsPerGroup = Math.max(3, Math.min(4, Math.floor(teamNames.length / groupKeys.length)));
-        groupKeys.forEach(function(k) {
-          for (var t = 0; t < teamsPerGroup; t++) {
-            if (teamIdx < teamNames.length) {
-              var tName = teamNames[teamIdx];
-              var initialPoints = (t === 0) ? '3đ' : '0đ';
-              data.groups[k].teams.push({
-                stt: String(t + 1),
-                code: k + (t + 1),
-                name: tName,
-                points: initialPoints
-              });
-              teamIdx++;
-            }
-          }
+        teamNames.forEach(function(name, idx) {
+          var targetGroup = groupKeys[idx % groupKeys.length];
+          var teamOrderInGroup = data.groups[targetGroup].teams.length + 1;
+          data.groups[targetGroup].teams.push({
+            stt: String(teamOrderInGroup),
+            code: targetGroup + teamOrderInGroup,
+            name: name,
+            points: '0đ'
+          });
         });
 
         saveAppConfig(appConfig);
         loadAdminScheduleEditor(venueKey);
-        alert('🎲 BỐC THĂM HOÀN TẤT!\nĐã phân bổ ngẫu nhiên ' + teamIdx + ' đội bóng vào ' + groupKeys.length + ' bảng đấu.');
+        renderOngoingShowcase();
+        alert('Đã bốc thăm ngẫu nhiên ' + teamNames.length + ' đội thực tế vào ' + groupKeys.length + ' bảng đấu thành công!');
+      }
+
+      function resetScheduleGroupsToEmpty() {
+        var clSelect = document.getElementById('adminScheduleClusterSelect');
+        var venueKey = clSelect ? clSelect.value : 'Sân 1';
+        if (!appConfig.scheduleData || !appConfig.scheduleData[venueKey]) return;
+        if (!confirm('Bạn có chắc chắn muốn xóa toàn bộ danh sách đội trong các bảng đấu của ' + venueKey + ' để bắt đầu lại từ đầu không?')) return;
+
+        var data = appConfig.scheduleData[venueKey];
+        if (data.groups) {
+          Object.keys(data.groups).forEach(function(k) {
+            data.groups[k].teams = [];
+          });
+        }
+        if (data.semiFinal1) {
+          data.semiFinal1.teams = 'Nhất A — Nhất D';
+          data.semiFinal1.time = '';
+        }
+        if (data.semiFinal2) {
+          data.semiFinal2.teams = 'Nhất B — Nhất C';
+          data.semiFinal2.time = '';
+        }
+        if (data.thirdPlace) {
+          data.thirdPlace.teams = 'Thua BK1 — Thua BK2';
+          data.thirdPlace.time = '';
+        }
+
+        saveAppConfig(appConfig);
+        loadAdminScheduleEditor(venueKey);
+        renderOngoingShowcase();
+        alert('Đã xóa trắng danh sách các bảng đấu thành công!');
       }
 
       function autoRankAndAdvanceKnockout() {
@@ -5692,26 +5697,28 @@
       // KHU VỰC CÁC GIẢI ĐANG DIỄN RA & LỊCH THI ĐẤU TRỰC TIẾP (CHUẨN 100% THEO ĐỒNG NAI)
       // ---------------------------------------------------------
       function renderOngoingShowcase() {
+        var section = document.getElementById('ongoingTournamentsSection');
         var container = document.getElementById('ongoingCardsContainer');
         var countBadge = document.getElementById('ongoingCountBadge');
         var fixturesContainer = document.getElementById('liveFixturesContainer');
-        if (!container) return;
+        if (!container || !section) return;
 
-        var ongoingSports = appConfig.sports.filter(function(s) {
-          return s.status === 'IN_PROGRESS';
+        var isDeadlinePassed = new Date(appConfig.hanChot).getTime() <= new Date().getTime();
+        var ongoingSports = (appConfig.sports || []).filter(function(s) {
+          return s.status === 'IN_PROGRESS' || (s.status === 'OPEN' && isDeadlinePassed);
         });
 
+        // NẾU CHƯA CÓ MÔN NÀO ĐANG THI ĐẤU, ẨN HOÀN TOÀN KHU VỰC NÀY
         if (ongoingSports.length === 0) {
-          ongoingSports = [
-            appConfig.sports.find(function(s) { return s.id === 'BONG_CHUYEN_DA'; }) || appConfig.sports[0]
-          ];
+          section.classList.add('hidden');
+          return;
         }
 
+        section.classList.remove('hidden');
         if (countBadge) countBadge.textContent = ongoingSports.length;
 
         container.innerHTML = '';
         ongoingSports.forEach(function(s) {
-          var autoAssets = detectSportAssets(s.name);
           var quota = s.quota || 16;
           var card = document.createElement('div');
           card.className = 'ongoing-glow-card bg-[#072415] rounded-[14px] p-4 sm:p-5 flex flex-col md:flex-row md:items-center justify-between gap-4 transition-all shadow-elevated border border-amber-500/80';
@@ -5725,11 +5732,11 @@
                   ${s.name} - ${appConfig.tenGiai}
                 </h3>
                 <div class="flex flex-wrap items-center gap-2 text-xs text-zinc-300">
-                  <span class="px-2 py-0.5 rounded bg-[#041a0f] border border-zinc-700 text-zinc-300 font-medium text-[11px]">${quota} đội đăng ký</span>
+                  <span class="px-2 py-0.5 rounded bg-[#041a0f] border border-zinc-700 text-zinc-300 font-medium text-[11px]">${quota} đội tham gia</span>
                   <span>•</span>
-                  <span class="text-zinc-400 text-[11px]">Hạn đăng ký: ${appConfig.ngayKhaiMac}</span>
+                  <span class="text-zinc-400 text-[11px]">Khai mạc: ${appConfig.ngayKhaiMac}</span>
                   <span>•</span>
-                  <span class="text-[#8be33a] font-semibold text-[11px]">Đã bốc thăm vòng bảng & knockout</span>
+                  <span class="text-[#8be33a] font-semibold text-[11px]">Đang thi đấu & cập nhật kết quả</span>
                 </div>
               </div>
             </div>
@@ -5757,81 +5764,91 @@
           container.appendChild(card);
         });
 
-        // Render Live Match Fixtures List
+        // Hiển thị lịch thi đấu thực tế (KHÔNG LẤY ĐỘI HAY TRẬN GIẢ)
         if (fixturesContainer) {
           var venueKey = activeScheduleCluster || 'Sân 1';
           var vData = (appConfig.scheduleData && appConfig.scheduleData[venueKey]) ? appConfig.scheduleData[venueKey] : null;
+          var realMatches = [];
 
-          var sampleMatches = [
-            {
-              time: '21:00',
-              sportName: 'Bóng rổ • Trận 19',
-              team1: 'C3. CLB DBC OG',
-              team2: 'C4. ABC D.Squad',
-              score1: '28',
-              score2: '24',
-              venue: 'Bóng rổ nam thanh niên 5x5 • Sân 1 • NVH Thanh thiếu nhi CS1',
-              stage: 'Vòng Bảng C'
-            },
-            {
-              time: '20:00',
-              sportName: 'Bóng rổ • Trận 18',
-              team1: 'D2. TH- THCS- THPT Song Ngữ Lạc Hồng',
-              team2: 'D4. Trường THPT Lê Quý Đôn - Long Bình Tân',
-              score1: '19',
-              score2: '21',
-              venue: 'Sân 1 • NVH Thanh thiếu nhi CS1',
-              stage: 'Vòng Bảng D'
-            },
-            {
-              time: '08:30',
-              sportName: 'Bóng đá • Bán kết 1',
-              team1: (vData && vData.semiFinal1 && vData.semiFinal1.teams) ? vData.semiFinal1.teams.split('—')[0] || 'Nhất A' : 'Nhất A',
-              team2: (vData && vData.semiFinal1 && vData.semiFinal1.teams) ? vData.semiFinal1.teams.split('—')[1] || 'Nhì B' : 'Nhì B',
-              score1: '',
-              score2: '',
-              venue: (vData && vData.semiFinal1 && vData.semiFinal1.venue) ? vData.semiFinal1.venue : 'Sân 1 • NVH Thanh thiếu nhi CS1',
-              stage: 'Bán Kết 1'
+          if (vData) {
+            if (vData.semiFinal1 && vData.semiFinal1.time && vData.semiFinal1.teams) {
+              realMatches.push({
+                time: vData.semiFinal1.time.includes('•') ? vData.semiFinal1.time.split('•')[1].trim() : vData.semiFinal1.time,
+                sportName: vData.semiFinal1.title || 'Bán kết 1',
+                team1: vData.semiFinal1.teams.split('—')[0] ? vData.semiFinal1.teams.split('—')[0].trim() : 'Nhất A',
+                team2: vData.semiFinal1.teams.split('—')[1] ? vData.semiFinal1.teams.split('—')[1].trim() : 'Nhất D',
+                venue: vData.semiFinal1.venue || venueKey,
+                stage: 'Bán Kết 1'
+              });
             }
-          ];
+            if (vData.semiFinal2 && vData.semiFinal2.time && vData.semiFinal2.teams) {
+              realMatches.push({
+                time: vData.semiFinal2.time.includes('•') ? vData.semiFinal2.time.split('•')[1].trim() : vData.semiFinal2.time,
+                sportName: vData.semiFinal2.title || 'Bán kết 2',
+                team1: vData.semiFinal2.teams.split('—')[0] ? vData.semiFinal2.teams.split('—')[0].trim() : 'Nhất B',
+                team2: vData.semiFinal2.teams.split('—')[1] ? vData.semiFinal2.teams.split('—')[1].trim() : 'Nhất C',
+                venue: vData.semiFinal2.venue || venueKey,
+                stage: 'Bán Kết 2'
+              });
+            }
+            if (vData.thirdPlace && vData.thirdPlace.time && vData.thirdPlace.teams) {
+              realMatches.push({
+                time: vData.thirdPlace.time.includes('•') ? vData.thirdPlace.time.split('•')[1].trim() : vData.thirdPlace.time,
+                sportName: vData.thirdPlace.title || 'Tranh suất 3',
+                team1: vData.thirdPlace.teams.split('—')[0] ? vData.thirdPlace.teams.split('—')[0].trim() : 'Thua BK1',
+                team2: vData.thirdPlace.teams.split('—')[1] ? vData.thirdPlace.teams.split('—')[1].trim() : 'Thua BK2',
+                venue: vData.thirdPlace.venue || venueKey,
+                stage: 'Tranh Suất Ba'
+              });
+            }
+          }
 
           fixturesContainer.innerHTML = '';
-          sampleMatches.forEach(function(m) {
-            var row = document.createElement('div');
-            row.className = 'p-3.5 rounded-[12px] bg-[#041a0f]/90 border border-zinc-800 hover:border-[#8be33a]/40 transition-all flex flex-col md:flex-row md:items-center justify-between gap-3 text-xs';
-            row.innerHTML = `
-              <div class="flex items-center gap-3 min-w-0">
-                <div class="px-2.5 py-1.5 rounded-[8px] bg-[#072415] border border-[#8be33a]/30 text-[#8be33a] font-mono font-bold text-xs text-center flex-shrink-0 w-24">
-                  ${m.time}
-                  <span class="text-[10px] text-zinc-400 block font-normal truncate">${m.sportName}</span>
-                </div>
-                <div class="space-y-0.5 min-w-0">
-                  <div class="flex items-center gap-2 sm:gap-3 text-sm font-bold text-white truncate">
-                    <span class="text-zinc-100 truncate">${m.team1}</span>
-                    <span class="px-2 py-0.5 rounded bg-zinc-800 text-amber-400 font-mono text-xs flex-shrink-0">
-                      ${m.score1 !== '' ? m.score1 + ' - ' + m.score2 : 'VS'}
-                    </span>
-                    <span class="text-zinc-100 truncate">${m.team2}</span>
-                  </div>
-                  <div class="text-[11px] text-zinc-400 flex items-center gap-1.5 truncate">
-                    <span class="text-amber-400 font-semibold flex-shrink-0">${m.stage}</span>
-                    <span>•</span>
-                    <span class="truncate">${m.venue}</span>
-                  </div>
-                </div>
+          if (realMatches.length === 0) {
+            fixturesContainer.innerHTML = `
+              <div class="p-6 rounded-[12px] bg-[#041a0f]/80 border border-zinc-800 text-center space-y-1">
+                <div class="text-amber-400 font-bold text-xs uppercase tracking-wider">Chưa có lịch thi đấu được công bố</div>
+                <div class="text-[11px] text-zinc-400">Ban Tổ Chức sẽ cập nhật thời gian, sân thi đấu và các cặp trận ngay sau khi bốc thăm chia bảng.</div>
               </div>
-
-              <button
-                type="button"
-                onclick="openScheduleModal()"
-                class="text-[#8be33a] hover:text-white font-bold text-xs flex items-center gap-1 cursor-pointer self-end md:self-center flex-shrink-0"
-              >
-                <span>Xem sơ đồ nhánh</span>
-                <span>→</span>
-              </button>
             `;
-            fixturesContainer.appendChild(row);
-          });
+          } else {
+            realMatches.forEach(function(m) {
+              var row = document.createElement('div');
+              row.className = 'p-3.5 rounded-[12px] bg-[#041a0f]/90 border border-zinc-800 hover:border-[#8be33a]/40 transition-all flex flex-col md:flex-row md:items-center justify-between gap-3 text-xs';
+              row.innerHTML = `
+                <div class="flex items-center gap-3 min-w-0">
+                  <div class="px-2.5 py-1.5 rounded-[8px] bg-[#072415] border border-[#8be33a]/30 text-[#8be33a] font-mono font-bold text-xs text-center flex-shrink-0 w-24">
+                    ${m.time}
+                    <span class="text-[10px] text-zinc-400 block font-normal truncate">${m.sportName}</span>
+                  </div>
+                  <div class="space-y-0.5 min-w-0">
+                    <div class="flex items-center gap-2 sm:gap-3 text-sm font-bold text-white truncate">
+                      <span class="text-zinc-100 truncate">${m.team1}</span>
+                      <span class="px-2 py-0.5 rounded bg-zinc-800 text-amber-400 font-mono text-xs flex-shrink-0">
+                        VS
+                      </span>
+                      <span class="text-zinc-100 truncate">${m.team2}</span>
+                    </div>
+                    <div class="text-[11px] text-zinc-400 flex items-center gap-1.5 truncate">
+                      <span class="text-amber-400 font-semibold flex-shrink-0">${m.stage}</span>
+                      <span>•</span>
+                      <span class="truncate">${m.venue}</span>
+                    </div>
+                  </div>
+                </div>
+
+                <button
+                  type="button"
+                  onclick="openScheduleModal()"
+                  class="text-[#8be33a] hover:text-white font-bold text-xs flex items-center gap-1 cursor-pointer self-end md:self-center flex-shrink-0"
+                >
+                  <span>Xem sơ đồ nhánh</span>
+                  <span>→</span>
+                </button>
+              `;
+              fixturesContainer.appendChild(row);
+            });
+          }
         }
       }
 

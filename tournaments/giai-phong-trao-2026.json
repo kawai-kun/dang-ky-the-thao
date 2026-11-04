@@ -1,0 +1,539 @@
+{
+  "tenGiai": "GIẢI THỂ THAO PHONG TRÀO NĂM 2026",
+  "chuDe": "CỔNG TIẾP NHẬN HỒ SƠ ĐĂNG KÝ VẬN ĐỘNG VIÊN TRỰC TUYẾN",
+  "ngayKhaiMac": "07h30 • 15/11/2026",
+  "diaDiem": "Trung tâm Huấn luyện & Thi đấu TDTT",
+  "hanChot": "2026-11-15T00:00",
+  "hotline": "0984.724.131",
+  "scriptUrl": "",
+  "banners": [
+    {
+      "id": "b1",
+      "title": "GIẢI THỂ THAO PHONG TRÀO NĂM 2026",
+      "subtitle": "SÔI ĐỘNG - ĐOÀN KẾT - TRUNG THỰC - CAO THƯỢNG",
+      "img": "https://images.unsplash.com/photo-1461896836934-ffe607ba8211?auto=format&fit=crop&w=1600&q=80"
+    },
+    {
+      "id": "b2",
+      "title": "HỘI THAO THANH NIÊN - TRẺ KHỎE TIÊN PHONG",
+      "subtitle": "TRANH TÀI CÁC MÔN THỂ THAO ĐỈNH CAO VÀ NÂNG CAO THỂ LỰC",
+      "img": "https://images.unsplash.com/photo-1517649763962-0c623266ddc0?auto=format&fit=crop&w=1600&q=80"
+    },
+    {
+      "id": "b3",
+      "title": "BÓNG CHUYỀN & BÓNG ĐÁ - HÀNH TRÌNH TỎA SÁNG",
+      "subtitle": "CHÀO ĐÓN CÁC ĐỘI BÓNG VÀ VẬN ĐỘNG VIÊN XUẤT SẮC",
+      "img": "https://images.unsplash.com/photo-1546519638-68e109498ffc?auto=format&fit=crop&w=1600&q=80"
+    }
+  ],
+  "scheduleData": {
+    "Sân 1": {
+      "clusterName": "Sân 1",
+      "groups": {
+        "A": {
+          "title": "Bảng A",
+          "matchCount": "6 trận",
+          "teams": [
+            {
+              "stt": "1",
+              "code": "A1",
+              "name": "Trường Phổ thông Thực hành Sư phạm",
+              "points": "3đ"
+            },
+            {
+              "stt": "2",
+              "code": "A2",
+              "name": "CLB Bóng Chuyền Trường THPT Vĩnh Cửu",
+              "points": "0đ"
+            },
+            {
+              "stt": "3",
+              "code": "A3",
+              "name": "Trường THPT Trấn Biên",
+              "points": "0đ"
+            },
+            {
+              "stt": "4",
+              "code": "A4",
+              "name": "THPT Nguyễn Hữu Cảnh",
+              "points": "0đ"
+            }
+          ]
+        },
+        "D": {
+          "title": "Bảng D",
+          "matchCount": "3 trận",
+          "teams": [
+            {
+              "stt": "1",
+              "code": "D3",
+              "name": "Trường THPT Chu Văn An",
+              "points": "3đ"
+            },
+            {
+              "stt": "2",
+              "code": "D2",
+              "name": "CLB Bóng chuyền Chuyên Lương Thế Vinh",
+              "points": "0đ"
+            },
+            {
+              "stt": "3",
+              "code": "D1",
+              "name": "CLB bóng chuyền Lê Hồng Phong",
+              "points": "0đ"
+            }
+          ]
+        },
+        "B": {
+          "title": "Bảng B",
+          "matchCount": "3 trận",
+          "teams": [
+            {
+              "stt": "1",
+              "code": "B1",
+              "name": "Trường TH - THCS - THPT Lê Quý Đôn Quyết Thắng",
+              "points": "3đ"
+            },
+            {
+              "stt": "2",
+              "code": "B2",
+              "name": "Trường THPT Nguyễn Trãi",
+              "points": "0đ"
+            },
+            {
+              "stt": "3",
+              "code": "B3",
+              "name": "THPT Nam Hà",
+              "points": "0đ"
+            }
+          ]
+        },
+        "C": {
+          "title": "Bảng C",
+          "matchCount": "3 trận",
+          "teams": [
+            {
+              "stt": "1",
+              "code": "C1",
+              "name": "Trường TH - THCS - THPT Song Ngữ Lạc Hồng",
+              "points": "3đ"
+            },
+            {
+              "stt": "2",
+              "code": "C2",
+              "name": "Trường THPT Lê Quý Đôn - Long Bình Tân",
+              "points": "0đ"
+            },
+            {
+              "stt": "3",
+              "code": "C3",
+              "name": "Trường THPT Tam Hiệp",
+              "points": "0đ"
+            }
+          ]
+        }
+      },
+      "semiFinal1": {
+        "title": "Bán kết 1 • Trận 60",
+        "time": "CN 15/11 • 08:00",
+        "venue": "Sân 1 - Khu thể thao",
+        "teams": "Nhất A — Nhất D"
+      },
+      "semiFinal2": {
+        "title": "Bán kết 2 • Trận 61",
+        "time": "CN 15/11 • 09:15",
+        "venue": "Sân 1 - Khu thể thao",
+        "teams": "Nhất B — Nhất C"
+      },
+      "thirdPlace": {
+        "title": "Tranh suất 3 • Trận 62",
+        "time": "CN 15/11 • 14:00",
+        "venue": "Sân 1 - Khu thể thao",
+        "teams": "Thua BK1 — Thua BK2"
+      },
+      "finals": {
+        "title": "Vòng chung kết",
+        "venue": "Sân 1 - Nhà Văn hóa Thanh thiếu nhi Đồng Nai CS1",
+        "qualified": "Thắng Bán kết 1 • Thắng Bán kết 2 • Thắng Tranh suất 3"
+      },
+      "venueDetail": {
+        "name": "Sân 1 - NVH Thanh thiếu nhi CS1",
+        "address": "Số 159 Cách Mạng Tháng 8, P. Quyết Thắng, TP. Biên Hòa, Đồng Nai"
+      }
+    },
+    "Sân 2": {
+      "clusterName": "Sân 2",
+      "groups": {
+        "A": {
+          "title": "Bảng A",
+          "matchCount": "4 trận",
+          "teams": [
+            {
+              "stt": "1",
+              "code": "A1",
+              "name": "THPT Long Khánh",
+              "points": "6đ"
+            },
+            {
+              "stt": "2",
+              "code": "A2",
+              "name": "THPT Hoàng Diệu",
+              "points": "3đ"
+            },
+            {
+              "stt": "3",
+              "code": "A3",
+              "name": "THPT Văn Hiến",
+              "points": "0đ"
+            }
+          ]
+        },
+        "D": {
+          "title": "Bảng D",
+          "matchCount": "3 trận",
+          "teams": [
+            {
+              "stt": "1",
+              "code": "D1",
+              "name": "CLB Thể Thao Suối Tre",
+              "points": "3đ"
+            },
+            {
+              "stt": "2",
+              "code": "D2",
+              "name": "THPT Xuân Lộc",
+              "points": "0đ"
+            }
+          ]
+        },
+        "B": {
+          "title": "Bảng B",
+          "matchCount": "3 trận",
+          "teams": [
+            {
+              "stt": "1",
+              "code": "B1",
+              "name": "CLB Thanh Niên Bảo Vinh",
+              "points": "3đ"
+            },
+            {
+              "stt": "2",
+              "code": "B2",
+              "name": "THPT Thống Nhất A",
+              "points": "0đ"
+            }
+          ]
+        },
+        "C": {
+          "title": "Bảng C",
+          "matchCount": "3 trận",
+          "teams": [
+            {
+              "stt": "1",
+              "code": "C1",
+              "name": "Đoàn Khối Doanh Nghiệp LK",
+              "points": "3đ"
+            },
+            {
+              "stt": "2",
+              "code": "C2",
+              "name": "CLB Cựu Học Sinh Long Khánh",
+              "points": "0đ"
+            }
+          ]
+        }
+      },
+      "semiFinal1": {
+        "title": "Bán kết 1 • Trận 30",
+        "time": "T7 14/11 • 08:30",
+        "venue": "Sân 2 - Trung tâm VHTT-TT",
+        "teams": "Nhất A — Nhất D"
+      },
+      "semiFinal2": {
+        "title": "Bán kết 2 • Trận 31",
+        "time": "T7 14/11 • 09:45",
+        "venue": "Sân 2 - Trung tâm VHTT-TT",
+        "teams": "Nhất B — Nhất C"
+      },
+      "thirdPlace": {
+        "title": "Tranh suất 3 • Trận 32",
+        "time": "T7 14/11 • 14:30",
+        "venue": "Sân 2 - Trung tâm VHTT-TT",
+        "teams": "Thua BK1 — Thua BK2"
+      },
+      "finals": {
+        "title": "Vòng chung kết",
+        "venue": "Sân 2 - Nhà Thi Đấu",
+        "qualified": "Thắng Bán kết 1 • Thắng Bán kết 2 • Thắng Tranh suất 3"
+      },
+      "venueDetail": {
+        "name": "Sân 2 - Trung tâm VHTT-TT",
+        "address": "Đường Nguyễn Thị Minh Khai, TP. Long Khánh"
+      }
+    },
+    "Sân 3": {
+      "clusterName": "Sân 3",
+      "groups": {
+        "A": {
+          "title": "Bảng A",
+          "matchCount": "3 trận",
+          "teams": [
+            {
+              "stt": "1",
+              "code": "A1",
+              "name": "THPT Đồng Xoài",
+              "points": "3đ"
+            },
+            {
+              "stt": "2",
+              "code": "A2",
+              "name": "THPT Chuyên Quang Trung",
+              "points": "0đ"
+            }
+          ]
+        },
+        "D": {
+          "title": "Bảng D",
+          "matchCount": "3 trận",
+          "teams": [
+            {
+              "stt": "1",
+              "code": "D1",
+              "name": "CLB Trẻ Phước Long",
+              "points": "3đ"
+            },
+            {
+              "stt": "2",
+              "code": "D2",
+              "name": "THPT Bình Long",
+              "points": "0đ"
+            }
+          ]
+        },
+        "B": {
+          "title": "Bảng B",
+          "matchCount": "3 trận",
+          "teams": [
+            {
+              "stt": "1",
+              "code": "B1",
+              "name": "THPT Chơn Thành",
+              "points": "3đ"
+            },
+            {
+              "stt": "2",
+              "code": "B2",
+              "name": "CLB Bóng Chuyền Hớn Quản",
+              "points": "0đ"
+            }
+          ]
+        },
+        "C": {
+          "title": "Bảng C",
+          "matchCount": "3 trận",
+          "teams": [
+            {
+              "stt": "1",
+              "code": "C1",
+              "name": "Đoàn Cơ Sở Bù Đăng",
+              "points": "3đ"
+            },
+            {
+              "stt": "2",
+              "code": "C2",
+              "name": "THPT Bù Đốp",
+              "points": "0đ"
+            }
+          ]
+        }
+      },
+      "semiFinal1": {
+        "title": "Bán kết 1 • Trận 15",
+        "time": "CN 08/11 • 08:00",
+        "venue": "Sân 3 - Nhà thi đấu Đa năng",
+        "teams": "Nhất A — Nhất D"
+      },
+      "semiFinal2": {
+        "title": "Bán kết 2 • Trận 16",
+        "time": "CN 08/11 • 09:30",
+        "venue": "Sân 3 - Nhà thi đấu Đa năng",
+        "teams": "Nhất B — Nhất C"
+      },
+      "thirdPlace": {
+        "title": "Tranh suất 3 • Trận 17",
+        "time": "CN 08/11 • 14:00",
+        "venue": "Sân 3 - Nhà thi đấu Đa năng",
+        "teams": "Thua BK1 — Thua BK2"
+      },
+      "finals": {
+        "title": "Vòng chung kết",
+        "venue": "Sân 3 - Nhà thi đấu Đa năng",
+        "qualified": "Thắng Bán kết 1 • Thắng Bán kết 2 • Thắng Tranh suất 3"
+      },
+      "venueDetail": {
+        "name": "Sân 3 - Nhà thi đấu Đa năng",
+        "address": "Đường Hùng Vương, TP. Đồng Xoài"
+      }
+    }
+  },
+  "sports": [
+    {
+      "id": "BONG_DA_7",
+      "status": "OPEN",
+      "name": "Bóng Đá Mini Sân 7",
+      "iconCode": "SOCCER",
+      "cat": "BONG",
+      "schema": "FOOTBALL",
+      "minVdv": 7,
+      "maxVdv": 14,
+      "quota": 16,
+      "desc": "Thi đấu sân cỏ nhân tạo 7 người. Đội hình chính thức 7 cầu thủ + tối đa 7 dự bị."
+    },
+    {
+      "id": "BONG_DA_5",
+      "status": "OPEN",
+      "name": "Bóng Đá Mini Sân 5",
+      "iconCode": "SOCCER",
+      "cat": "BONG",
+      "schema": "FOOTBALL",
+      "minVdv": 5,
+      "maxVdv": 10,
+      "quota": 16,
+      "desc": "Thi đấu sân cỏ nhân tạo 5 người. Đội hình chính thức 5 cầu thủ + tối đa 5 dự bị."
+    },
+    {
+      "id": "BONG_CHUYEN_DA",
+      "status": "IN_PROGRESS",
+      "name": "Bóng Chuyền Da (Nam / Nữ)",
+      "iconCode": "VOLLEY",
+      "cat": "BONG",
+      "schema": "CUSTOM_TEAM",
+      "minVdv": 6,
+      "maxVdv": 12,
+      "quota": 16,
+      "desc": "Thi đấu bóng chuyền da 6 người trên sân + dự bị theo luật hiện hành."
+    },
+    {
+      "id": "BONG_CHUYEN_HOI",
+      "status": "OPEN",
+      "name": "Bóng Chuyền Hơi Phong Trào",
+      "iconCode": "VOLLEY",
+      "cat": "BONG",
+      "schema": "CUSTOM_TEAM",
+      "minVdv": 5,
+      "maxVdv": 10,
+      "quota": 20,
+      "desc": "Mỗi đội 5 người thi đấu trên sân, dành cho nam hoặc nữ hoặc phong trào liên tịch."
+    },
+    {
+      "id": "CAU_LONG",
+      "status": "OPEN",
+      "name": "Cầu Lông (Đơn & Đôi Hỗn Hợp)",
+      "iconCode": "RACKET",
+      "cat": "VOT",
+      "schema": "RACKET_MIXED",
+      "minVdv": 1,
+      "maxVdv": 15,
+      "quota": 32,
+      "desc": "Đăng ký hỗn hợp theo các nội dung: Đơn Nam, Đơn Nữ, Đôi Nam, Đôi Nữ, Đôi Nam Nữ."
+    },
+    {
+      "id": "BONG_BAN",
+      "status": "OPEN",
+      "name": "Bóng Bàn (Đơn & Đôi Hỗn Hợp)",
+      "iconCode": "PADDLE",
+      "cat": "VOT",
+      "schema": "RACKET_MIXED",
+      "minVdv": 1,
+      "maxVdv": 10,
+      "quota": 32,
+      "desc": "Thi đấu bóng bàn đơn nam, đơn nữ, đôi nam, đôi nữ và đôi nam nữ."
+    },
+    {
+      "id": "PICKLEBALL",
+      "status": "OPEN",
+      "name": "Pickleball (Đơn & Đôi)",
+      "iconCode": "PADDLE",
+      "cat": "VOT",
+      "schema": "RACKET_MIXED",
+      "minVdv": 1,
+      "maxVdv": 10,
+      "quota": 24,
+      "desc": "Bộ môn Pickleball thời thượng: Đơn nam, Đơn nữ, Đôi nam, Đôi nữ và Đôi nam nữ."
+    },
+    {
+      "id": "TENNIS",
+      "status": "LOCKED",
+      "name": "Quần Vợt / Tennis (Đôi)",
+      "iconCode": "TENNIS",
+      "cat": "VOT",
+      "schema": "RACKET_MIXED",
+      "minVdv": 2,
+      "maxVdv": 6,
+      "quota": 16,
+      "desc": "Thi đấu các nội dung Đôi nam, Đôi nữ và Đôi phối hợp nam nữ."
+    },
+    {
+      "id": "CHAY_VIET_DA",
+      "status": "OPEN",
+      "name": "Chạy Việt Dã (3km & 5km)",
+      "iconCode": "RUNNER",
+      "cat": "DIEN_KINH",
+      "schema": "ATHLETICS",
+      "minVdv": 1,
+      "maxVdv": 50,
+      "quota": 300,
+      "desc": "Cự ly 3km (nữ) và 5km (nam). Đăng ký theo danh sách cá nhân hoặc đoàn thể."
+    },
+    {
+      "id": "KEO_CO",
+      "status": "OPEN",
+      "name": "Kéo Co Đồng Đội",
+      "iconCode": "TUG",
+      "cat": "DAN_GIAN",
+      "schema": "TUG_OF_WAR",
+      "minVdv": 10,
+      "maxVdv": 12,
+      "quota": 16,
+      "desc": "Mỗi đội 10 VĐV (5 nam + 5 nữ) thi đấu 3 hiệp thắng 2."
+    },
+    {
+      "id": "NHAY_BAO_BO",
+      "status": "OPEN",
+      "name": "Nhảy Bao Bố (Đơn & Tiếp Sức)",
+      "iconCode": "TUG",
+      "cat": "DAN_GIAN",
+      "schema": "SACK_RACE",
+      "minVdv": 2,
+      "maxVdv": 8,
+      "quota": 20,
+      "desc": "Thi đấu cự ly 30m đơn nam, đơn nữ và tiếp sức phối hợp nam nữ."
+    },
+    {
+      "id": "DAY_GAY",
+      "status": "OPEN",
+      "name": "Đẩy Gậy Truyền Thống",
+      "iconCode": "TUG",
+      "cat": "DAN_GIAN",
+      "schema": "RACKET_MIXED",
+      "minVdv": 1,
+      "maxVdv": 6,
+      "quota": 30,
+      "desc": "Thi đấu đối kháng cá nhân theo các hạng cân quy định của Ban Tổ Chức."
+    },
+    {
+      "id": "CO_TUONG",
+      "status": "LOCKED",
+      "name": "Cờ Tướng (Đồng Đội & Cá Nhân)",
+      "iconCode": "CHESS",
+      "cat": "DAN_GIAN",
+      "schema": "RACKET_MIXED",
+      "minVdv": 1,
+      "maxVdv": 4,
+      "quota": 32,
+      "desc": "Thi đấu cờ tiêu chuẩn theo hệ Thụy Sĩ hoặc loại trực tiếp."
+    }
+  ],
+  "id": "giai-phong-trao-2026",
+  "slug": "giai-phong-trao-2026"
+}

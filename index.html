@@ -275,9 +275,19 @@
       .eq-bar-2 { animation: eqBar2 0.7s ease-in-out infinite; }
       .eq-bar-3 { animation: eqBar3 1.1s ease-in-out infinite; }
 
-      /* PRINT OPTIMIZATION (IN PHIẾU TIẾP NHẬN SẠCH ĐẸP, CHỈ IN DUY NHẤT PHIẾU ĐĂNG KÝ) */
+      
+      /* ZALO FLOATING PULSE BUTTON & BADGES */
+      @keyframes zaloPulse {
+        0% { transform: scale(1); box-shadow: 0 0 0 0 rgba(0, 104, 255, 0.7); }
+        70% { transform: scale(1.06); box-shadow: 0 0 0 16px rgba(0, 104, 255, 0); }
+        100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(0, 104, 255, 0); }
+      }
+      .zalo-pulse-btn {
+        animation: zaloPulse 1.8s infinite;
+      }
+      /* PRINT OPTIMIZATION (IN PHIẾU TIẾP NHẬN, BIÊN BẢN A4, THẺ VĐV) */
       @media print {
-        header, footer, .no-print, #adminModal, #adminLoginModal, #lookupModal, #quickPasteModal, #sportEditModal, #scheduleModal, .hero-sports-dynamic, .animate-marquee, #ongoingTournamentsSection, #step1Section, #step2Section, #step3ReviewBox {
+        header, footer, .no-print, #adminModal, #adminLoginModal, #lookupModal, #quickPasteModal, #sportEditModal, #scheduleModal, .hero-sports-dynamic, .animate-marquee, #ongoingTournamentsSection, #step1Section, #step2Section, #step3ReviewBox, #floatingZaloWidget {
           display: none !important;
         }
         body {
@@ -290,7 +300,36 @@
           margin: 0 !important;
           max-width: 100% !important;
         }
-        #step3Section, #step3ReceiptBox {
+
+        /* Khi in Biên bản điểm danh */
+        body.print-match-sheet main,
+        body.print-match-sheet #step3Section,
+        body.print-match-sheet #step3ReceiptBox {
+          display: none !important;
+        }
+        body.print-match-sheet #matchSheetModal {
+          position: static !important;
+          display: block !important;
+          background: white !important;
+          padding: 0 !important;
+        }
+
+        /* Khi in Thẻ VĐV */
+        body.print-badges main,
+        body.print-badges #step3Section,
+        body.print-badges #step3ReceiptBox {
+          display: none !important;
+        }
+        body.print-badges #badgesModal {
+          position: static !important;
+          display: block !important;
+          background: white !important;
+          padding: 0 !important;
+        }
+
+        /* Khi in Phiếu Tiếp Nhận bình thường */
+        body:not(.print-match-sheet):not(.print-badges) #step3Section,
+        body:not(.print-match-sheet):not(.print-badges) #step3ReceiptBox {
           display: block !important;
           margin: 0 auto !important;
           padding: 0 !important;
@@ -301,6 +340,9 @@
           margin: 0 auto !important;
           max-width: 100% !important;
           page-break-inside: avoid;
+        }
+        .print-page-break {
+          page-break-after: always;
         }
       }
     </style>
@@ -914,21 +956,35 @@
             <!-- Ticket Body -->
             <div class="p-6 space-y-5 bg-white text-[#0e1f14]">
               <!-- Big Registration Code -->
-              <div class="text-center p-4 rounded-[10px] bg-[#f4f7f5] border border-[#d6e0d8] space-y-1">
-                <div class="text-[10px] font-semibold uppercase tracking-wider text-[#6b7f72]">MÃ SỐ TIẾP NHẬN CHÍNH THỨC</div>
-                <div id="receiptCode" class="text-2xl sm:text-3xl font-extrabold font-mono tracking-wider text-orange-600 py-1">
-                  DK-BD7-001
+              <div class="p-4 rounded-[12px] bg-[#f4f7f5] border border-[#d6e0d8] flex flex-col sm:flex-row items-center justify-between gap-4">
+                <div class="text-center sm:text-left space-y-1">
+                  <div class="text-[10px] font-semibold uppercase tracking-wider text-[#6b7f72]">MÃ SỐ TIẾP NHẬN CHÍNH THỨC</div>
+                  <div id="receiptCode" class="text-2xl sm:text-3xl font-extrabold font-mono tracking-wider text-orange-600">
+                    DK-BD7-001
+                  </div>
+                  <div>
+                    <button
+                      onclick="copyReceiptCode()"
+                      class="h-7 px-2.5 rounded-[6px] bg-white hover:bg-[#f4f7f5] text-[#0e1f14] text-[11px] font-medium inline-flex items-center gap-1 border border-[#d6e0d8] transition-colors cursor-pointer shadow-subtle"
+                    >
+                      <svg class="w-3 h-3 text-[#6b7f72]" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 17.25v3.375c0 .621-.504 1.125-1.125 1.125h-9.75a1.125 1.125 0 01-1.125-1.125V7.875c0-.621.504-1.125 1.125-1.125H6.75a9.06 9.06 0 011.5.124m7.5 10.376h3.375c.621 0 1.125-.504 1.125-1.125V11.25c0-4.46-3.243-8.161-7.5-8.876a9.06 9.06 0 00-1.5-.124H9.375c-.621 0-1.125.504-1.125 1.125v3.5m7.5 10.375H9.375a1.125 1.125 0 01-1.125-1.125v-9.25m12 6.625v-1.875a3.375 3.375 0 00-3.375-3.375h-1.5a1.125 1.125 0 01-1.125-1.125v-1.5a3.375 3.375 0 00-3.375-3.375H9.75" />
+                      </svg>
+                      <span id="copyBtnText">Sao chép mã</span>
+                    </button>
+                  </div>
                 </div>
-                <div>
-                  <button
-                    onclick="copyReceiptCode()"
-                    class="h-7 px-2.5 rounded-[6px] bg-white hover:bg-[#f4f7f5] text-[#0e1f14] text-[11px] font-medium inline-flex items-center gap-1 border border-[#d6e0d8] transition-colors cursor-pointer shadow-subtle"
-                  >
-                    <svg class="w-3 h-3 text-[#6b7f72]" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-                      <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 17.25v3.375c0 .621-.504 1.125-1.125 1.125h-9.75a1.125 1.125 0 01-1.125-1.125V7.875c0-.621.504-1.125 1.125-1.125H6.75a9.06 9.06 0 011.5.124m7.5 10.376h3.375c.621 0 1.125-.504 1.125-1.125V11.25c0-4.46-3.243-8.161-7.5-8.876a9.06 9.06 0 00-1.5-.124H9.375c-.621 0-1.125.504-1.125 1.125v3.5m7.5 10.375H9.375a1.125 1.125 0 01-1.125-1.125v-9.25m12 6.625v-1.875a3.375 3.375 0 00-3.375-3.375h-1.5a1.125 1.125 0 01-1.125-1.125v-1.5a3.375 3.375 0 00-3.375-3.375H9.75" />
-                    </svg>
-                    <span id="copyBtnText">Sao chép mã</span>
-                  </button>
+
+                <!-- Dynamic QR Code for Ticket -->
+                <div class="flex items-center gap-3 p-2 rounded-[10px] bg-white border border-[#d6e0d8] shadow-subtle">
+                  <div class="w-20 h-20 bg-white flex items-center justify-center p-1 rounded overflow-hidden">
+                    <img id="receiptQrImage" src="" alt="Mã QR Xác Thực" class="w-full h-full object-contain" />
+                  </div>
+                  <div class="text-left space-y-0.5">
+                    <span class="inline-block px-1.5 py-0.5 rounded text-[9px] font-bold bg-emerald-100 text-emerald-800 uppercase tracking-wider">Mã QR Xác Thực</span>
+                    <div class="text-[11px] font-bold text-zinc-900 leading-tight">Quét để tra cứu hồ sơ</div>
+                    <div class="text-[10px] text-zinc-500">Trọng tài quét để đối chiếu danh sách</div>
+                  </div>
                 </div>
               </div>
 
@@ -1290,11 +1346,26 @@
                 <button
                   onclick="exportRegistrationsToCSV()"
                   class="ui-button-default text-xs h-8 px-3"
+                  title="Tải toàn bộ danh sách đăng ký về máy dạng CSV/Excel"
                 >
                   <svg class="w-3.5 h-3.5 mr-1" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5M16.5 12L12 16.5m0 0L7.5 12m4.5 4.5V3" />
                   </svg>
-                  <span>Xuất file Excel (CSV)</span>
+                  <span>Xuất Excel</span>
+                </button>
+                <button
+                  onclick="openMatchSheetModal()"
+                  class="px-3 h-8 rounded-[8px] bg-[#06301a] hover:bg-[#0a4224] text-[#8be33a] font-bold text-xs flex items-center gap-1.5 cursor-pointer shadow-subtle border border-[#8be33a]/30"
+                  title="Xuất biên bản điểm danh VĐV trước trận đấu cho Trọng tài"
+                >
+                  <span>📋 In Biên Bản Điểm Danh</span>
+                </button>
+                <button
+                  onclick="openBadgesModal()"
+                  class="px-3 h-8 rounded-[8px] bg-emerald-700 hover:bg-emerald-800 text-white font-semibold text-xs flex items-center gap-1.5 cursor-pointer shadow-subtle"
+                  title="In hàng loạt thẻ VĐV đeo ngực"
+                >
+                  <span>🪪 In Thẻ VĐV</span>
                 </button>
               </div>
             </div>
@@ -1464,6 +1535,10 @@
                     <label class="block text-[11px] text-zinc-600 mb-0.5">Cặp đấu:</label>
                     <input type="text" id="sched_bk1_match" class="w-full px-2.5 py-1.5 rounded-[6px] border border-zinc-300 text-xs" />
                   </div>
+                  <div>
+                    <label class="block text-[11px] text-zinc-600 mb-0.5 font-bold text-amber-700">⚡ Tỷ số trực tiếp (VD: 2 - 1 hoặc 25 - 20):</label>
+                    <input type="text" id="sched_bk1_score" placeholder="Để trống nếu chưa đá" class="w-full px-2.5 py-1.5 rounded-[6px] border border-amber-300 bg-amber-50/50 font-mono font-bold text-xs text-amber-900" />
+                  </div>
                 </div>
 
                 <div class="p-3.5 rounded-[10px] bg-zinc-50 border border-zinc-200 space-y-2">
@@ -1475,6 +1550,10 @@
                   <div>
                     <label class="block text-[11px] text-zinc-600 mb-0.5">Cặp đấu:</label>
                     <input type="text" id="sched_bk2_match" class="w-full px-2.5 py-1.5 rounded-[6px] border border-zinc-300 text-xs" />
+                  </div>
+                  <div>
+                    <label class="block text-[11px] text-zinc-600 mb-0.5 font-bold text-amber-700">⚡ Tỷ số trực tiếp (VD: 3 - 0 hoặc 19 - 21):</label>
+                    <input type="text" id="sched_bk2_score" placeholder="Để trống nếu chưa đá" class="w-full px-2.5 py-1.5 rounded-[6px] border border-amber-300 bg-amber-50/50 font-mono font-bold text-xs text-amber-900" />
                   </div>
                 </div>
               </div>
@@ -2048,6 +2127,49 @@
         <!-- Diagram Canvas Container -->
         <div id="scheduleBracketContainer" class="p-4 sm:p-6 overflow-x-auto flex-1 bg-[#fafcfb]">
           <!-- Rendered dynamically by renderScheduleDiagram() -->
+        </div>
+      </div>
+    </div>
+
+    
+    <!-- MODAL 1: BIÊN BẢN THI ĐẤU & ĐIỂM DANH TRỌNG TÀI -->
+    <div id="matchSheetModal" class="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm hidden flex items-center justify-center p-2 sm:p-4 overflow-y-auto">
+      <div class="bg-white rounded-[14px] max-w-4xl w-full max-h-[92vh] flex flex-col shadow-2xl overflow-hidden border border-zinc-300 text-xs">
+        <div class="bg-[#06301a] text-white p-4 flex items-center justify-between no-print border-b border-[#8be33a]/30">
+          <div class="flex items-center gap-2">
+            <span class="text-lg">📋</span>
+            <h3 class="font-bold text-sm text-white">Biên Bản Thi Đấu & Điểm Danh VĐV</h3>
+          </div>
+          <div class="flex items-center gap-2">
+            <button onclick="window.print()" class="px-3 py-1.5 rounded-[6px] bg-[#8be33a] text-[#06301a] font-bold text-xs flex items-center gap-1 cursor-pointer">
+              <span>🖨️ In Biên Bản (A4)</span>
+            </button>
+            <button onclick="closeMatchSheetModal()" class="w-8 h-8 rounded-[6px] bg-white/10 hover:bg-white/20 text-white flex items-center justify-center cursor-pointer">✕</button>
+          </div>
+        </div>
+        <div id="matchSheetPrintArea" class="p-6 overflow-y-auto space-y-4 bg-white text-black">
+          <!-- Dynamic injected via renderMatchSheet() -->
+        </div>
+      </div>
+    </div>
+
+    <!-- MODAL 2: IN THẺ ĐEO VẬN ĐỘNG VIÊN (ATHLETE BADGES) -->
+    <div id="badgesModal" class="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm hidden flex items-center justify-center p-2 sm:p-4 overflow-y-auto">
+      <div class="bg-white rounded-[14px] max-w-5xl w-full max-h-[92vh] flex flex-col shadow-2xl overflow-hidden border border-zinc-300 text-xs">
+        <div class="bg-[#06301a] text-white p-4 flex items-center justify-between no-print border-b border-[#8be33a]/30">
+          <div class="flex items-center gap-2">
+            <span class="text-lg">🪪</span>
+            <h3 class="font-bold text-sm text-white">Thẻ Vận Động Viên Đeo Ngực (Athlete Badges)</h3>
+          </div>
+          <div class="flex items-center gap-2">
+            <button onclick="window.print()" class="px-3 py-1.5 rounded-[6px] bg-[#8be33a] text-[#06301a] font-bold text-xs flex items-center gap-1 cursor-pointer">
+              <span>🖨️ In Hàng Loạt Thẻ</span>
+            </button>
+            <button onclick="closeBadgesModal()" class="w-8 h-8 rounded-[6px] bg-white/10 hover:bg-white/20 text-white flex items-center justify-center cursor-pointer">✕</button>
+          </div>
+        </div>
+        <div id="badgesPrintArea" class="p-6 overflow-y-auto bg-zinc-100">
+          <!-- Dynamic injected via renderBadges() -->
         </div>
       </div>
     </div>
@@ -2768,6 +2890,7 @@
         renderSportsGrid('ALL');
         renderOngoingShowcase();
         populateLookupSportSelect();
+        updateZaloFloatingWidget();
       }
 
       function updateTopStats() {
@@ -3585,6 +3708,9 @@
 
         document.getElementById('receiptTournamentTitle').textContent = appConfig.tenGiai;
         document.getElementById('receiptCode').textContent = regCode;
+        var qrUrl = 'https://api.qrserver.com/v1/create-qr-code/?size=160x160&data=' + encodeURIComponent(window.location.origin + window.location.pathname + '?tra-cuu=' + regCode);
+        var qrImg = document.getElementById('receiptQrImage');
+        if (qrImg) qrImg.src = qrUrl;
         document.getElementById('receiptKhaiMac').textContent = appConfig.ngayKhaiMac;
         document.getElementById('receiptDiaDiem').textContent = appConfig.diaDiem;
 
@@ -3704,6 +3830,9 @@
 
         document.getElementById('receiptTournamentTitle').textContent = appConfig.tenGiai;
         document.getElementById('receiptCode').textContent = r.code;
+        var qrUrl = 'https://api.qrserver.com/v1/create-qr-code/?size=160x160&data=' + encodeURIComponent(window.location.origin + window.location.pathname + '?tra-cuu=' + r.code);
+        var qrImg = document.getElementById('receiptQrImage');
+        if (qrImg) qrImg.src = qrUrl;
         document.getElementById('receiptKhaiMac').textContent = appConfig.ngayKhaiMac;
         document.getElementById('receiptDiaDiem').textContent = appConfig.diaDiem;
 
@@ -5596,11 +5725,15 @@
         if (data.semiFinal1) {
           document.getElementById('sched_bk1_time').value = data.semiFinal1.time || '';
           document.getElementById('sched_bk1_match').value = data.semiFinal1.teams || '';
+          var s1El = document.getElementById('sched_bk1_score');
+          if (s1El) s1El.value = data.semiFinal1.score || '';
         }
         // BK2
         if (data.semiFinal2) {
           document.getElementById('sched_bk2_time').value = data.semiFinal2.time || '';
           document.getElementById('sched_bk2_match').value = data.semiFinal2.teams || '';
+          var s2El = document.getElementById('sched_bk2_score');
+          if (s2El) s2El.value = data.semiFinal2.score || '';
         }
         // Third place
         if (data.thirdPlace) {
@@ -5678,14 +5811,16 @@
           title: 'Bán kết 1 • Trận 60',
           time: document.getElementById('sched_bk1_time').value.trim(),
           venue: 'NVH Thanh thiếu nhi CS1',
-          teams: document.getElementById('sched_bk1_match').value.trim()
+          teams: document.getElementById('sched_bk1_match').value.trim(),
+          score: document.getElementById('sched_bk1_score') ? document.getElementById('sched_bk1_score').value.trim() : ''
         };
 
         data.semiFinal2 = {
           title: 'Bán kết 2 • Trận 61',
           time: document.getElementById('sched_bk2_time').value.trim(),
           venue: 'NVH Thanh thiếu nhi CS1',
-          teams: document.getElementById('sched_bk2_match').value.trim()
+          teams: document.getElementById('sched_bk2_match').value.trim(),
+          score: document.getElementById('sched_bk2_score') ? document.getElementById('sched_bk2_score').value.trim() : ''
         };
 
         data.thirdPlace = {
@@ -5792,6 +5927,7 @@
                 sportName: vData.semiFinal1.title || 'Bán kết 1',
                 team1: vData.semiFinal1.teams.split('—')[0] ? vData.semiFinal1.teams.split('—')[0].trim() : 'Nhất A',
                 team2: vData.semiFinal1.teams.split('—')[1] ? vData.semiFinal1.teams.split('—')[1].trim() : 'Nhất D',
+                score: vData.semiFinal1.score || '',
                 venue: vData.semiFinal1.venue || venueKey,
                 stage: 'Bán Kết 1'
               });
@@ -5802,6 +5938,7 @@
                 sportName: vData.semiFinal2.title || 'Bán kết 2',
                 team1: vData.semiFinal2.teams.split('—')[0] ? vData.semiFinal2.teams.split('—')[0].trim() : 'Nhất B',
                 team2: vData.semiFinal2.teams.split('—')[1] ? vData.semiFinal2.teams.split('—')[1].trim() : 'Nhất C',
+                score: vData.semiFinal2.score || '',
                 venue: vData.semiFinal2.venue || venueKey,
                 stage: 'Bán Kết 2'
               });
@@ -5839,8 +5976,8 @@
                   <div class="space-y-0.5 min-w-0">
                     <div class="flex items-center gap-2 sm:gap-3 text-sm font-bold text-white truncate">
                       <span class="text-zinc-100 truncate">${m.team1}</span>
-                      <span class="px-2 py-0.5 rounded bg-zinc-800 text-amber-400 font-mono text-xs flex-shrink-0">
-                        VS
+                      <span class="px-2 py-0.5 rounded ${m.score ? 'bg-amber-400 text-[#041a0f] font-black shadow-sm' : 'bg-zinc-800 text-amber-400 font-mono'} text-xs flex-shrink-0">
+                        ${m.score ? m.score : 'VS'}
                       </span>
                       <span class="text-zinc-100 truncate">${m.team2}</span>
                     </div>
@@ -5876,6 +6013,205 @@
         }
       });
 
+      
+      // ---------------------------------------------------------
+      // TÍNH NĂNG MỞ RỘNG: ZALO FLOATING WIDGET, BIÊN BẢN & THẺ VĐV
+      // ---------------------------------------------------------
+      function updateZaloFloatingWidget() {
+        var phone = (appConfig && appConfig.hotline) ? appConfig.hotline : '0984.724.131';
+        var cleanPhone = phone.replace(/[^0-9]/g, '');
+        var link = document.getElementById('zaloFloatingLink');
+        var phoneText = document.getElementById('zaloWidgetPhone');
+        if (link) link.href = 'https://zalo.me/' + cleanPhone;
+        if (phoneText) phoneText.textContent = phone;
+      }
+
+      function openZaloChatForReg(phone, donVi, code, status) {
+        var cleanPhone = (phone || '').replace(/[^0-9]/g, '');
+        if (!cleanPhone) {
+          alert('Hồ sơ này không có số điện thoại!');
+          return;
+        }
+        window.open('https://zalo.me/' + cleanPhone, '_blank');
+      }
+
+      function openMatchSheetModal(filterCode) {
+        renderMatchSheet(filterCode);
+        document.body.classList.add('print-match-sheet');
+        document.getElementById('matchSheetModal').classList.remove('hidden');
+      }
+
+      function closeMatchSheetModal() {
+        document.body.classList.remove('print-match-sheet');
+        document.getElementById('matchSheetModal').classList.add('hidden');
+      }
+
+      function renderMatchSheet(filterCode) {
+        var container = document.getElementById('matchSheetPrintArea');
+        if (!container) return;
+
+        var regs = loadRegistrations();
+        if (filterCode) {
+          regs = regs.filter(function(r) { return r.code === filterCode; });
+        } else {
+          // Chỉ lấy các hồ sơ đã duyệt hoặc tất cả
+          regs = regs.filter(function(r) { return r.status === 'APPROVED' || !filterCode; });
+        }
+
+        if (regs.length === 0) {
+          container.innerHTML = '<div class="text-center py-12 text-zinc-400 text-sm">Chưa có hồ sơ hợp lệ nào để in biên bản thi đấu!</div>';
+          return;
+        }
+
+        container.innerHTML = regs.map(function(r, regIdx) {
+          var athletesRows = (r.athletes || []).map(function(a, idx) {
+            return `
+              <tr class="border-b border-black">
+                <td class="p-2 text-center font-bold">${idx + 1}</td>
+                <td class="p-2 font-bold">${a.hoTen || '--'}</td>
+                <td class="p-2 text-center">${a.namSinh || '--'}</td>
+                <td class="p-2 text-center">${a.gioiTinh || '--'}</td>
+                <td class="p-2 text-center font-mono font-bold text-base">${a.soAo || '--'}</td>
+                <td class="p-2 font-mono text-center">${a.cccd || '--'}</td>
+                <td class="p-2 text-center">${a.vaiTro || a.noiDung || a.viTri || '--'}</td>
+                <td class="p-2 text-center min-w-[80px]"></td>
+              </tr>
+            `;
+          }).join('');
+
+          return `
+            <div class="${regIdx > 0 ? 'print-page-break pt-8' : ''} space-y-4 font-sans text-black">
+              <!-- Official Document Header -->
+              <div class="text-center space-y-1 border-b-2 border-black pb-3">
+                <div class="text-xs uppercase font-bold tracking-widest">CỘNG HÒA XÃ HỘI CHỦ NGHĨA VIỆT NAM</div>
+                <div class="text-xs font-semibold underline underline-offset-4">Độc lập - Tự do - Hạnh phúc</div>
+                <h2 class="text-lg font-black uppercase tracking-tight pt-2">${appConfig.tenGiai}</h2>
+                <h3 class="text-base font-extrabold uppercase text-emerald-900">BIÊN BẢN ĐIỂM DANH & DANH SÁCH THI ĐẤU CHÍNH THỨC</h3>
+              </div>
+
+              <!-- Match & Team Info -->
+              <div class="grid grid-cols-2 gap-2 text-xs border border-black p-3 bg-zinc-50">
+                <div><strong>Đơn vị / Đội bóng:</strong> ${r.donVi || '--'}</div>
+                <div><strong>Môn thi đấu:</strong> ${r.sportName || '--'}</div>
+                <div><strong>Mã hồ sơ:</strong> <span class="font-mono font-bold">${r.code || '--'}</span></div>
+                <div><strong>Trưởng đoàn / HLV:</strong> ${r.truongDoan || '--'} (SĐT: ${r.sdt || '--'})</div>
+                <div><strong>Ngày giờ thi đấu:</strong> ${appConfig.ngayKhaiMac}</div>
+                <div><strong>Địa điểm thi đấu:</strong> ${appConfig.diaDiem}</div>
+              </div>
+
+              <!-- Athletes Table -->
+              <table class="w-full text-left text-xs border-collapse border-2 border-black">
+                <thead>
+                  <tr class="bg-zinc-200 border-b-2 border-black font-bold">
+                    <th class="p-2 border-r border-black w-10 text-center">STT</th>
+                    <th class="p-2 border-r border-black">Họ và Tên Vận Động Viên</th>
+                    <th class="p-2 border-r border-black text-center w-16">Năm Sinh</th>
+                    <th class="p-2 border-r border-black text-center w-16">Giới Tính</th>
+                    <th class="p-2 border-r border-black text-center w-16">Số Áo</th>
+                    <th class="p-2 border-r border-black text-center w-28">Số CCCD</th>
+                    <th class="p-2 border-r border-black text-center">Vị Trí / Nội Dung</th>
+                    <th class="p-2 text-center w-24">Chữ Ký Điểm Danh</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  ${athletesRows || '<tr><td colspan="8" class="p-4 text-center">Chưa có danh sách vận động viên</td></tr>'}
+                </tbody>
+              </table>
+
+              <!-- Signature Boxes -->
+              <div class="grid grid-cols-3 gap-4 pt-6 text-center text-xs">
+                <div class="space-y-16">
+                  <div><strong>ĐẠI DIỆN TRƯỞNG ĐOÀN</strong><br><span class="italic text-[10px]">(Ký và ghi rõ họ tên)</span></div>
+                  <div class="font-bold">${r.truongDoan || ''}</div>
+                </div>
+                <div class="space-y-16">
+                  <div><strong>TRỌNG TÀI CHÍNH</strong><br><span class="italic text-[10px]">(Xác nhận đủ điều kiện thi đấu)</span></div>
+                  <div class="font-bold">.........................................</div>
+                </div>
+                <div class="space-y-16">
+                  <div><strong>BAN TỔ CHỨC GIẢI</strong><br><span class="italic text-[10px]">(Ký tên và đóng dấu)</span></div>
+                  <div class="font-bold">.........................................</div>
+                </div>
+              </div>
+            </div>
+          `;
+        }).join('');
+      }
+
+      function openBadgesModal(filterCode) {
+        renderBadges(filterCode);
+        document.body.classList.add('print-badges');
+        document.getElementById('badgesModal').classList.remove('hidden');
+      }
+
+      function closeBadgesModal() {
+        document.body.classList.remove('print-badges');
+        document.getElementById('badgesModal').classList.add('hidden');
+      }
+
+      function renderBadges(filterCode) {
+        var container = document.getElementById('badgesPrintArea');
+        if (!container) return;
+
+        var regs = loadRegistrations();
+        if (filterCode) {
+          regs = regs.filter(function(r) { return r.code === filterCode; });
+        }
+
+        var allBadges = [];
+        regs.forEach(function(r) {
+          (r.athletes || []).forEach(function(a) {
+            allBadges.push({
+              regCode: r.code,
+              donVi: r.donVi,
+              sportName: r.sportName,
+              hoTen: a.hoTen,
+              soAo: a.soAo,
+              vaiTro: a.vaiTro || a.noiDung || a.viTri || 'Vận Động Viên'
+            });
+          });
+        });
+
+        if (allBadges.length === 0) {
+          container.innerHTML = '<div class="text-center py-12 text-zinc-400 text-sm">Chưa có vận động viên nào để in thẻ!</div>';
+          return;
+        }
+
+        var cardsHtml = allBadges.map(function(b) {
+          return `
+            <div class="w-[85mm] h-[120mm] bg-[#06301a] text-white rounded-[12px] p-4 flex flex-col justify-between border-2 border-[#8be33a]/50 shadow-elevated relative overflow-hidden print:border-black print:text-black print:bg-white inline-block m-2">
+              <div class="text-center space-y-1 border-b border-[#8be33a]/30 pb-2">
+                <span class="text-[9px] font-bold uppercase tracking-widest text-[#8be33a] block">BAN TỔ CHỨC</span>
+                <h4 class="font-black text-xs uppercase leading-tight line-clamp-2">${appConfig.tenGiai}</h4>
+              </div>
+
+              <!-- Center Athlete Info -->
+              <div class="text-center space-y-2 py-2">
+                <div class="w-16 h-16 rounded-full bg-[#041f11] border-2 border-[#8be33a] mx-auto flex items-center justify-center text-2xl shadow-subtle">
+                  🏃
+                </div>
+                <div>
+                  <span class="text-[10px] text-zinc-300 uppercase block font-semibold">${b.vaiTro}</span>
+                  <h3 class="font-extrabold text-base text-[#8be33a] leading-tight">${b.hoTen}</h3>
+                  <div class="text-xs font-bold text-white pt-0.5">${b.donVi}</div>
+                </div>
+                <div class="inline-block px-3 py-1 rounded bg-[#041f11] border border-[#8be33a]/40 font-mono font-black text-base text-white">
+                  SỐ ÁO: ${b.soAo || '--'}
+                </div>
+              </div>
+
+              <!-- Badge Footer -->
+              <div class="pt-2 border-t border-[#8be33a]/30 text-center text-[10px] text-zinc-300">
+                <div class="font-bold text-white uppercase">${b.sportName}</div>
+                <div class="font-mono text-[#8be33a] text-[9px]">${b.regCode}</div>
+              </div>
+            </div>
+          `;
+        }).join('');
+
+        container.innerHTML = `<div class="flex flex-wrap items-center justify-center">${cardsHtml}</div>`;
+      }
+
       window.addEventListener('DOMContentLoaded', function() {
         loadAppConfig(function() {
           applyConfigToUI();
@@ -5883,5 +6219,39 @@
         });
       });
     </script>
+  
+    <!-- ================= FLOATING ZALO WIDGET (NHẤP NHÁY LIÊN TỤC THEO MẪU BẠN GỬI) ================= -->
+    <aside
+      id="floatingZaloWidget"
+      class="fixed bottom-6 right-6 z-40 flex items-center group no-print select-none"
+      aria-label="Hỗ trợ Zalo Ban Tổ Chức"
+    >
+      <a
+        id="zaloFloatingLink"
+        href="https://zalo.me/0984724131"
+        target="_blank"
+        rel="noopener noreferrer"
+        class="relative flex items-center justify-center w-14 h-14 rounded-2xl bg-[#0068ff] shadow-[0_8px_25px_rgba(0,104,255,0.55)] border-2 border-white/90 zalo-pulse-btn transition-transform hover:scale-110 active:scale-95"
+        title="Bấm để chat Zalo trực tiếp với Ban Tổ Chức"
+      >
+        <!-- Official Zalo Logo -->
+        <svg class="w-9 h-9" viewBox="0 0 48 48" fill="none">
+          <path d="M11 29.5c0 .3.2.5.5.5h4c.4 0 .6-.3.6-.6 0-.3-.2-.5-.5-.5h-2.5l4.5-6.3c.2-.3.1-.6-.2-.6h-4.2c-.4 0-.6.3-.6.6 0 .3.2.5.5.5h2.5l-4.6 6.4zM24 23.4c-.5-.5-1.1-.7-1.8-.7-.9 0-1.6.4-2.1 1-.5.6-.8 1.4-.8 2.4 0 1 .3 1.8.8 2.4.5.6 1.2 1 2.1 1 .7 0 1.3-.2 1.8-.7v.5c0 .3.2.5.5.5h.9c.3 0 .5-.2.5-.5V24c0-.3-.2-.5-.5-.5h-.9c-.3 0-.5.2-.5.5v-.6zm-.8 4.2c-.3.4-.7.6-1.2.6-.5 0-1-.2-1.2-.6-.3-.4-.4-1-.4-1.7s.1-1.3.4-1.7c.3-.4.7-.6 1.2-.6.5 0 .9.2 1.2.6.3.4.4 1 .4 1.7s-.1 1.3-.4 1.7zM28.8 21.2c-.4 0-.6.2-.6.6v8.2c0 .4.2.6.6.6h.9c.4 0 .6-.2.6-.6v-8.2c0-.4-.2-.6-.6-.6h-.9zM36.8 22.7c-.7 0-1.3.3-1.8.7-.5.5-.8 1.3-.8 2.4 0 1 .3 1.8.8 2.4.5.5 1.1.8 1.8.8.8 0 1.4-.3 1.9-.8.5-.6.7-1.4.7-2.4 0-1.1-.2-1.9-.7-2.4-.5-.5-1.1-.7-1.9-.7zm1 4.7c-.2.4-.6.6-1 .6s-.8-.2-1-.6c-.3-.4-.4-1-.4-1.6 0-.7.1-1.2.4-1.6.2-.4.6-.6 1-.6s.8.2 1 .6c.3.4.4.9.4 1.6 0 .6-.1 1.2-.4 1.6z" fill="#ffffff"/>
+        </svg>
+
+        <!-- Live Ping Indicator -->
+        <span class="absolute -top-1.5 -right-1.5 flex h-4 w-4">
+          <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+          <span class="relative inline-flex rounded-full h-4 w-4 bg-emerald-500 border-2 border-white"></span>
+        </span>
+      </a>
+
+      <!-- Hover Tooltip Popup -->
+      <div class="hidden sm:flex items-center gap-1.5 absolute right-16 bg-[#041f11] text-white text-xs font-semibold py-2 px-3 rounded-[10px] shadow-modal border border-[#8be33a]/40 whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none">
+        <span>💬 Hỗ trợ Zalo BTC:</span>
+        <span id="zaloWidgetPhone" class="text-[#8be33a] font-mono font-bold">0984.724.131</span>
+      </div>
+    </aside>
+
   </body>
 </html>

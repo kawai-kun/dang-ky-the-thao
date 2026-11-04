@@ -330,17 +330,7 @@
             </div>
           </div>
 
-          <!-- Lịch Thi Đấu Button (Sơ đồ thi đấu chuẩn Cổng Thể Thao Đồng Nai) -->
-          <button
-            onclick="openScheduleModal()"
-            class="h-8 px-3 rounded-[10px] bg-[#06301a] hover:bg-[#0a4224] text-white text-xs font-semibold border border-[#8be33a]/50 shadow-subtle transition-all flex items-center gap-1.5 cursor-pointer hover:border-[#8be33a]"
-            title="Xem sơ đồ & lịch thi đấu"
-          >
-            <svg class="w-3.5 h-3.5 text-[#8be33a]" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 012.25-2.25h13.5A2.25 2.25 0 0121 7.5v11.25m-18 0A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75m-18 0v-7.5A2.25 2.25 0 015.25 9h13.5A2.25 2.25 0 0121 9v7.5" />
-            </svg>
-            <span>Lịch thi đấu</span>
-          </button>
+          <!-- Nút Lịch thi đấu ở topbar đã được ẩn theo yêu cầu của BTC -->
 
           <!-- Tra Cứu Button -->
           <button
@@ -545,53 +535,8 @@
 
     <!-- 5. MAIN CONTENT WRAPPER -->
     <main class="max-w-7xl mx-auto px-4 sm:px-6 py-6 flex-1 w-full">
-      <!-- ================= STEP 1: CHỌN MÔN THI ĐẤU (SHADCN CARD SHOWCASE) ================= -->
-      <section id="step1Section" class="space-y-6">
-        <!-- Section Header & Filter Tabs -->
-        <div class="flex flex-col md:flex-row md:items-end justify-between gap-4 border-b border-[#d6e0d8] pb-4">
-          <div>
-            <div class="text-[11px] font-semibold uppercase tracking-wider text-[#ea580c] mb-1 flex items-center gap-1.5">
-              <span>BƯỚC 1 / 3</span>
-              <span>•</span>
-              <span>HỆ THỐNG MỞ ĐĂNG KÝ</span>
-            </div>
-            <h2 class="text-xl sm:text-2xl font-bold text-[#0e1f14] tracking-tight">
-              Danh Sách Các Môn Thi Đấu
-            </h2>
-            <p class="text-[#6b7f72] text-xs sm:text-sm mt-0.5">
-              Bấm trực tiếp vào môn thi đấu đang mở để xem quy chế số lượng và nộp hồ sơ.
-            </p>
-          </div>
-
-          <!-- Category Filter Tabs (Cổng Thể Thao Style) -->
-          <div class="flex flex-col sm:flex-row items-start sm:items-center gap-2">
-            <!-- Bộ lọc trạng thái môn: Đang Mở vs Đang Thi Đấu -->
-            <div class="flex items-center gap-1 p-1 bg-[#f4f7f5] rounded-[10px] border border-[#d6e0d8] text-xs font-medium">
-              <button onclick="filterSportStatus('ALL')" id="filterStatusALL" class="px-3 py-1.5 rounded-[8px] bg-[#06301a] text-[#8be33a] font-bold shadow-subtle border border-[#8be33a]/30 transition-all">Tất cả</button>
-              <button onclick="filterSportStatus('OPEN')" id="filterStatusOPEN" class="px-3 py-1.5 rounded-[8px] text-emerald-800 hover:bg-emerald-100 font-semibold transition-all">🟢 Đang Mở</button>
-              <button onclick="filterSportStatus('IN_PROGRESS')" id="filterStatusIN_PROGRESS" class="px-3 py-1.5 rounded-[8px] text-rose-800 hover:bg-rose-100 font-semibold transition-all">🔴 Đang Thi Đấu</button>
-              <button onclick="filterSportStatus('LOCKED')" id="filterStatusLOCKED" class="px-3 py-1.5 rounded-[8px] text-zinc-600 hover:bg-zinc-200 font-medium transition-all">🔒 Đang Khóa</button>
-            </div>
-
-            <!-- Bộ lọc thể loại -->
-            <div class="flex flex-wrap items-center gap-1 p-1 bg-[#f4f7f5] rounded-[10px] border border-[#d6e0d8] text-xs font-medium">
-              <button onclick="filterCategory('ALL')" id="filterBtnALL" class="px-2.5 py-1.5 rounded-[8px] bg-[#06301a] text-[#8be33a] font-semibold transition-all">Tất cả (<span id="countCatAll">13</span>)</button>
-              <button onclick="filterCategory('BONG')" id="filterBtnBONG" class="px-2.5 py-1.5 rounded-[8px] text-[#6b7f72] hover:text-[#0e1f14] font-medium transition-all">Môn Bóng</button>
-              <button onclick="filterCategory('VOT')" id="filterBtnVOT" class="px-2.5 py-1.5 rounded-[8px] text-[#6b7f72] hover:text-[#0e1f14] font-medium transition-all">Môn Vợt</button>
-              <button onclick="filterCategory('DIEN_KINH')" id="filterBtnDIEN_KINH" class="px-2.5 py-1.5 rounded-[8px] text-[#6b7f72] hover:text-[#0e1f14] font-medium transition-all">Điền Kinh</button>
-              <button onclick="filterCategory('DAN_GIAN')" id="filterBtnDAN_GIAN" class="px-2.5 py-1.5 rounded-[8px] text-[#6b7f72] hover:text-[#0e1f14] font-medium transition-all">Dân Gian</button>
-            </div>
-          </div>
-        </div>
-
-        <!-- Sports Grid (Rendered via JS with Clean Border & High-Craft Cards) -->
-        <div id="sportsGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
-          <!-- Dynamically populated -->
-        </div>
-      </section>
-
       <!-- ================= KHU VỰC CÁC GIẢI ĐANG DIỄN RA (CHUẨN 100% THEO THETHAO.THANHDOANDONGNAI.COM) ================= -->
-      <section id="ongoingTournamentsSection" class="space-y-6 mt-12 mb-10 hidden">
+      <section id="ongoingTournamentsSection" class="space-y-6 mb-8 hidden">
         <!-- Section Header -->
         <div class="flex flex-col sm:flex-row sm:items-end justify-between gap-2 border-b border-[#d6e0d8] pb-3">
           <div>
@@ -637,6 +582,51 @@
           <div id="liveFixturesContainer" class="space-y-3">
             <!-- Dynamically populated via renderLiveFixtures() -->
           </div>
+        </div>
+      </section>
+
+      <!-- ================= STEP 1: CHỌN MÔN THI ĐẤU (SHADCN CARD SHOWCASE) ================= -->
+      <section id="step1Section" class="space-y-6">
+        <!-- Section Header & Filter Tabs -->
+        <div class="flex flex-col md:flex-row md:items-end justify-between gap-4 border-b border-[#d6e0d8] pb-4">
+          <div>
+            <div class="text-[11px] font-semibold uppercase tracking-wider text-[#ea580c] mb-1 flex items-center gap-1.5">
+              <span>BƯỚC 1 / 3</span>
+              <span>•</span>
+              <span>HỆ THỐNG MỞ ĐĂNG KÝ</span>
+            </div>
+            <h2 class="text-xl sm:text-2xl font-bold text-[#0e1f14] tracking-tight">
+              Danh Sách Các Môn Thi Đấu
+            </h2>
+            <p class="text-[#6b7f72] text-xs sm:text-sm mt-0.5">
+              Bấm trực tiếp vào môn thi đấu đang mở để xem quy chế số lượng và nộp hồ sơ.
+            </p>
+          </div>
+
+          <!-- Category Filter Tabs (Cổng Thể Thao Style) -->
+          <div class="flex flex-col sm:flex-row items-start sm:items-center gap-2">
+            <!-- Bộ lọc trạng thái môn: Đang Mở vs Đang Thi Đấu -->
+            <div class="flex items-center gap-1 p-1 bg-[#f4f7f5] rounded-[10px] border border-[#d6e0d8] text-xs font-medium">
+              <button onclick="filterSportStatus('ALL')" id="filterStatusALL" class="px-3 py-1.5 rounded-[8px] bg-[#06301a] text-[#8be33a] font-bold shadow-subtle border border-[#8be33a]/30 transition-all">Tất cả</button>
+              <button onclick="filterSportStatus('OPEN')" id="filterStatusOPEN" class="px-3 py-1.5 rounded-[8px] text-emerald-800 hover:bg-emerald-100 font-semibold transition-all">🟢 Đang Mở</button>
+              <button onclick="filterSportStatus('IN_PROGRESS')" id="filterStatusIN_PROGRESS" class="px-3 py-1.5 rounded-[8px] text-rose-800 hover:bg-rose-100 font-semibold transition-all">🔴 Đang Thi Đấu</button>
+              <button onclick="filterSportStatus('LOCKED')" id="filterStatusLOCKED" class="px-3 py-1.5 rounded-[8px] text-zinc-600 hover:bg-zinc-200 font-medium transition-all">🔒 Đang Khóa</button>
+            </div>
+
+            <!-- Bộ lọc thể loại -->
+            <div class="flex flex-wrap items-center gap-1 p-1 bg-[#f4f7f5] rounded-[10px] border border-[#d6e0d8] text-xs font-medium">
+              <button onclick="filterCategory('ALL')" id="filterBtnALL" class="px-2.5 py-1.5 rounded-[8px] bg-[#06301a] text-[#8be33a] font-semibold transition-all">Tất cả (<span id="countCatAll">13</span>)</button>
+              <button onclick="filterCategory('BONG')" id="filterBtnBONG" class="px-2.5 py-1.5 rounded-[8px] text-[#6b7f72] hover:text-[#0e1f14] font-medium transition-all">Môn Bóng</button>
+              <button onclick="filterCategory('VOT')" id="filterBtnVOT" class="px-2.5 py-1.5 rounded-[8px] text-[#6b7f72] hover:text-[#0e1f14] font-medium transition-all">Môn Vợt</button>
+              <button onclick="filterCategory('DIEN_KINH')" id="filterBtnDIEN_KINH" class="px-2.5 py-1.5 rounded-[8px] text-[#6b7f72] hover:text-[#0e1f14] font-medium transition-all">Điền Kinh</button>
+              <button onclick="filterCategory('DAN_GIAN')" id="filterBtnDAN_GIAN" class="px-2.5 py-1.5 rounded-[8px] text-[#6b7f72] hover:text-[#0e1f14] font-medium transition-all">Dân Gian</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Sports Grid (Rendered via JS with Clean Border & High-Craft Cards) -->
+        <div id="sportsGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+          <!-- Dynamically populated -->
         </div>
       </section>
 
@@ -4537,6 +4527,7 @@
           renderAdminSportsTable();
           renderSportsGrid(currentCategory);
           updateTopStats();
+          renderOngoingShowcase();
         }
       }
 
@@ -4547,6 +4538,7 @@
         renderAdminSportsTable();
         renderSportsGrid(currentCategory);
         updateTopStats();
+        renderOngoingShowcase();
       }
 
       function handleSportNameInput(val) {
@@ -4673,6 +4665,7 @@
         renderAdminSportsTable();
         renderSportsGrid(currentCategory);
         updateTopStats();
+        renderOngoingShowcase();
       }
 
       // ---------------------------------------------------------

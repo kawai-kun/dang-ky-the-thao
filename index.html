@@ -114,12 +114,14 @@
         pointer-events: none;
       }
 
-      /* TIÊU ĐỀ GIẢI ĐẤU LỚN VÀ RỘNG, ĐẬM CHẤT THỂ THAO */
+      /* TIÊU ĐỀ GIẢI ĐẤU LỚN VÀ RỘNG, ĐẬM CHẤT THỂ THAO, KHOẢNG CÁCH DÒNG THOÁNG ĐẸP */
       .hero-single-line-title {
         display: inline-block;
         max-width: 100%;
-        line-height: 1.15;
+        line-height: 1.45 !important;
+        letter-spacing: 0.015em;
         word-break: break-word;
+        padding: 6px 0;
       }
 
       /* SƠ ĐỒ NHÁNH ĐẤU BRACKET (CHUẨN 100% THEO THETHAO.THANHDOANDONGNAI.COM) */
@@ -387,11 +389,11 @@
 
       <!-- Nội dung trung tâm của Hero -->
       <div class="relative z-10 max-w-6xl mx-auto text-center space-y-5 w-full px-2 sm:px-4">
-        <!-- Main Tournament Title: LỚN VÀ RỘNG, ĐẬM NÉT THỂ THAO, CHIẾM TRỌN KHÔNG GIAN BỀ NGANG -->
+        <!-- Main Tournament Title: LỚN VÀ RỘNG, ĐẬM NÉT THỂ THAO, CHIẾM TRỌN KHÔNG GIAN BỀ NGANG, KHOẢNG CÁCH DÒNG THOÁNG -->
         <div class="w-full flex items-center justify-center py-1 sm:py-2">
           <h1
             id="heroTenGiai"
-            class="hero-single-line-title font-black uppercase tracking-tight text-white drop-shadow-[0_4px_24px_rgba(0,0,0,0.85)] text-3xl sm:text-5xl md:text-6xl lg:text-7xl max-w-5xl mx-auto leading-tight transition-all duration-150"
+            class="hero-single-line-title font-black uppercase text-white drop-shadow-[0_4px_24px_rgba(0,0,0,0.85)] text-3xl sm:text-5xl md:text-6xl lg:text-7xl max-w-5xl mx-auto transition-all duration-150"
           >
             GIẢI THỂ THAO PHONG TRÀO NĂM 2026
           </h1>
@@ -2626,6 +2628,9 @@
       function adjustTournamentTitleFontSize() {
         var el = document.getElementById('heroTenGiai');
         if (!el) return;
+
+        // Khoảng cách dòng thoáng đãng, sang trọng, không bị dính chữ tiếng Việt có dấu
+        el.style.lineHeight = '1.45';
 
         var text = (el.textContent || '').trim();
         var len = text.length;

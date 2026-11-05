@@ -93,24 +93,25 @@
         position: absolute;
         inset: 0;
         background-size: cover;
-        background-position: center 35%;
+        background-position: center;
         opacity: 0;
         transform: scale(1);
-        transition: opacity 900ms ease-in-out, transform 8000ms ease-out;
+        transition: opacity 800ms ease-in-out, transform 8000ms ease-out;
         pointer-events: none;
+        filter: brightness(1.05) contrast(1.08);
       }
       .hero-slide.active {
         opacity: 1;
-        transform: scale(1.06);
+        transform: scale(1.04);
       }
 
+      /* ATHLETIC PINE MILD VIGNETTE: SÁNG RÕ ẢNH BANNER 100%, KHÔNG CHE KHUẤT HÌNH ẢNH */
       .hero-overlay {
         position: absolute;
         inset: 0;
         background: 
-          radial-gradient(circle at 18% 25%, rgba(139, 227, 58, 0.22) 0%, transparent 45%),
-          radial-gradient(circle at 82% 20%, rgba(249, 115, 22, 0.28) 0%, transparent 45%),
-          linear-gradient(135deg, rgba(4, 31, 17, 0.92) 0%, rgba(6, 48, 26, 0.85) 55%, rgba(234, 88, 12, 0.35) 100%);
+          linear-gradient(180deg, rgba(4, 31, 17, 0.40) 0%, rgba(4, 31, 17, 0.15) 45%, rgba(4, 31, 17, 0.65) 100%),
+          radial-gradient(circle at center, transparent 40%, rgba(4, 31, 17, 0.30) 100%);
         pointer-events: none;
       }
 
@@ -1913,28 +1914,56 @@
             <p class="text-[11px] text-zinc-400 mt-0.5">Hệ thống sẽ tự động nhận diện và gán Icon + Hình ảnh thể thao tương ứng.</p>
           </div>
 
-          <!-- Preview Ảnh & Icon Tự Động -->
-          <div class="p-3 rounded-[8px] bg-zinc-50 border border-zinc-200 flex items-center gap-3">
-            <div id="editSportImagePreviewContainer" class="w-16 h-12 rounded-[6px] overflow-hidden bg-zinc-200 flex-shrink-0">
-              <img id="editSportImgPreview" src="" alt="Preview" class="w-full h-full object-cover" />
-            </div>
-            <div class="flex-1">
-              <span class="text-[11px] text-zinc-500 block font-medium">Icon và Ảnh đại diện tự động:</span>
-              <div class="flex items-center gap-2 mt-0.5">
-                <span id="editSportIconPreview" class="text-orange-600"></span>
-                <span id="editSportPhotoName" class="text-xs font-semibold text-zinc-800">Tự động khớp theo tên môn</span>
+          <!-- Khung Preview Ảnh Môn Rõ Ràng & Bộ Nạp Ảnh Trực Tiếp -->
+          <div class="space-y-2 p-3 bg-zinc-50 rounded-[10px] border border-zinc-200">
+            <div class="flex items-center justify-between gap-2">
+              <div>
+                <label class="font-bold text-zinc-900 text-xs block">Hình Ảnh Đại Diện Môn Thi Đấu:</label>
+                <span class="text-[11px] text-zinc-500">Hiển thị sắc nét trên thẻ đăng ký ngoài trang chủ</span>
+              </div>
+              <div class="flex items-center gap-2">
+                <label class="px-3 py-1.5 rounded-[8px] bg-[#06301a] hover:bg-[#0a4224] text-[#8be33a] font-bold text-xs cursor-pointer inline-flex items-center gap-1.5 shadow-sm transition-all">
+                  <span>📁 Tải ảnh từ máy tính</span>
+                  <input type="file" id="editSportFileInput" accept="image/*" class="hidden" onchange="uploadSportPhotoFile(this)" />
+                </label>
+                <button
+                  type="button"
+                  onclick="resetSportToDefaultPhoto()"
+                  class="px-2.5 py-1.5 rounded-[8px] bg-white hover:bg-zinc-100 text-zinc-700 font-medium text-xs border border-zinc-300 cursor-pointer shadow-2xs"
+                  title="Dùng ảnh mẫu chuẩn theo tên môn"
+                >
+                  Ảnh tự động
+                </button>
               </div>
             </div>
-          </div>
 
-          <div>
-            <label class="block font-medium text-zinc-700 mb-1">Đường Dẫn Hình Ảnh Môn (Tùy Chọn):</label>
-            <input
-              type="url"
-              id="editSportCustomPhoto"
-              placeholder="https://... hoặc để trống để dùng ảnh tự động"
-              class="w-full px-3 py-2 rounded-[8px] border border-zinc-300 text-xs font-mono"
-            />
+            <!-- Khung ảnh lớn sắc nét (Full-width 16:9) -->
+            <div class="relative w-full h-40 sm:h-44 rounded-[10px] overflow-hidden bg-zinc-900 border-2 border-zinc-300 shadow-inner">
+              <img
+                id="editSportImgPreview"
+                src=""
+                alt="Preview"
+                class="w-full h-full object-cover object-center"
+              />
+              <div class="absolute bottom-2.5 left-2.5 right-2.5 flex items-center justify-between bg-black/65 backdrop-blur-md px-3 py-1.5 rounded-[8px] text-white text-xs border border-white/20">
+                <div class="flex items-center gap-2">
+                  <span id="editSportIconPreview" class="text-[#8be33a]"></span>
+                  <span id="editSportPhotoName" class="font-semibold truncate">Xem trước ảnh thực tế</span>
+                </div>
+                <span class="text-[11px] text-[#8be33a] font-semibold">Sáng rõ 100%</span>
+              </div>
+            </div>
+
+            <div>
+              <label class="block text-[11px] font-medium text-zinc-600 mb-1">Hoặc dán đường link ảnh web (URL):</label>
+              <input
+                type="text"
+                id="editSportCustomPhoto"
+                placeholder="https://... hoặc bấm nút Tải ảnh từ máy tính ở trên"
+                oninput="handleSportCustomPhotoInput(this.value)"
+                class="w-full px-3 py-1.5 rounded-[8px] border border-zinc-300 text-xs font-mono bg-white"
+              />
+            </div>
           </div>
 
           <div class="grid grid-cols-2 gap-3">
@@ -3086,21 +3115,24 @@
                   </span>
                 </div>
 
-                <!-- Dynamic Real Sports Photo Banner -->
-                <div class="relative h-36 sm:h-40 w-full overflow-hidden bg-[#041f11]">
+                <!-- Dynamic Real Sports Photo Banner (SÁNG RÕ 100%, KHÔNG BỊ TỐI CHE KHUẤT) -->
+                <div class="relative h-44 sm:h-48 w-full overflow-hidden bg-zinc-900">
                   <img
                     src="${photoUrl}"
                     alt="${s.name}"
-                    class="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-300"
+                    class="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-300 filter brightness-100 contrast-100"
                     loading="lazy"
                   />
-                  <div class="absolute inset-0 bg-gradient-to-t from-[#041f11]/90 via-[#06301a]/30 to-transparent"></div>
+                  <!-- Dải bóng mờ nhẹ ở đáy để làm nổi bật nhãn tên, 85% diện tích ảnh hoàn toàn trong sáng -->
+                  <div class="absolute inset-x-0 bottom-0 h-14 bg-gradient-to-t from-black/80 via-black/30 to-transparent pointer-events-none"></div>
                   
-                  <div class="absolute bottom-2.5 left-3.5 right-3.5 flex items-center gap-2">
-                    <div class="w-6 h-6 rounded-[6px] bg-[#041f11]/85 backdrop-blur-md border border-rose-400/40 flex items-center justify-center text-rose-400 flex-shrink-0">
-                      ${vectorSvg}
+                  <div class="absolute bottom-2.5 left-3 right-3 flex items-center gap-2">
+                    <div class="flex items-center gap-2 bg-black/65 backdrop-blur-md px-2.5 py-1 rounded-full border border-rose-400/40 shadow-sm max-w-[85%]">
+                      <div class="w-5 h-5 rounded-full bg-rose-500/20 flex items-center justify-center text-rose-400 flex-shrink-0">
+                        ${vectorSvg}
+                      </div>
+                      <span class="text-xs font-bold text-white drop-shadow-sm truncate">${s.name}</span>
                     </div>
-                    <span class="text-xs font-semibold text-white drop-shadow-sm truncate">${s.name}</span>
                   </div>
                 </div>
 
@@ -3167,22 +3199,25 @@
                   </span>
                 </div>
 
-                <!-- Dynamic Real Sports Photo Banner -->
-                <div class="relative h-36 sm:h-40 w-full overflow-hidden bg-[#041f11]">
+                <!-- Dynamic Real Sports Photo Banner (SÁNG RÕ 100%, KHÔNG BỊ TỐI CHE KHUẤT) -->
+                <div class="relative h-44 sm:h-48 w-full overflow-hidden bg-zinc-900">
                   <img
                     src="${photoUrl}"
                     alt="${s.name}"
-                    class="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-300"
+                    class="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-300 filter brightness-100 contrast-100"
                     loading="lazy"
                   />
-                  <div class="absolute inset-0 bg-gradient-to-t from-[#041f11]/90 via-[#06301a]/30 to-transparent"></div>
+                  <!-- Dải bóng mờ nhẹ ở đáy để làm nổi bật nhãn tên, 85% diện tích ảnh hoàn toàn trong sáng -->
+                  <div class="absolute inset-x-0 bottom-0 h-14 bg-gradient-to-t from-black/80 via-black/30 to-transparent pointer-events-none"></div>
                   
                   <!-- Tag ghi chính xác tên môn và icon thể thao thực tế -->
-                  <div class="absolute bottom-2.5 left-3.5 right-3.5 flex items-center gap-2">
-                    <div class="w-6 h-6 rounded-[6px] bg-[#041f11]/85 backdrop-blur-md border border-[#8be33a]/40 flex items-center justify-center text-[#8be33a] flex-shrink-0">
-                      ${vectorSvg}
+                  <div class="absolute bottom-2.5 left-3 right-3 flex items-center gap-2">
+                    <div class="flex items-center gap-2 bg-black/65 backdrop-blur-md px-2.5 py-1 rounded-full border border-[#8be33a]/40 shadow-sm max-w-[85%]">
+                      <div class="w-5 h-5 rounded-full bg-[#8be33a]/20 flex items-center justify-center text-[#8be33a] flex-shrink-0">
+                        ${vectorSvg}
+                      </div>
+                      <span class="text-xs font-bold text-white drop-shadow-sm truncate">${s.name}</span>
                     </div>
-                    <span class="text-xs font-semibold text-white drop-shadow-sm truncate">${s.name}</span>
                   </div>
                 </div>
 
@@ -3257,14 +3292,29 @@
                   </span>
                 </div>
 
-                <!-- Muted Photo Banner -->
-                <div class="relative h-36 sm:h-40 w-full overflow-hidden bg-zinc-800">
+                <!-- Photo Banner (RÕ RÀNG, SẮC NÉT, KHÔNG BỊ TỐI ĐEN) -->
+                <div class="relative h-44 sm:h-48 w-full overflow-hidden bg-zinc-800">
                   <img
                     src="${photoUrl}"
                     alt="${s.name}"
-                    class="w-full h-full object-cover object-center grayscale opacity-40"
+                    class="w-full h-full object-cover object-center filter brightness-95 saturate-75"
+                    loading="lazy"
                   />
-                  <div class="absolute inset-0 bg-[#041f11]/60"></div>
+                  <!-- Huy hiệu Khóa ở trung tâm bán trong suốt -->
+                  <div class="absolute inset-0 bg-black/25 flex items-center justify-center">
+                    <span class="px-3 py-1 rounded-full bg-black/75 backdrop-blur-md border border-white/20 text-white font-semibold text-[11px] flex items-center gap-1.5 shadow-md">
+                      <svg class="w-3.5 h-3.5 text-zinc-300" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M16.5 10.5V6.75a4.5 4.5 0 10-9 0v3.75m-.75 11.25h10.5a2.25 2.25 0 002.25-2.25v-6.75a2.25 2.25 0 00-2.25-2.25H6.75a2.25 2.25 0 00-2.25 2.25v6.75a2.25 2.25 0 002.25 2.25z"/></svg>
+                      <span>${lockReason}</span>
+                    </span>
+                  </div>
+                  <div class="absolute bottom-2.5 left-3 right-3 flex items-center gap-2">
+                    <div class="flex items-center gap-2 bg-black/65 backdrop-blur-md px-2.5 py-1 rounded-full border border-white/20 shadow-sm max-w-[85%]">
+                      <div class="w-5 h-5 rounded-full bg-white/20 flex items-center justify-center text-zinc-300 flex-shrink-0">
+                        ${vectorSvg}
+                      </div>
+                      <span class="text-xs font-semibold text-white drop-shadow-sm truncate">${s.name}</span>
+                    </div>
+                  </div>
                 </div>
 
                 <!-- Body -->
@@ -4092,6 +4142,70 @@
         alert('Đã xóa "' + currentVenue + '" thành công!');
       }
 
+      // CÔNG CỤ NÉN & XỬ LÝ ẢNH CLIENT-SIDE (GIÚP ẢNH TẢI LÊN SIÊU NÉT, NHẸ, LƯU TRỮ TỐT)
+      function compressImageFile(file, maxWidth, maxHeight, quality, callback) {
+        if (!file || !file.type.match(/image.*/)) {
+          alert('Vui lòng chọn một file ảnh hợp lệ (JPG, PNG, WebP)!');
+          return;
+        }
+        var reader = new FileReader();
+        reader.onload = function(e) {
+          var img = new Image();
+          img.onload = function() {
+            var canvas = document.createElement('canvas');
+            var width = img.width;
+            var height = img.height;
+
+            if (width > maxWidth || height > maxHeight) {
+              if (width / height > maxWidth / maxHeight) {
+                height = Math.round((height * maxWidth) / width);
+                width = maxWidth;
+              } else {
+                width = Math.round((width * maxHeight) / height);
+                height = maxHeight;
+              }
+            }
+
+            canvas.width = width;
+            canvas.height = height;
+            var ctx = canvas.getContext('2d');
+            ctx.drawImage(img, 0, 0, width, height);
+            var dataUrl = canvas.toDataURL('image/jpeg', quality || 0.85);
+            callback(dataUrl);
+          };
+          img.onerror = function() {
+            alert('Lỗi: Không thể phân giải file ảnh này!');
+          };
+          img.src = e.target.result;
+        };
+        reader.readAsDataURL(file);
+      }
+
+      function uploadBannerFile(input, idx) {
+        if (!input.files || !input.files[0]) return;
+        var file = input.files[0];
+        compressImageFile(file, 1600, 900, 0.85, function(dataUrl) {
+          if (!appConfig.banners) appConfig.banners = [];
+          if (appConfig.banners[idx]) {
+            appConfig.banners[idx].img = dataUrl;
+          }
+          renderAdminBanners();
+          initHeroSlider();
+        });
+      }
+
+      function updateBannerRowImgUrl(input, idx) {
+        var val = input.value.trim();
+        if (val && !val.startsWith('[Ảnh tải từ máy tính')) {
+          if (!appConfig.banners) appConfig.banners = [];
+          if (appConfig.banners[idx]) {
+            appConfig.banners[idx].img = val;
+            renderAdminBanners();
+            initHeroSlider();
+          }
+        }
+      }
+
       function saveGeneralConfig() {
         appConfig.tenGiai = document.getElementById('cfgTenGiai').value.trim();
         appConfig.chuDe = document.getElementById('cfgChuDe').value.trim();
@@ -4100,32 +4214,26 @@
         appConfig.hanChot = document.getElementById('cfgHanChot').value;
         appConfig.hotline = document.getElementById('cfgHotline').value.trim();
 
-        // Thu thập banner rows
-        var bannerRows = document.querySelectorAll('#adminBannersList input[data-banner-idx]');
-        var updatedBanners = [];
-        var bannerMap = {};
-        bannerRows.forEach(function(inp) {
-          var idx = inp.getAttribute('data-banner-idx');
-          var field = inp.getAttribute('data-field');
-          if (!bannerMap[idx]) bannerMap[idx] = {};
-          bannerMap[idx][field] = inp.value.trim();
-        });
-        Object.keys(bannerMap).forEach(function(k) {
-          if (bannerMap[k].img) {
-            updatedBanners.push({
-              id: 'b_' + k,
-              title: bannerMap[k].title || '',
-              subtitle: 'SÔI ĐỘNG - ĐOÀN KẾT',
-              img: bannerMap[k].img
-            });
+        // Thu thập banner titles từ inputs, bảo toàn dữ liệu ảnh gốc
+        var titleInputs = document.querySelectorAll('#adminBannersList input[data-field="title"]');
+        titleInputs.forEach(function(inp) {
+          var idx = parseInt(inp.getAttribute('data-banner-idx'), 10);
+          if (appConfig.banners && appConfig.banners[idx]) {
+            appConfig.banners[idx].title = inp.value.trim();
           }
         });
-        if (updatedBanners.length > 0) {
-          appConfig.banners = updatedBanners;
-        }
+        var urlInputs = document.querySelectorAll('#adminBannersList input[data-field="img"]');
+        urlInputs.forEach(function(inp) {
+          var idx = parseInt(inp.getAttribute('data-banner-idx'), 10);
+          var val = inp.value.trim();
+          if (val && !val.startsWith('[Ảnh tải từ máy tính') && appConfig.banners && appConfig.banners[idx]) {
+            appConfig.banners[idx].img = val;
+          }
+        });
 
         saveAppConfig(appConfig);
         applyConfigToUI();
+        initHeroSlider();
         alert('Đã lưu thông số giải đấu và danh sách banner thành công!');
       }
 
@@ -4137,30 +4245,55 @@
         var banners = appConfig.banners || [];
         banners.forEach(function(b, idx) {
           var row = document.createElement('div');
-          row.className = 'p-3 rounded-[8px] bg-zinc-50 border border-zinc-200 flex flex-col sm:flex-row gap-3 items-start sm:items-center justify-between text-xs';
+          row.className = 'p-3 rounded-[10px] bg-zinc-50 border border-zinc-200 flex flex-col sm:flex-row gap-3 items-start sm:items-center justify-between text-xs hover:border-[#06301a]/40 transition-all';
+          var isDataUrl = (b.img || '').startsWith('data:image');
+          var displayUrl = isDataUrl ? '[Ảnh tải từ máy tính của bạn]' : b.img;
+
           row.innerHTML = `
-            <div class="w-16 h-12 rounded-[6px] overflow-hidden bg-zinc-200 flex-shrink-0 border border-zinc-300">
-              <img src="${b.img}" alt="Preview" class="w-full h-full object-cover" onerror="this.src='https://images.unsplash.com/photo-1461896836934-ffe607ba8211?w=200';" />
+            <div class="relative w-24 h-16 rounded-[8px] overflow-hidden bg-zinc-800 flex-shrink-0 border-2 border-zinc-300 shadow-sm">
+              <img src="${b.img}" alt="Preview" class="w-full h-full object-cover" onerror="this.src='https://images.unsplash.com/photo-1461896836934-ffe607ba8211?w=300';" />
             </div>
-            <div class="flex-1 grid grid-cols-1 sm:grid-cols-2 gap-2 w-full">
+            <div class="flex-1 grid grid-cols-1 sm:grid-cols-2 gap-2.5 w-full">
               <div>
-                <label class="block text-[11px] text-zinc-500">Đường link ảnh (URL):</label>
-                <input type="text" data-banner-idx="${idx}" data-field="img" value="${b.img}" oninput="updateBannerRowImgPreview(this, ${idx})" class="w-full px-2 py-1 rounded-[6px] border border-zinc-300 font-mono text-[11px] bg-white" />
+                <div class="flex items-center justify-between mb-1">
+                  <label class="text-[11px] font-semibold text-zinc-700">Hình ảnh Banner #${idx + 1}:</label>
+                  <label class="px-2 py-0.5 rounded-[5px] bg-[#06301a] hover:bg-[#0a4224] text-[#8be33a] font-bold text-[10px] cursor-pointer inline-flex items-center gap-1 shadow-sm transition-all">
+                    <span>📁 Tải ảnh từ máy tính</span>
+                    <input type="file" accept="image/*" class="hidden" onchange="uploadBannerFile(this, ${idx})" />
+                  </label>
+                </div>
+                <input
+                  type="text"
+                  data-banner-idx="${idx}"
+                  data-field="img"
+                  value="${displayUrl}"
+                  placeholder="Dán link URL ảnh hoặc bấm Tải ảnh từ máy tính"
+                  onchange="updateBannerRowImgUrl(this, ${idx})"
+                  class="w-full px-2 py-1.5 rounded-[6px] border border-zinc-300 font-mono text-[11px] bg-white"
+                />
               </div>
               <div>
-                <label class="block text-[11px] text-zinc-500">Tiêu đề chú thích ảnh:</label>
-                <input type="text" data-banner-idx="${idx}" data-field="title" value="${b.title || ''}" class="w-full px-2 py-1 rounded-[6px] border border-zinc-300 text-[11px] bg-white" />
+                <label class="block text-[11px] font-semibold text-zinc-700 mb-1">Tiêu đề chú thích ảnh:</label>
+                <input
+                  type="text"
+                  data-banner-idx="${idx}"
+                  data-field="title"
+                  value="${b.title || ''}"
+                  placeholder="VD: GIẢI THỂ THAO PHONG TRÀO NĂM 2026"
+                  class="w-full px-2 py-1.5 rounded-[6px] border border-zinc-300 text-[11px] bg-white"
+                />
               </div>
             </div>
-            <button type="button" onclick="deleteBannerRow(${idx})" class="px-2 py-1 rounded-[6px] bg-red-50 hover:bg-red-100 text-red-600 font-medium cursor-pointer self-end sm:self-center">Xóa</button>
+            <button
+              type="button"
+              onclick="deleteBannerRow(${idx})"
+              class="px-2.5 py-1.5 rounded-[6px] bg-red-50 hover:bg-red-100 text-red-600 font-medium cursor-pointer self-end sm:self-center flex-shrink-0"
+            >
+              Xóa
+            </button>
           `;
           list.appendChild(row);
         });
-      }
-
-      function updateBannerRowImgPreview(input, idx) {
-        var img = input.closest('.border').querySelector('img');
-        if (img) img.src = input.value;
       }
 
       function addNewBannerRow() {
@@ -4172,6 +4305,7 @@
           img: 'https://images.unsplash.com/photo-1546519638-68e109498ffc?auto=format&fit=crop&w=1600&q=80'
         });
         renderAdminBanners();
+        initHeroSlider();
       }
 
       function deleteBannerRow(idx) {
@@ -4181,6 +4315,7 @@
         }
         appConfig.banners.splice(idx, 1);
         renderAdminBanners();
+        initHeroSlider();
       }
 
       // ---------------------------------------------------------
@@ -4664,11 +4799,14 @@
 
           tr.innerHTML = `
             <td class="p-2.5 text-center font-bold text-zinc-400">${idx + 1}</td>
-            <td class="p-2.5 font-semibold text-zinc-900 flex items-center gap-2">
-              <span class="w-6 h-6 rounded-[6px] bg-zinc-100 flex items-center justify-center text-zinc-700">
-                ${SPORT_VECTOR_ICONS[iconCode] || SPORT_VECTOR_ICONS.SOCCER}
-              </span>
-              <span>${s.name}</span>
+            <td class="p-2.5 font-semibold text-zinc-900 flex items-center gap-2.5">
+              <div class="w-11 h-8 rounded-[6px] overflow-hidden bg-zinc-800 border border-zinc-300 flex-shrink-0 shadow-2xs">
+                <img src="${s.customPhoto || autoAssets.photo}" alt="${s.name}" class="w-full h-full object-cover" onerror="this.src='https://images.unsplash.com/photo-1517649763962-0c623266ddc0?w=100';" />
+              </div>
+              <div class="min-w-0">
+                <span class="block truncate">${s.name}</span>
+                <span class="text-[10px] text-zinc-400 font-normal">${s.customPhoto ? '🖼️ Ảnh tải lên' : '✨ Ảnh tự động'}</span>
+              </div>
             </td>
             <td class="p-2.5 text-zinc-600">${s.cat}</td>
             <td class="p-2.5 font-mono text-[11px] text-zinc-500">${s.schema}</td>
@@ -4712,15 +4850,55 @@
 
       function handleSportNameInput(val) {
         var assets = detectSportAssets(val);
-        document.getElementById('editSportIconCode').value = assets.iconCode;
-        document.getElementById('editSportCat').value = assets.cat;
+        var iconCodeSelect = document.getElementById('editSportIconCode');
+        var catSelect = document.getElementById('editSportCat');
+        if (iconCodeSelect) iconCodeSelect.value = assets.iconCode;
+        if (catSelect) catSelect.value = assets.cat;
 
         var imgEl = document.getElementById('editSportImgPreview');
         var customPhoto = document.getElementById('editSportCustomPhoto').value.trim();
-        imgEl.src = customPhoto || assets.photo;
+        if (imgEl) imgEl.src = customPhoto || assets.photo;
 
         var iconPreviewEl = document.getElementById('editSportIconPreview');
-        iconPreviewEl.innerHTML = SPORT_VECTOR_ICONS[assets.iconCode] || SPORT_VECTOR_ICONS.SOCCER;
+        if (iconPreviewEl) iconPreviewEl.innerHTML = SPORT_VECTOR_ICONS[assets.iconCode] || SPORT_VECTOR_ICONS.SOCCER;
+        var photoNameEl = document.getElementById('editSportPhotoName');
+        if (photoNameEl) photoNameEl.textContent = customPhoto ? 'Ảnh tùy chỉnh đã chọn' : 'Tự động khớp: ' + (val || 'Chưa đặt tên');
+      }
+
+      function uploadSportPhotoFile(input) {
+        if (!input.files || !input.files[0]) return;
+        var file = input.files[0];
+        compressImageFile(file, 900, 600, 0.85, function(dataUrl) {
+          document.getElementById('editSportCustomPhoto').value = dataUrl;
+          var imgEl = document.getElementById('editSportImgPreview');
+          if (imgEl) imgEl.src = dataUrl;
+          var photoNameEl = document.getElementById('editSportPhotoName');
+          if (photoNameEl) photoNameEl.textContent = '🖼️ Ảnh tải từ máy tính (' + file.name + ')';
+        });
+      }
+
+      function handleSportCustomPhotoInput(val) {
+        var imgEl = document.getElementById('editSportImgPreview');
+        var photoNameEl = document.getElementById('editSportPhotoName');
+        if (val && val.trim()) {
+          if (imgEl) imgEl.src = val.trim();
+          if (photoNameEl) photoNameEl.textContent = '🔗 Ảnh tùy chỉnh (URL)';
+        } else {
+          var name = document.getElementById('editSportName').value;
+          var assets = detectSportAssets(name);
+          if (imgEl) imgEl.src = assets.photo;
+          if (photoNameEl) photoNameEl.textContent = '✨ Ảnh tự động theo tên môn';
+        }
+      }
+
+      function resetSportToDefaultPhoto() {
+        document.getElementById('editSportCustomPhoto').value = '';
+        var name = document.getElementById('editSportName').value;
+        var assets = detectSportAssets(name);
+        var imgEl = document.getElementById('editSportImgPreview');
+        if (imgEl) imgEl.src = assets.photo;
+        var photoNameEl = document.getElementById('editSportPhotoName');
+        if (photoNameEl) photoNameEl.textContent = '✨ Đã khôi phục ảnh tự động theo môn';
       }
 
       function openSportEditModal(sportId) {
@@ -4741,7 +4919,13 @@
           document.getElementById('editSportQuota').value = s.quota || 16;
           document.getElementById('editSportDesc').value = s.desc || '';
 
-          handleSportNameInput(s.name);
+          var autoAssets = detectSportAssets(s.name);
+          var imgEl = document.getElementById('editSportImgPreview');
+          if (imgEl) imgEl.src = s.customPhoto || autoAssets.photo;
+          var iconPreviewEl = document.getElementById('editSportIconPreview');
+          if (iconPreviewEl) iconPreviewEl.innerHTML = SPORT_VECTOR_ICONS[s.iconCode || autoAssets.iconCode] || SPORT_VECTOR_ICONS.SOCCER;
+          var photoNameEl = document.getElementById('editSportPhotoName');
+          if (photoNameEl) photoNameEl.textContent = s.customPhoto ? '🖼️ Ảnh tùy chỉnh đã lưu' : '✨ Ảnh tự động theo tên môn';
         } else {
           document.getElementById('sportEditModalTitle').textContent = 'Thêm Môn Thi Đấu Mới';
           document.getElementById('editSportId').value = '';

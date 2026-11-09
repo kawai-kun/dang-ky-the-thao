@@ -1703,10 +1703,10 @@
                 </div>
               </div>
 
-              <!-- Tranh Suất 3 & Chung Kết -->
+              <!-- Tranh Hạng Ba & Chung Kết -->
               <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
                 <div class="p-3.5 rounded-[10px] bg-amber-50/50 border border-amber-200 space-y-2">
-                  <h5 class="font-bold text-amber-900 text-xs">4. Tranh Suất Thứ Ba</h5>
+                  <h5 class="font-bold text-amber-900 text-xs">4. Tranh Hạng Ba</h5>
                   <div>
                     <label class="block text-[11px] text-zinc-600 mb-0.5">Thời gian & Giờ:</label>
                     <input type="text" id="sched_third_time" class="w-full px-2.5 py-1.5 rounded-[6px] border border-zinc-300 text-xs" />
@@ -2756,7 +2756,7 @@
               teams: 'Nhất Bảng B — Nhì Bảng A'
             },
             thirdPlace: {
-              title: 'Tranh suất 3 • Trận 62',
+              title: 'Tranh Hạng Ba • Trận 62',
               time: 'CN 15/11 • 14:00',
               venue: 'Sân 1',
               teams: 'Thua BK1 — Thua BK2'
@@ -2764,7 +2764,7 @@
             finals: {
               title: 'Vòng chung kết',
               venue: 'Sân 1 - Khu thể thao',
-              qualified: 'Thắng Bán kết 1 • Thắng Bán kết 2 • Thắng Tranh suất 3'
+              qualified: 'Thắng Bán kết 1 • Thắng Bán kết 2'
             },
             venueDetail: {
               name: 'Sân 1 - Khu thể thao',
@@ -2803,7 +2803,7 @@
               teams: 'Nhất Bảng A — Nhì Bảng B'
             },
             thirdPlace: {
-              title: 'Tranh suất 3 • Trận 32',
+              title: 'Tranh Hạng Ba • Trận 32',
               time: 'T7 14/11 • 14:30',
               venue: 'Sân 2',
               teams: 'Thua BK1 — Thua BK2'
@@ -2811,7 +2811,7 @@
             finals: {
               title: 'Vòng chung kết',
               venue: 'Sân 2 - Nhà Thi Đấu',
-              qualified: 'Thắng Bán kết 1 • Thắng Bán kết 2 • Thắng Tranh suất 3'
+              qualified: 'Thắng Bán kết 1 • Thắng Bán kết 2'
             },
             venueDetail: {
               name: 'Sân 2 - Trung tâm VHTT-TT',
@@ -2850,7 +2850,7 @@
               teams: 'Nhất Bảng D — Nhì Bảng C'
             },
             thirdPlace: {
-              title: 'Tranh suất 3 • Trận 17',
+              title: 'Tranh Hạng Ba • Trận 17',
               time: 'CN 08/11 • 14:00',
               venue: 'Sân 3',
               teams: 'Thua BK1 — Thua BK2'
@@ -2858,7 +2858,7 @@
             finals: {
               title: 'Vòng chung kết',
               venue: 'Sân 3 - Nhà thi đấu',
-              qualified: 'Thắng Bán kết 1 • Thắng Bán kết 2 • Thắng Tranh suất 3'
+              qualified: 'Thắng Bán kết 1 • Thắng Bán kết 2'
             },
             venueDetail: {
               name: 'Sân 3 - Nhà thi đấu Đa năng',
@@ -5511,6 +5511,128 @@
       //  TỰ ĐIỀU CHỈNH TRẬN ĐẤU, ĐỔI THỨ TỰ, XUẤT FILE PDF CHUẨN BAN HÀNH)
       // =========================================================
 
+      function renderTournamentBranchSvg(clusterKey, data) {
+        var d = data || {};
+        var bk1 = d.semiFinal1 || { time: '08:00', venue: clusterKey, teams: 'Nhất Bảng A — Nhì Bảng B' };
+        var bk2 = d.semiFinal2 || { time: '09:15', venue: clusterKey, teams: 'Nhất Bảng B — Nhì Bảng A' };
+        var third = d.thirdPlace || { time: '14:00', venue: clusterKey, teams: 'Thua BK1 — Thua BK2' };
+        var fin = d.finals || { venue: clusterKey, qualified: 'Thắng Bán kết 1 • Thắng Bán kết 2' };
+
+        var bk1Time = bk1.time ? (bk1.time.includes('•') ? bk1.time.split('•')[1].trim() : bk1.time) : '08:00';
+        var bk2Time = bk2.time ? (bk2.time.includes('•') ? bk2.time.split('•')[1].trim() : bk2.time) : '09:15';
+        var thirdTime = third.time ? (third.time.includes('•') ? third.time.split('•')[1].trim() : third.time) : '14:00';
+
+        return `
+          <div class="tournament-bracket-tree overflow-x-auto p-4 bg-gradient-to-br from-zinc-50 to-white rounded-[10px] border border-zinc-200">
+            <div class="flex items-center gap-2 sm:gap-4 min-w-[580px] justify-between">
+              <!-- CỘT 1: HẠT GIỐNG ĐẦU BẢNG VÀO BÁN KẾT -->
+              <div class="w-40 space-y-6 flex-shrink-0">
+                <div class="space-y-1">
+                  <div class="text-[9px] font-black uppercase tracking-wider text-emerald-800 bg-emerald-50 px-2 py-0.5 rounded border border-emerald-200 flex items-center justify-between">
+                    <span>CẶP ĐẤU 1</span>
+                    <span>BÁN KẾT 1</span>
+                  </div>
+                  <div class="p-1.5 rounded-[6px] bg-white border border-zinc-300 shadow-2xs flex items-center justify-between text-xs font-bold text-zinc-900">
+                    <span class="truncate">Nhất Bảng A</span>
+                    <span class="text-[10px] px-1 py-0.5 rounded bg-emerald-100 text-emerald-800 font-mono">1A</span>
+                  </div>
+                  <div class="p-1.5 rounded-[6px] bg-white border border-zinc-300 shadow-2xs flex items-center justify-between text-xs font-bold text-zinc-900">
+                    <span class="truncate">Nhì Bảng B</span>
+                    <span class="text-[10px] px-1 py-0.5 rounded bg-zinc-100 text-zinc-700 font-mono">2B</span>
+                  </div>
+                </div>
+
+                <div class="space-y-1">
+                  <div class="text-[9px] font-black uppercase tracking-wider text-emerald-800 bg-emerald-50 px-2 py-0.5 rounded border border-emerald-200 flex items-center justify-between">
+                    <span>CẶP ĐẤU 2</span>
+                    <span>BÁN KẾT 2</span>
+                  </div>
+                  <div class="p-1.5 rounded-[6px] bg-white border border-zinc-300 shadow-2xs flex items-center justify-between text-xs font-bold text-zinc-900">
+                    <span class="truncate">Nhất Bảng B</span>
+                    <span class="text-[10px] px-1 py-0.5 rounded bg-emerald-100 text-emerald-800 font-mono">1B</span>
+                  </div>
+                  <div class="p-1.5 rounded-[6px] bg-white border border-zinc-300 shadow-2xs flex items-center justify-between text-xs font-bold text-zinc-900">
+                    <span class="truncate">Nhì Bảng A</span>
+                    <span class="text-[10px] px-1 py-0.5 rounded bg-zinc-100 text-zinc-700 font-mono">2A</span>
+                  </div>
+                </div>
+              </div>
+
+              <!-- ĐƯỜNG NHÁNH NỐI 1 (CẶP ĐẤU ➔ BÁN KẾT) -->
+              <div class="w-8 flex flex-col justify-around h-52 flex-shrink-0">
+                <svg class="w-8 h-20 text-emerald-700" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 32 80">
+                  <path d="M 0 16 H 16 V 40 H 32" stroke-linecap="round" stroke-linejoin="round" />
+                  <path d="M 0 64 H 16 V 40" stroke-linecap="round" stroke-linejoin="round" />
+                </svg>
+                <svg class="w-8 h-20 text-emerald-700" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 32 80">
+                  <path d="M 0 16 H 16 V 40 H 32" stroke-linecap="round" stroke-linejoin="round" />
+                  <path d="M 0 64 H 16 V 40" stroke-linecap="round" stroke-linejoin="round" />
+                </svg>
+              </div>
+
+              <!-- CỘT 2: TRẬN BÁN KẾT -->
+              <div class="w-44 space-y-6 flex-shrink-0">
+                <div class="p-2 rounded-[8px] bg-white border-2 border-emerald-600 shadow-sm space-y-1">
+                  <div class="flex items-center justify-between text-[10px] font-bold border-b border-zinc-100 pb-0.5">
+                    <span class="text-emerald-800 font-black">⚡ BÁN KẾT 1</span>
+                    <span class="font-mono text-zinc-600">${bk1Time}</span>
+                  </div>
+                  <div class="text-xs font-bold text-zinc-900 truncate">${bk1.teams || 'Nhất A — Nhì B'}</div>
+                  <div class="text-[9px] text-zinc-400 truncate">📍 ${bk1.venue || clusterKey}</div>
+                </div>
+
+                <div class="p-2 rounded-[8px] bg-white border-2 border-emerald-600 shadow-sm space-y-1">
+                  <div class="flex items-center justify-between text-[10px] font-bold border-b border-zinc-100 pb-0.5">
+                    <span class="text-emerald-800 font-black">⚡ BÁN KẾT 2</span>
+                    <span class="font-mono text-zinc-600">${bk2Time}</span>
+                  </div>
+                  <div class="text-xs font-bold text-zinc-900 truncate">${bk2.teams || 'Nhất B — Nhì A'}</div>
+                  <div class="text-[9px] text-zinc-400 truncate">📍 ${bk2.venue || clusterKey}</div>
+                </div>
+              </div>
+
+              <!-- ĐƯỜNG NHÁNH NỐI 2 (BÁN KẾT ➔ CHUNG KẾT & TRANH HẠNG BA) -->
+              <div class="w-10 flex items-center justify-center h-56 flex-shrink-0">
+                <svg class="w-10 h-56 text-[#06301a]" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 40 224">
+                  <path d="M 0 46 H 20 V 84 H 40" stroke-linecap="round" stroke-linejoin="round" />
+                  <path d="M 0 150 H 20 V 84" stroke-linecap="round" stroke-linejoin="round" />
+                  <path d="M 20 84 V 196 H 40" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="3 3" stroke="#d97706" />
+                </svg>
+              </div>
+
+              <!-- CỘT 3: VÒNG CHUNG KẾT & TRANH HẠNG BA -->
+              <div class="w-48 space-y-3 flex-shrink-0">
+                <!-- Chung kết -->
+                <div class="p-2.5 rounded-[10px] bg-[#06301a] text-white border-2 border-amber-400 shadow-md space-y-1">
+                  <div class="flex items-center justify-between text-[10px] font-black border-b border-[#8be33a]/30 pb-0.5 text-amber-400">
+                    <span class="flex items-center gap-1">👑 CHUNG KẾT</span>
+                    <span class="px-1 py-0.5 rounded bg-amber-400 text-[#06301a] font-black text-[9px]">CÚP VÀNG</span>
+                  </div>
+                  <div class="text-xs font-black text-white text-center py-0.5 leading-tight">
+                    <span>Thắng Bán Kết 1</span>
+                    <div class="text-[#8be33a] font-mono text-[9px] my-0.5">— TRANH CÚP —</div>
+                    <span>Thắng Bán Kết 2</span>
+                  </div>
+                  <div class="text-[9px] text-zinc-300 truncate text-center">📍 ${fin.venue || clusterKey}</div>
+                </div>
+
+                <!-- Tranh Hạng Ba -->
+                <div class="p-2 rounded-[8px] bg-amber-50 border border-amber-300 shadow-2xs space-y-0.5">
+                  <div class="flex items-center justify-between text-[10px] font-bold text-amber-900 border-b border-amber-200 pb-0.5">
+                    <span>🥉 TRANH HẠNG BA</span>
+                    <span class="font-mono text-zinc-600">${thirdTime}</span>
+                  </div>
+                  <div class="text-xs font-bold text-zinc-800 text-center py-0.5 truncate">
+                    <span>Thua BK 1</span> <span class="text-amber-700 font-mono text-[9px]">vs</span> <span>Thua BK 2</span>
+                  </div>
+                  <div class="text-[9px] text-zinc-500 truncate text-center">📍 ${third.venue || clusterKey}</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        `;
+      }
+
       function generateRoundRobinFixtures(teams, defaultVenue) {
         if (!teams || teams.length < 2) return [];
         var list = teams.slice();
@@ -6043,7 +6165,15 @@
             </div>
           </div>
 
-          <!-- PHẦN III: QUY ĐỊNH & CHỮ KÝ -->
+          <!-- PHẦN III: SƠ ĐỒ NHÁNH ĐẤU LOẠI TRỰC TIẾP -->
+          <div class="space-y-2 pt-2">
+            <h4 class="font-bold text-xs uppercase text-zinc-900 flex items-center gap-1.5 border-l-4 border-[#06301a] pl-2">
+              <span>III. SƠ ĐỒ NHÁNH ĐẤU LOẠI TRỰC TIẾP (BÁN KẾT, TRANH HẠNG BA & CHUNG KẾT)</span>
+            </h4>
+            ${renderTournamentBranchSvg(cKey, data)}
+          </div>
+
+          <!-- PHẦN IV: QUY ĐỊNH & CHỮ KÝ -->
           <div class="pt-3 border-t border-zinc-300 space-y-3">
             <div class="p-2.5 rounded bg-zinc-50 border border-zinc-200 text-[11px] text-zinc-600 leading-relaxed space-y-0.5">
               <strong class="text-zinc-900 block font-bold">LƯU Ý DÀNH CHO CÁC ĐOÀN VÀ VẬN ĐỘNG VIÊN:</strong>
@@ -6096,8 +6226,8 @@
 
         var bk1 = data.semiFinal1 || { title: 'Bán kết 1 • Trận 60', time: 'CN 15/11 • 08:00', venue: 'Sân 1', teams: 'Nhất A — Nhì B' };
         var bk2 = data.semiFinal2 || { title: 'Bán kết 2 • Trận 61', time: 'CN 15/11 • 09:15', venue: 'Sân 1', teams: 'Nhất B — Nhì A' };
-        var third = data.thirdPlace || { title: 'Tranh suất 3 • Trận 62', time: 'CN 15/11 • 14:00', venue: 'Sân 1', teams: 'Thua BK1 — Thua BK2' };
-        var fin = data.finals || { title: 'Vòng chung kết', venue: 'Khu thể thao trung tâm', qualified: 'Thắng Bán kết 1 • Thắng Bán kết 2 • Thắng Tranh suất 3' };
+        var third = data.thirdPlace || { title: 'Tranh Hạng Ba • Trận 62', time: 'CN 15/11 • 14:00', venue: 'Sân 1', teams: 'Thua BK1 — Thua BK2' };
+        var fin = data.finals || { title: 'Vòng chung kết', venue: 'Khu thể thao trung tâm', qualified: 'Thắng Bán kết 1 • Thắng Bán kết 2' };
 
         function renderGroupCard(g, gKey) {
           var teamRows = (g.teams || []).map(function(t, idx) {
@@ -6246,15 +6376,15 @@
                     🥉
                   </div>
                   <div>
-                    <h4 class="font-extrabold text-xs text-zinc-900 uppercase tracking-tight">Tranh Suất 3</h4>
-                    <span class="text-[11px] text-zinc-500 font-medium">Hạng ba toàn đoàn</span>
+                    <h4 class="font-extrabold text-xs text-zinc-900 uppercase tracking-tight">Tranh Hạng Ba</h4>
+                    <span class="text-[11px] text-zinc-500 font-medium">Trận tranh Huy chương Đồng / Hạng 3</span>
                   </div>
                 </div>
 
                 <div id="sched_card_third" class="bg-white rounded-[10px] border border-amber-300 shadow-sm p-3.5 space-y-2.5 my-auto">
                   <div class="flex items-center gap-2">
                     <span class="w-5 h-5 rounded-[6px] bg-amber-100 text-amber-800 flex items-center justify-center text-xs font-bold">3</span>
-                    <strong class="font-bold text-xs text-zinc-900">${third.title || 'Tranh suất 3 • Trận 62'}</strong>
+                    <strong class="font-bold text-xs text-zinc-900">${third.title || 'Tranh Hạng Ba • Trận 62'}</strong>
                   </div>
                   <div class="text-[11px] text-zinc-500 space-y-0.5">
                     <div class="flex items-center gap-1.5">
@@ -6297,7 +6427,7 @@
                       <span class="font-medium text-white">${fin.venue || clusterKey}</span>
                     </div>
                     <div class="text-[11px] text-[#8be33a] leading-tight pt-1">
-                      ${fin.qualified || 'Thắng Bán kết 1 • Thắng Bán kết 2 • Thắng Tranh suất 3'}
+                      ${fin.qualified || 'Thắng Bán kết 1 • Thắng Bán kết 2'}
                     </div>
                   </div>
                 </div>
@@ -6591,7 +6721,7 @@
         data.thirdPlace.venue = venueKey;
 
         if (!data.finals) data.finals = {};
-        data.finals.qualified = 'Thắng Bán kết 1 • Thắng Bán kết 2 • Thắng Tranh suất 3';
+        data.finals.qualified = 'Thắng Bán kết 1 • Thắng Bán kết 2';
 
         saveAppConfig(appConfig);
         loadAdminScheduleEditor(venueKey);
@@ -6762,14 +6892,14 @@
             var firstKey = groupKeys[0];
             var firstGrp = data.groups[firstKey] || { title: 'Bảng ' + firstKey, teams: [], matches: [] };
             var diagBox = document.createElement('div');
-            diagBox.className = 'p-3.5 rounded-[10px] bg-gradient-to-br from-emerald-50/70 via-white to-zinc-50 border border-emerald-300 shadow-sm space-y-3';
+            diagBox.className = 'p-3.5 rounded-[10px] bg-white border border-emerald-300 shadow-sm space-y-3';
             diagBox.innerHTML = `
               <div class="flex items-center justify-between border-b border-emerald-200/70 pb-2">
                 <div class="flex items-center gap-2">
-                  <span class="w-7 h-7 rounded-[8px] bg-[#06301a] text-[#8be33a] flex items-center justify-center text-xs font-bold shadow-subtle">📊</span>
+                  <span class="w-7 h-7 rounded-[8px] bg-[#06301a] text-[#8be33a] flex items-center justify-center text-xs font-bold shadow-subtle">🌿</span>
                   <div>
-                    <h4 class="font-extrabold text-xs text-zinc-900 uppercase tracking-tight">Sơ Đồ Thi Đấu Trực Quan (${clusterKey})</h4>
-                    <p class="text-[10px] text-zinc-500">Sơ đồ nhánh đấu, tiến trình và đường đi tiếp vào Bán kết</p>
+                    <h4 class="font-extrabold text-xs text-zinc-900 uppercase tracking-tight">Sơ Đồ Thi Đấu Dạng Nhánh (${clusterKey})</h4>
+                    <p class="text-[10px] text-zinc-500">Nhánh bốc thăm đấu loại trực tiếp vào Bán Kết & Chung Kết</p>
                   </div>
                 </div>
                 <button type="button" onclick="openSchedulePrintModal('${clusterKey}')" class="px-2.5 py-1 rounded bg-[#06301a] hover:bg-[#0a4224] text-[#8be33a] font-bold text-[11px] flex items-center gap-1 cursor-pointer shadow-subtle border border-[#8be33a]/30" title="Xuất toàn bộ sơ đồ và lịch thi đấu thành file PDF hoặc in giấy A4">
@@ -6777,70 +6907,8 @@
                 </button>
               </div>
 
-              <!-- Sơ đồ đường đi tiến trình -->
-              <div class="p-3 bg-white rounded-[8px] border border-zinc-200 space-y-2.5">
-                <div class="flex items-center justify-between text-xs">
-                  <span class="font-bold text-zinc-800 flex items-center gap-1.5">
-                    <span class="w-2 h-2 rounded-full bg-[#06301a]"></span>
-                    <span>${firstGrp.title || 'Bảng A'} (${(firstGrp.teams || []).length} đội)</span>
-                  </span>
-                  <span class="text-[10px] font-semibold text-emerald-800 bg-emerald-50 px-2 py-0.5 rounded border border-emerald-200">Đấu vòng tròn 1 lượt</span>
-                </div>
-
-                <div class="grid grid-cols-3 gap-2 text-center text-[11px] pt-1">
-                  <div class="p-2 rounded bg-zinc-50 border border-zinc-200 space-y-0.5">
-                    <div class="font-bold text-zinc-900 text-[10px] uppercase">1. Vòng Bảng</div>
-                    <div class="text-[10px] text-zinc-600">${(firstGrp.teams || []).length} đội thi đấu</div>
-                    <div class="font-mono font-bold text-emerald-700 text-xs">${firstGrp.matchCount || '3 trận'}</div>
-                  </div>
-                  <div class="p-2 rounded bg-emerald-50/70 border border-emerald-200 space-y-0.5">
-                    <div class="font-bold text-emerald-900 text-[10px] uppercase">2. Bán Kết</div>
-                    <div class="text-[10px] text-emerald-700">Nhất A & Nhì A</div>
-                    <div class="font-bold text-emerald-800 text-[10px] truncate">${data.semiFinal1 ? (data.semiFinal1.time ? data.semiFinal1.time.split('•')[1] || data.semiFinal1.time : '08:00') : '08:00'}</div>
-                  </div>
-                  <div class="p-2 rounded bg-amber-50 border border-amber-300 space-y-0.5">
-                    <div class="font-bold text-amber-900 text-[10px] uppercase">3. Chung Kết 🏆</div>
-                    <div class="text-[10px] text-amber-700">Cúp Vô Địch</div>
-                    <div class="font-bold text-amber-800 text-[10px] truncate">${data.finals ? (data.finals.venue || clusterKey) : clusterKey}</div>
-                  </div>
-                </div>
-              </div>
-
-              <!-- Thẻ trận Bán kết & Chung kết tóm tắt -->
-              <div class="space-y-2 text-xs">
-                <div class="p-2.5 rounded-[8px] bg-white border border-zinc-200 flex items-center justify-between">
-                  <div class="space-y-0.5">
-                    <div class="font-bold text-zinc-900 text-[11px] flex items-center gap-1">
-                      <span class="w-1.5 h-1.5 rounded-full bg-emerald-600"></span>
-                      <span>Bán kết 1:</span>
-                    </div>
-                    <div class="text-zinc-600 text-[11px] font-medium pl-2.5">${data.semiFinal1 ? (data.semiFinal1.teams || 'Nhất Bảng A — Nhì Bảng B') : 'Nhất Bảng A — Nhì Bảng B'}</div>
-                  </div>
-                  <span class="font-mono text-[10px] font-bold text-[#06301a] bg-[#8be33a]/30 px-1.5 py-0.5 rounded">${data.semiFinal1 ? (data.semiFinal1.time || '08:00') : '08:00'}</span>
-                </div>
-
-                <div class="p-2.5 rounded-[8px] bg-white border border-zinc-200 flex items-center justify-between">
-                  <div class="space-y-0.5">
-                    <div class="font-bold text-zinc-900 text-[11px] flex items-center gap-1">
-                      <span class="w-1.5 h-1.5 rounded-full bg-emerald-600"></span>
-                      <span>Bán kết 2:</span>
-                    </div>
-                    <div class="text-zinc-600 text-[11px] font-medium pl-2.5">${data.semiFinal2 ? (data.semiFinal2.teams || 'Nhất Bảng B — Nhì Bảng A') : 'Nhất Bảng B — Nhì Bảng A'}</div>
-                  </div>
-                  <span class="font-mono text-[10px] font-bold text-[#06301a] bg-[#8be33a]/30 px-1.5 py-0.5 rounded">${data.semiFinal2 ? (data.semiFinal2.time || '09:15') : '09:15'}</span>
-                </div>
-
-                <div class="p-2.5 rounded-[8px] bg-amber-50/80 border border-amber-300 flex items-center justify-between">
-                  <div class="space-y-0.5">
-                    <div class="font-bold text-amber-900 text-[11px] flex items-center gap-1">
-                      <span>👑</span>
-                      <span>Vòng Chung Kết:</span>
-                    </div>
-                    <div class="text-zinc-700 text-[11px] font-medium pl-4">${data.finals ? (data.finals.qualified || 'Thắng Bán kết 1 • Thắng Bán kết 2') : 'Thắng BK1 • Thắng BK2'}</div>
-                  </div>
-                  <span class="font-bold text-[10px] text-amber-800 bg-amber-100 px-1.5 py-0.5 rounded border border-amber-300">Cúp Vàng 🏆</span>
-                </div>
-              </div>
+              <!-- Sơ Đồ Nhánh Cây Đấu Loại Trực Quan -->
+              ${renderTournamentBranchSvg(clusterKey, data)}
             `;
             grpGrid.appendChild(diagBox);
           }
@@ -6975,7 +7043,7 @@
         };
 
         data.thirdPlace = {
-          title: 'Tranh suất 3 • Trận 62',
+          title: 'Tranh Hạng Ba • Trận 62',
           time: document.getElementById('sched_third_time') ? document.getElementById('sched_third_time').value.trim() : '',
           venue: clusterKey,
           teams: document.getElementById('sched_third_match') ? document.getElementById('sched_third_match').value.trim() : ''
@@ -7119,12 +7187,12 @@
             if (vData.thirdPlace && vData.thirdPlace.time && vData.thirdPlace.teams) {
               realMatches.push({
                 time: vData.thirdPlace.time.includes('•') ? vData.thirdPlace.time.split('•')[1].trim() : vData.thirdPlace.time,
-                sportName: vData.thirdPlace.title || 'Tranh suất 3',
+                sportName: vData.thirdPlace.title || 'Tranh Hạng Ba',
                 team1: vData.thirdPlace.teams.split('—')[0] ? vData.thirdPlace.teams.split('—')[0].trim() : 'Thua BK1',
                 team2: vData.thirdPlace.teams.split('—')[1] ? vData.thirdPlace.teams.split('—')[1].trim() : 'Thua BK2',
                 score: '',
                 venue: vData.thirdPlace.venue || cKey,
-                stage: cKey + ' • Tranh Suất Ba'
+                stage: cKey + ' • Tranh Hạng Ba'
               });
             }
           });

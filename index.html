@@ -1670,75 +1670,117 @@
 
               <!-- Vòng Đấu Loại Trực Tiếp (Bán Kết, Tranh Hạng Ba & Chung Kết) -->
               <div id="adminKnockoutSection" class="space-y-3">
+                <!-- Datalist gợi ý sân / địa điểm kế thừa từ thông số giải -->
+                <datalist id="schedule_venue_list">
+                  <!-- Tự động nạp từ appConfig.diaDiem và các cụm sân -->
+                </datalist>
+
+                <!-- Hàng 1: Bán Kết 1 & Bán Kết 2 -->
                 <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                  <!-- 2. Trận Bán Kết 1 -->
                   <div class="p-3.5 rounded-[10px] bg-zinc-50 border border-zinc-200 space-y-2">
-                    <h5 class="font-bold text-zinc-900 text-xs flex items-center justify-between">
-                      <span>2. Trận Bán Kết 1 (Nhất Bảng A gặp Nhì Bảng B)</span>
-                      <span class="text-[10px] font-bold text-emerald-700 bg-emerald-50 px-1.5 py-0.5 rounded border border-emerald-200">Nhất A — Nhì B</span>
+                    <h5 class="font-bold text-zinc-900 text-xs flex items-center justify-between border-b border-zinc-200/80 pb-1.5">
+                      <span class="flex items-center gap-1.5"><span class="w-2 h-2 rounded-full bg-emerald-600"></span>2. Trận Bán Kết 1</span>
+                      <span class="text-[10px] font-bold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded border border-emerald-200">Nhất A — Nhì B</span>
                     </h5>
-                    <div>
-                      <label class="block text-[11px] text-zinc-600 mb-0.5">Thời gian & Giờ:</label>
-                      <input type="text" id="sched_bk1_time" placeholder="CN 15/11 • 08:00" class="w-full px-2.5 py-1.5 rounded-[6px] border border-zinc-300 text-xs" />
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                      <div>
+                        <label class="block text-[11px] font-medium text-zinc-600 mb-0.5">⏱️ Thời gian & Giờ:</label>
+                        <input type="text" id="sched_bk1_time" placeholder="CN 15/11 • 08:00" class="w-full px-2.5 py-1.5 rounded-[6px] border border-zinc-300 text-xs bg-white focus:ring-1 focus:ring-[#06301a]" />
+                      </div>
+                      <div>
+                        <label class="block text-[11px] font-medium text-zinc-600 mb-0.5">📍 Địa điểm / Sân:</label>
+                        <input type="text" list="schedule_venue_list" id="sched_bk1_venue" placeholder="Sân 1" class="w-full px-2.5 py-1.5 rounded-[6px] border border-zinc-300 text-xs bg-white focus:ring-1 focus:ring-[#06301a]" />
+                      </div>
                     </div>
                     <div>
-                      <label class="block text-[11px] text-zinc-600 mb-0.5">Cặp đấu:</label>
-                      <input type="text" id="sched_bk1_match" value="Nhất Bảng A — Nhì Bảng B" class="w-full px-2.5 py-1.5 rounded-[6px] border border-zinc-300 text-xs font-semibold text-zinc-900" />
+                      <label class="block text-[11px] font-medium text-zinc-600 mb-0.5">👥 Cặp đấu:</label>
+                      <input type="text" id="sched_bk1_match" value="Nhất Bảng A — Nhì Bảng B" class="w-full px-2.5 py-1.5 rounded-[6px] border border-zinc-300 text-xs font-semibold text-zinc-900 bg-white" />
                     </div>
                     <div>
                       <label class="block text-[11px] text-zinc-600 mb-0.5 font-bold text-amber-700">⚡ Tỷ số trực tiếp (VD: 2 - 1 hoặc 25 - 20):</label>
-                      <input type="text" id="sched_bk1_score" placeholder="Để trống nếu chưa đá" class="w-full px-2.5 py-1.5 rounded-[6px] border border-amber-300 bg-amber-50/50 font-mono font-bold text-xs text-amber-900" />
+                      <input type="text" id="sched_bk1_score" placeholder="Để trống nếu chưa đá" class="w-full px-2.5 py-1.5 rounded-[6px] border border-amber-300 bg-amber-50/50 font-mono font-bold text-xs text-amber-900 focus:bg-white" />
                     </div>
                   </div>
 
+                  <!-- 3. Trận Bán Kết 2 -->
                   <div class="p-3.5 rounded-[10px] bg-zinc-50 border border-zinc-200 space-y-2">
-                    <h5 class="font-bold text-zinc-900 text-xs flex items-center justify-between">
-                      <span>3. Trận Bán Kết 2 (Nhất Bảng B gặp Nhì Bảng A)</span>
-                      <span class="text-[10px] font-bold text-emerald-700 bg-emerald-50 px-1.5 py-0.5 rounded border border-emerald-200">Nhất B — Nhì A</span>
+                    <h5 class="font-bold text-zinc-900 text-xs flex items-center justify-between border-b border-zinc-200/80 pb-1.5">
+                      <span class="flex items-center gap-1.5"><span class="w-2 h-2 rounded-full bg-emerald-600"></span>3. Trận Bán Kết 2</span>
+                      <span class="text-[10px] font-bold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded border border-emerald-200">Nhất B — Nhì A</span>
                     </h5>
-                    <div>
-                      <label class="block text-[11px] text-zinc-600 mb-0.5">Thời gian & Giờ:</label>
-                      <input type="text" id="sched_bk2_time" placeholder="CN 15/11 • 09:15" class="w-full px-2.5 py-1.5 rounded-[6px] border border-zinc-300 text-xs" />
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                      <div>
+                        <label class="block text-[11px] font-medium text-zinc-600 mb-0.5">⏱️ Thời gian & Giờ:</label>
+                        <input type="text" id="sched_bk2_time" placeholder="CN 15/11 • 09:15" class="w-full px-2.5 py-1.5 rounded-[6px] border border-zinc-300 text-xs bg-white focus:ring-1 focus:ring-[#06301a]" />
+                      </div>
+                      <div>
+                        <label class="block text-[11px] font-medium text-zinc-600 mb-0.5">📍 Địa điểm / Sân:</label>
+                        <input type="text" list="schedule_venue_list" id="sched_bk2_venue" placeholder="Sân 1" class="w-full px-2.5 py-1.5 rounded-[6px] border border-zinc-300 text-xs bg-white focus:ring-1 focus:ring-[#06301a]" />
+                      </div>
                     </div>
                     <div>
-                      <label class="block text-[11px] text-zinc-600 mb-0.5">Cặp đấu:</label>
-                      <input type="text" id="sched_bk2_match" value="Nhất Bảng B — Nhì Bảng A" class="w-full px-2.5 py-1.5 rounded-[6px] border border-zinc-300 text-xs font-semibold text-zinc-900" />
+                      <label class="block text-[11px] font-medium text-zinc-600 mb-0.5">👥 Cặp đấu:</label>
+                      <input type="text" id="sched_bk2_match" value="Nhất Bảng B — Nhì Bảng A" class="w-full px-2.5 py-1.5 rounded-[6px] border border-zinc-300 text-xs font-semibold text-zinc-900 bg-white" />
                     </div>
                     <div>
                       <label class="block text-[11px] text-zinc-600 mb-0.5 font-bold text-amber-700">⚡ Tỷ số trực tiếp (VD: 3 - 0 hoặc 19 - 21):</label>
-                      <input type="text" id="sched_bk2_score" placeholder="Để trống nếu chưa đá" class="w-full px-2.5 py-1.5 rounded-[6px] border border-amber-300 bg-amber-50/50 font-mono font-bold text-xs text-amber-900" />
+                      <input type="text" id="sched_bk2_score" placeholder="Để trống nếu chưa đá" class="w-full px-2.5 py-1.5 rounded-[6px] border border-amber-300 bg-amber-50/50 font-mono font-bold text-xs text-amber-900 focus:bg-white" />
                     </div>
                   </div>
                 </div>
 
-                <!-- Tranh Hạng Ba & Chung Kết -->
+                <!-- Hàng 2: Tranh Hạng Ba & Chung Kết (Đồng bộ tuyệt đối) -->
                 <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                  <div class="p-3.5 rounded-[10px] bg-amber-50/50 border border-amber-200 space-y-2">
-                    <h5 class="font-bold text-amber-900 text-xs flex items-center justify-between">
-                      <span>4. Tranh Hạng Ba (Huy Chương Đồng)</span>
-                      <span class="text-[10px] font-bold text-amber-800 bg-amber-100 px-1.5 py-0.5 rounded border border-amber-300">Thua Bán kết 1 — Thua Bán kết 2</span>
+                  <!-- 4. Tranh Hạng Ba -->
+                  <div class="p-3.5 rounded-[10px] bg-amber-50/60 border border-amber-300 space-y-2">
+                    <h5 class="font-bold text-amber-900 text-xs flex items-center justify-between border-b border-amber-200 pb-1.5">
+                      <span class="flex items-center gap-1.5">🥉 4. Trận Tranh Hạng Ba (Huy Chương Đồng)</span>
+                      <span class="text-[10px] font-bold text-amber-800 bg-amber-100 px-2 py-0.5 rounded border border-amber-300">Thua BK1 — Thua BK2</span>
                     </h5>
-                    <div>
-                      <label class="block text-[11px] text-zinc-600 mb-0.5">Thời gian & Giờ:</label>
-                      <input type="text" id="sched_third_time" placeholder="CN 15/11 • 14:00" class="w-full px-2.5 py-1.5 rounded-[6px] border border-zinc-300 text-xs" />
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                      <div>
+                        <label class="block text-[11px] font-medium text-zinc-600 mb-0.5">⏱️ Thời gian & Giờ:</label>
+                        <input type="text" id="sched_third_time" placeholder="CN 15/11 • 14:00" class="w-full px-2.5 py-1.5 rounded-[6px] border border-zinc-300 text-xs bg-white focus:ring-1 focus:ring-amber-600" />
+                      </div>
+                      <div>
+                        <label class="block text-[11px] font-medium text-zinc-600 mb-0.5">📍 Địa điểm / Sân:</label>
+                        <input type="text" list="schedule_venue_list" id="sched_third_venue" placeholder="Sân 1" class="w-full px-2.5 py-1.5 rounded-[6px] border border-zinc-300 text-xs bg-white focus:ring-1 focus:ring-amber-600" />
+                      </div>
                     </div>
                     <div>
-                      <label class="block text-[11px] text-zinc-600 mb-0.5">Cặp đấu:</label>
-                      <input type="text" id="sched_third_match" value="Thua Bán kết 1 — Thua Bán kết 2" class="w-full px-2.5 py-1.5 rounded-[6px] border border-zinc-300 text-xs font-semibold text-zinc-900" />
+                      <label class="block text-[11px] font-medium text-zinc-600 mb-0.5">👥 Cặp đấu:</label>
+                      <input type="text" id="sched_third_match" value="Thua Bán kết 1 — Thua Bán kết 2" class="w-full px-2.5 py-1.5 rounded-[6px] border border-zinc-300 text-xs font-semibold text-zinc-900 bg-white" />
+                    </div>
+                    <div>
+                      <label class="block text-[11px] text-zinc-600 mb-0.5 font-bold text-amber-800">⚡ Tỷ số trực tiếp (VD: 2 - 0):</label>
+                      <input type="text" id="sched_third_score" placeholder="Để trống nếu chưa đá" class="w-full px-2.5 py-1.5 rounded-[6px] border border-amber-300 bg-white font-mono font-bold text-xs text-amber-900" />
                     </div>
                   </div>
 
-                  <div class="p-3.5 rounded-[10px] bg-[#06301a]/10 border border-[#06301a]/30 space-y-2">
-                    <h5 class="font-bold text-[#06301a] text-xs flex items-center justify-between">
-                      <span>5. Vòng Chung Kết (Tranh Cúp Vô Địch 🏆)</span>
-                      <span class="text-[10px] font-bold text-[#06301a] bg-[#8be33a]/30 px-1.5 py-0.5 rounded border border-[#8be33a]/40">Thắng BK1 — Thắng BK2</span>
+                  <!-- 5. Trận Chung Kết -->
+                  <div class="p-3.5 rounded-[10px] bg-emerald-50/70 border-2 border-emerald-600 space-y-2">
+                    <h5 class="font-bold text-[#06301a] text-xs flex items-center justify-between border-b border-emerald-300 pb-1.5">
+                      <span class="flex items-center gap-1.5">🏆 5. Vòng Chung Kết (Tranh Cúp Vô Địch)</span>
+                      <span class="text-[10px] font-black text-[#06301a] bg-[#8be33a]/40 px-2 py-0.5 rounded border border-[#8be33a]/60">Thắng BK1 — Thắng BK2</span>
                     </h5>
-                    <div>
-                      <label class="block text-[11px] text-zinc-600 mb-0.5">Địa điểm chung kết:</label>
-                      <input type="text" id="sched_finals_venue" placeholder="Sân trung tâm" class="w-full px-2.5 py-1.5 rounded-[6px] border border-zinc-300 text-xs" />
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                      <div>
+                        <label class="block text-[11px] font-medium text-zinc-600 mb-0.5">⏱️ Thời gian & Giờ:</label>
+                        <input type="text" id="sched_finals_time" placeholder="CN 15/11 • 15:30" class="w-full px-2.5 py-1.5 rounded-[6px] border border-zinc-300 text-xs bg-white focus:ring-1 focus:ring-[#06301a]" />
+                      </div>
+                      <div>
+                        <label class="block text-[11px] font-medium text-zinc-600 mb-0.5">📍 Địa điểm / Sân:</label>
+                        <input type="text" list="schedule_venue_list" id="sched_finals_venue" placeholder="Sân chính" class="w-full px-2.5 py-1.5 rounded-[6px] border border-zinc-300 text-xs bg-white focus:ring-1 focus:ring-[#06301a]" />
+                      </div>
                     </div>
                     <div>
-                      <label class="block text-[11px] text-zinc-600 mb-0.5">Quy chế đội vào chung kết:</label>
-                      <input type="text" id="sched_finals_qual" value="Thắng Bán kết 1 • Thắng Bán kết 2" class="w-full px-2.5 py-1.5 rounded-[6px] border border-zinc-300 text-xs font-semibold text-zinc-900" />
+                      <label class="block text-[11px] font-medium text-zinc-600 mb-0.5">👥 Cặp đấu / Quy chế:</label>
+                      <input type="text" id="sched_finals_qual" value="Thắng Bán kết 1 — Thắng Bán kết 2" class="w-full px-2.5 py-1.5 rounded-[6px] border border-zinc-300 text-xs font-semibold text-zinc-900 bg-white" />
+                    </div>
+                    <div>
+                      <label class="block text-[11px] text-zinc-600 mb-0.5 font-bold text-emerald-800">⚡ Tỷ số trực tiếp (VD: 3 - 2):</label>
+                      <input type="text" id="sched_finals_score" placeholder="Để trống nếu chưa đá" class="w-full px-2.5 py-1.5 rounded-[6px] border border-emerald-400 bg-white font-mono font-bold text-xs text-emerald-900" />
                     </div>
                   </div>
                 </div>
@@ -1763,7 +1805,10 @@
                 </div>
               </div>
 
-              <div class="pt-3 border-t border-zinc-200 flex justify-end">
+              <div class="pt-3 border-t border-zinc-200 flex flex-col sm:flex-row items-center justify-between gap-2">
+                <div id="schedAutoSaveStatus" class="text-xs text-zinc-500 font-medium">
+                  <span class="text-emerald-700 flex items-center gap-1">🛡️ Tự động lưu sau 3 giây khi ngưng nhập</span>
+                </div>
                 <button
                   onclick="saveScheduleConfigFromAdmin()"
                   class="ui-button-accent text-xs"
@@ -5546,14 +5591,20 @@
 
       function renderTournamentBranchSvg(clusterKey, data) {
         var d = data || {};
-        var bk1 = d.semiFinal1 || { time: '08:00', venue: clusterKey, teams: 'Nhất Bảng A — Nhì Bảng B' };
-        var bk2 = d.semiFinal2 || { time: '09:15', venue: clusterKey, teams: 'Nhất Bảng B — Nhì Bảng A' };
-        var third = d.thirdPlace || { time: '14:00', venue: clusterKey, teams: 'Thua Bán kết 1 — Thua Bán kết 2' };
-        var fin = d.finals || { venue: clusterKey, qualified: 'Thắng Bán kết 1 • Thắng Bán kết 2' };
+        var bk1 = d.semiFinal1 || { time: '08:00', venue: clusterKey, teams: 'Nhất Bảng A — Nhì Bảng B', score: '' };
+        var bk2 = d.semiFinal2 || { time: '09:15', venue: clusterKey, teams: 'Nhất Bảng B — Nhì Bảng A', score: '' };
+        var third = d.thirdPlace || { time: '14:00', venue: clusterKey, teams: 'Thua Bán kết 1 — Thua Bán kết 2', score: '' };
+        var fin = d.finals || { time: '15:30', venue: clusterKey, qualified: 'Thắng Bán kết 1 • Thắng Bán kết 2', score: '' };
 
         var bk1Time = bk1.time ? (bk1.time.includes('•') ? bk1.time.split('•')[1].trim() : bk1.time) : '08:00';
         var bk2Time = bk2.time ? (bk2.time.includes('•') ? bk2.time.split('•')[1].trim() : bk2.time) : '09:15';
         var thirdTime = third.time ? (third.time.includes('•') ? third.time.split('•')[1].trim() : third.time) : '14:00';
+        var finTime = fin.time ? (fin.time.includes('•') ? fin.time.split('•')[1].trim() : fin.time) : '15:30';
+
+        var bk1ScoreBadge = bk1.score ? `<div class="mt-1 px-1.5 py-0.5 rounded bg-emerald-100 text-emerald-800 font-mono font-black text-[10px] text-center border border-emerald-300">⚡ Tỷ số: ${bk1.score}</div>` : '';
+        var bk2ScoreBadge = bk2.score ? `<div class="mt-1 px-1.5 py-0.5 rounded bg-emerald-100 text-emerald-800 font-mono font-black text-[10px] text-center border border-emerald-300">⚡ Tỷ số: ${bk2.score}</div>` : '';
+        var thirdScoreBadge = third.score ? `<div class="mt-1 px-1.5 py-0.5 rounded bg-amber-200 text-amber-900 font-mono font-black text-[10px] text-center border border-amber-300">⚡ Tỷ số: ${third.score}</div>` : '';
+        var finScoreBadge = fin.score ? `<div class="mt-1 px-2 py-0.5 rounded bg-amber-400 text-[#06301a] font-mono font-black text-xs text-center border border-amber-500 shadow-xs">⚡ Tỷ số: ${fin.score}</div>` : '';
 
         return `
           <div class="tournament-bracket-tree overflow-x-auto p-4 bg-gradient-to-br from-zinc-50 to-white rounded-[10px] border border-zinc-200">
@@ -5612,6 +5663,7 @@
                   </div>
                   <div class="text-xs font-bold text-zinc-900 truncate">${bk1.teams || 'Nhất A — Nhì B'}</div>
                   <div class="text-[9px] text-zinc-400 truncate">📍 ${bk1.venue || clusterKey}</div>
+                  ${bk1ScoreBadge}
                 </div>
 
                 <div class="p-2 rounded-[8px] bg-white border-2 border-emerald-600 shadow-sm space-y-1">
@@ -5621,6 +5673,7 @@
                   </div>
                   <div class="text-xs font-bold text-zinc-900 truncate">${bk2.teams || 'Nhất B — Nhì A'}</div>
                   <div class="text-[9px] text-zinc-400 truncate">📍 ${bk2.venue || clusterKey}</div>
+                  ${bk2ScoreBadge}
                 </div>
               </div>
 
@@ -5639,7 +5692,7 @@
                 <div class="p-2.5 rounded-[10px] bg-[#06301a] text-white border-2 border-amber-400 shadow-md space-y-1">
                   <div class="flex items-center justify-between text-[10px] font-black border-b border-[#8be33a]/30 pb-0.5 text-amber-400">
                     <span class="flex items-center gap-1">👑 CHUNG KẾT</span>
-                    <span class="px-1 py-0.5 rounded bg-amber-400 text-[#06301a] font-black text-[9px]">CÚP VÀNG</span>
+                    <span class="font-mono text-[#8be33a] font-bold text-[10px]">${finTime}</span>
                   </div>
                   <div class="text-xs font-black text-white text-center py-0.5 leading-tight">
                     <span>Thắng Bán Kết 1</span>
@@ -5647,6 +5700,7 @@
                     <span>Thắng Bán Kết 2</span>
                   </div>
                   <div class="text-[9px] text-zinc-300 truncate text-center">📍 ${fin.venue || clusterKey}</div>
+                  ${finScoreBadge}
                 </div>
 
                 <!-- Tranh Hạng Ba -->
@@ -5659,6 +5713,7 @@
                     <span>Thua BK 1</span> <span class="text-amber-700 font-mono text-[9px]">vs</span> <span>Thua BK 2</span>
                   </div>
                   <div class="text-[9px] text-zinc-500 truncate text-center">📍 ${third.venue || clusterKey}</div>
+                  ${thirdScoreBadge}
                 </div>
               </div>
             </div>
@@ -5953,35 +6008,126 @@
         alert('⚡ ĐÃ XẾP LỊCH VÒNG TRÒN VÀ TÍNH GIỜ CHO BẢNG ' + groupKey + ' THÀNH CÔNG (' + fixtures.length + ' trận)!');
       }
 
-      function autoCalculateGroupMatchTimes(clusterKey, groupKey) {
+      function calculateSessionTimes(startAm, matchesAm, startPm, duration, breakMin, totalMatches) {
+        var times = [];
+        var parseTime = function(tStr) {
+          if (!tStr || !tStr.includes(':')) return { h: 7, m: 30 };
+          var parts = tStr.split(':');
+          return { h: parseInt(parts[0], 10) || 0, m: parseInt(parts[1], 10) || 0 };
+        };
+        var fmtTime = function(totalM) {
+          var h = Math.floor(totalM / 60) % 24;
+          var m = totalM % 60;
+          return (h < 10 ? '0' + h : h) + ':' + (m < 10 ? '0' + m : m);
+        };
+
+        var am = parseTime(startAm || '07:30');
+        var curAm = am.h * 60 + am.m;
+
+        var pm = parseTime(startPm || '14:00');
+        var curPm = pm.h * 60 + pm.m;
+
+        var mAm = parseInt(matchesAm, 10);
+        if (isNaN(mAm) || mAm <= 0) mAm = Math.ceil(totalMatches / 2) || 3;
+
+        for (var i = 0; i < totalMatches; i++) {
+          if (i < mAm) {
+            times.push(fmtTime(curAm));
+            curAm += duration + breakMin;
+          } else {
+            times.push(fmtTime(curPm));
+            curPm += duration + breakMin;
+          }
+        }
+        return times;
+      }
+
+      function attachScheduleAutoSaveListener() {
+        var container = document.getElementById('adminTab_TAB_SCHEDULE');
+        if (!container || container.__autoSaveAttached) return;
+        container.__autoSaveAttached = true;
+
+        var scheduleDebounceTimer = null;
+        function triggerAutoSave() {
+          var statusEl = document.getElementById('schedAutoSaveStatus');
+          if (statusEl) {
+            statusEl.innerHTML = '<span class="text-amber-600 font-semibold flex items-center gap-1">⏳ Đang nhập liệu... (tự lưu sau 3s)</span>';
+          }
+          clearTimeout(scheduleDebounceTimer);
+          scheduleDebounceTimer = setTimeout(function() {
+            saveScheduleConfigFromAdmin(true);
+            if (statusEl) {
+              var nowStr = new Date().toLocaleTimeString('vi-VN', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
+              statusEl.innerHTML = '<span class="text-emerald-700 font-bold flex items-center gap-1">✅ Đã tự động lưu (' + nowStr + ')</span>';
+            }
+          }, 3000);
+        }
+
+        container.addEventListener('input', triggerAutoSave);
+        container.addEventListener('change', triggerAutoSave);
+      }
+
+      function autoCalculateGroupMatchTimes(clusterKey, groupKey, silent) {
         if (!appConfig.scheduleData || !appConfig.scheduleData[clusterKey]) return;
         var data = appConfig.scheduleData[clusterKey];
         if (!data.groups || !data.groups[groupKey]) return;
 
         var grp = data.groups[groupKey];
         var matches = grp.matches || [];
-        if (matches.length === 0) {
-          alert('Bảng ' + groupKey + ' chưa có trận đấu nào để tính giờ!');
+
+        // Đếm số trận thực tế trong bảng đang hiển thị
+        var rowCount = 0;
+        for (var i = 0; i < 60; i++) {
+          if (document.getElementById('m_time_' + groupKey + '_' + i)) rowCount++;
+          else break;
+        }
+        var totalMatches = rowCount > 0 ? rowCount : (matches.length || 0);
+        if (totalMatches === 0) {
+          if (!silent) alert('Bảng ' + groupKey + ' chưa có trận đấu nào để tính giờ!');
           return;
         }
 
-        var startInput = document.getElementById('grp_start_' + groupKey);
+        var startAmInput = document.getElementById('grp_start_am_' + groupKey);
+        var matchesAmInput = document.getElementById('grp_matches_am_' + groupKey);
+        var startPmInput = document.getElementById('grp_start_pm_' + groupKey);
         var durInput = document.getElementById('grp_dur_' + groupKey);
         var brkInput = document.getElementById('grp_break_' + groupKey);
 
-        var startTime = startInput ? startInput.value.trim() : '07:30';
+        var startAm = startAmInput ? startAmInput.value.trim() : '07:30';
+        var matchesAm = matchesAmInput ? parseInt(matchesAmInput.value, 10) || 3 : 3;
+        var startPm = startPmInput ? startPmInput.value.trim() : '14:00';
         var duration = durInput ? parseInt(durInput.value, 10) || 40 : 40;
         var breakMin = brkInput ? parseInt(brkInput.value, 10) || 10 : 10;
 
-        var times = calculateSequentialTimes(startTime, duration, breakMin, matches.length);
-        matches.forEach(function(m, idx) {
-          m.time = times[idx] || startTime;
-        });
+        var times = calculateSessionTimes(startAm, matchesAm, startPm, duration, breakMin, totalMatches);
 
-        saveAppConfig(appConfig);
-        loadAdminScheduleEditor(clusterKey);
-        renderOngoingShowcase();
-        alert('⚡ ĐÃ CẬP NHẬT TỰ ĐỘNG GIỜ THI ĐẤU CHO ' + matches.length + ' TRẬN BẢNG ' + groupKey + ' (Bắt đầu ' + startTime + ', mỗi trận ' + duration + 'p, nghỉ ' + breakMin + 'p)!');
+        // Cập nhật trực tiếp giá trị vào input trên DOM (KHÔNG tải lại bảng để tránh mất dữ liệu đã nhập!)
+        for (var idx = 0; idx < totalMatches; idx++) {
+          var tEl = document.getElementById('m_time_' + groupKey + '_' + idx);
+          if (tEl && times[idx]) {
+            tEl.value = times[idx];
+          }
+        }
+
+        // Lưu cấu hình giờ vào bộ nhớ
+        grp.timeConfig = {
+          startAm: startAm,
+          matchesAm: matchesAm,
+          startPm: startPm,
+          duration: duration,
+          breakMin: breakMin
+        };
+
+        // Tự động lưu ngầm toàn bộ dữ liệu đang nhập trên giao diện
+        saveScheduleConfigFromAdmin(true);
+
+        var autoStatus = document.getElementById('schedAutoSaveStatus');
+        if (autoStatus) {
+          autoStatus.innerHTML = '<span class="text-emerald-700 font-bold">⚡ Đã tự động chia giờ: sáng ' + startAm + ' (' + matchesAm + ' trận), chiều ' + startPm + ' cho Bảng ' + groupKey + '!</span>';
+        }
+        if (!silent) {
+          alert('⚡ ĐÃ TỰ ĐỘNG PHÂN BỔ GIỜ THI ĐẤU BẢNG ' + groupKey + ':\n• Buổi sáng: ' + startAm + ' (tối đa ' + matchesAm + ' trận)\n• Buổi chiều: ' + startPm + '\n• Mỗi trận ' + duration + ' phút, nghỉ ' + breakMin + ' phút.');
+        }
       }
 
       function addCustomGroupMatch(clusterKey, groupKey) {
@@ -6763,7 +6909,17 @@
       }
 
       function loadAdminScheduleEditor(clusterKey) {
-        if (!appConfig.scheduleData || !appConfig.scheduleData[clusterKey]) return;
+        clusterKey = clusterKey || (document.getElementById('adminScheduleClusterSelect') ? document.getElementById('adminScheduleClusterSelect').value : 'Sân 1');
+        if (!appConfig.scheduleData) appConfig.scheduleData = {};
+        if (!appConfig.scheduleData[clusterKey]) {
+          appConfig.scheduleData[clusterKey] = {
+            clusterName: clusterKey,
+            format: 'ROUND_ROBIN_KNOCKOUT',
+            groupsCount: 1,
+            advanceRule: 'TOP_2',
+            groups: {}
+          };
+        }
         var data = appConfig.scheduleData[clusterKey];
 
         // Format, GroupsCount, AdvanceRule
@@ -6781,21 +6937,41 @@
 
         // Bố trí theo thể thức thi đấu đã chọn
         if (data.format === 'ROUND_ROBIN_ONLY') {
-          // Vòng tròn 1 lượt tính điểm toàn giải: Ẩn phần Bán kết & Chung kết
           if (grpSection) grpSection.classList.remove('hidden');
           if (koSection) koSection.classList.add('hidden');
         } else if (data.format === 'KNOCKOUT_ONLY') {
-          // Đấu loại trực tiếp 100%: Ẩn vòng bảng, chỉ hiện nhánh loại trực tiếp
           if (grpSection) grpSection.classList.add('hidden');
           if (koSection) koSection.classList.remove('hidden');
         } else {
-          // ROUND_ROBIN_KNOCKOUT: Hiện cả vòng bảng và vòng loại trực tiếp bên dưới
           if (grpSection) grpSection.classList.remove('hidden');
           if (koSection) koSection.classList.remove('hidden');
         }
 
+        // Lấy danh sách sân / địa điểm thi đấu từ thông số giải (appConfig.diaDiem) và các cụm sân
+        var tournamentVenue = (appConfig.diaDiem || '').trim();
         var venueKeys = Object.keys(appConfig.scheduleData || {});
-        if (venueKeys.length === 0) venueKeys = ['Sân 1', 'Sân 2', 'Sân 3'];
+        var venueList = [];
+        if (tournamentVenue) {
+          var rawVenues = tournamentVenue.split(/[,;\n\r]+/);
+          rawVenues.forEach(function(v) {
+            v = v.trim();
+            if (v && !venueList.includes(v)) venueList.push(v);
+          });
+        }
+        venueKeys.forEach(function(v) {
+          if (v && !venueList.includes(v)) venueList.push(v);
+        });
+        if (venueList.length === 0) venueList = ['Sân 1', 'Sân 2', 'Sân 3'];
+
+        // Cập nhật datalist schedule_venue_list
+        var venueDatalistEl = document.getElementById('schedule_venue_list');
+        if (venueDatalistEl) {
+          venueDatalistEl.innerHTML = venueList.map(function(v) {
+            return '<option value="' + v + '">';
+          }).join('');
+        }
+
+        var defaultKnockoutVenue = tournamentVenue || clusterKey;
 
         var grpGrid = document.getElementById('adminGroupsEditorGrid');
         if (grpGrid) {
@@ -6811,14 +6987,24 @@
 
             var matches = g.matches || [];
 
-            // Datalist options for auto-completing team names
+            // Datalist options cho chọn nhanh đội trong bảng
             var teamDatalistOptions = (g.teams || []).map(function(t) {
               return `<option value="${t.name}">`;
             }).join('');
 
+            // Cấu hình giờ ca sáng và ca chiều
+            var tc = g.timeConfig || {
+              startAm: (matches[0] && matches[0].time) ? matches[0].time : '07:30',
+              matchesAm: matches.length > 3 ? Math.ceil(matches.length / 2) : (matches.length || 3),
+              startPm: '14:00',
+              duration: 40,
+              breakMin: 10
+            };
+
             var matchRowsHtml = matches.map(function(m, idx) {
-              var venueOptions = venueKeys.map(function(v) {
-                return `<option value="${v}" ${m.venue === v ? 'selected' : ''}>${v}</option>`;
+              var matchVenue = m.venue || clusterKey;
+              var venueOptions = venueList.map(function(v) {
+                return `<option value="${v}" ${matchVenue === v ? 'selected' : ''}>${v}</option>`;
               }).join('');
 
               var isFirst = idx === 0;
@@ -6840,16 +7026,16 @@
                     <input list="team_list_${k}" id="m_t1_${k}_${idx}" value="${m.team1 || ''}" class="w-full px-2 py-1 border border-zinc-200 rounded text-xs font-semibold text-zinc-900" placeholder="Chọn / Nhập Đội 1" title="Nhấp đúp để chọn từ danh sách đội trong bảng" />
                   </td>
                   <td class="p-1 text-center">
-                    <button type="button" onclick="swapMatchTeamsRow('${clusterKey}', '${k}', ${idx})" class="p-1 text-zinc-400 hover:text-emerald-700 hover:bg-emerald-50 rounded cursor-pointer transition-colors" title="Đổi chỗ Đội 1 ⇄ Đội 2">⇄</button>
+                    <button type="button" onclick="swapMatchTeamsRow('${clusterKey}', '${k}', ${idx})" class="p-1 text-zinc-400 hover:text-emerald-700 hover:bg-emerald-50 rounded cursor-pointer transition-colors" title="Đảo sân: Đổi chỗ Đội 1 và Đội 2">⇄</button>
                   </td>
                   <td class="p-1.5">
-                    <input type="text" id="m_sc_${k}_${idx}" value="${m.score || ''}" placeholder="Tỷ số" class="w-16 px-1 py-1 text-center font-mono font-bold border border-amber-300 bg-amber-50/40 rounded text-xs text-amber-900" title="Để trống nếu chưa thi đấu (VD: 2 - 1)" />
+                    <input type="text" id="m_sc_${k}_${idx}" value="${m.score || ''}" placeholder="Tỉ số" class="w-18 px-1.5 py-1 text-center font-mono font-bold border border-zinc-200 rounded text-xs text-amber-900 bg-amber-50/40 focus:bg-white" title="Tỉ số trận đấu (VD: 2 - 1)" />
                   </td>
                   <td class="p-1.5">
                     <input list="team_list_${k}" id="m_t2_${k}_${idx}" value="${m.team2 || ''}" class="w-full px-2 py-1 border border-zinc-200 rounded text-xs font-semibold text-zinc-900" placeholder="Chọn / Nhập Đội 2" title="Nhấp đúp để chọn từ danh sách đội trong bảng" />
                   </td>
                   <td class="p-1.5">
-                    <select id="m_ven_${k}_${idx}" class="w-24 px-1.5 py-1 border border-zinc-200 rounded text-xs bg-white font-medium">
+                    <select id="m_ven_${k}_${idx}" class="w-28 px-1.5 py-1 border border-zinc-200 rounded text-xs bg-white font-medium">
                       ${venueOptions}
                     </select>
                   </td>
@@ -6889,21 +7075,42 @@
                 <textarea id="admin_grp_teams_${k}" rows="3" class="w-full p-2.5 border border-zinc-200 rounded-[6px] text-xs font-mono leading-relaxed focus:ring-1 focus:ring-[#06301a]" placeholder="Tên đội | Điểm số (Ví dụ: THPT Trấn Biên | 3đ)">${teamLines}</textarea>
               </div>
 
-              <!-- Lịch thi đấu & Tính giờ tự động cho Bảng (Full Width) -->
+              <!-- Lịch thi đấu & Cấu hình Giờ Sáng/Chiều cho Bảng -->
               <div class="pt-2.5 border-t border-zinc-100 space-y-2.5">
-                <div class="flex flex-wrap items-center justify-between gap-2 bg-zinc-50 p-2.5 rounded-[8px] border border-zinc-200 text-xs">
-                  <div class="flex items-center gap-2 flex-wrap">
-                    <span class="text-xs font-bold text-zinc-800">⏱️ Bắt đầu:</span>
-                    <input type="text" id="grp_start_${k}" value="${(matches[0] && matches[0].time) ? matches[0].time : '07:30'}" class="w-16 px-1.5 py-1 border border-zinc-300 rounded text-center font-mono font-bold text-xs" />
-                    <span class="text-xs text-zinc-600">Đá:</span>
-                    <input type="number" id="grp_dur_${k}" value="40" min="10" max="120" class="w-12 px-1.5 py-1 border border-zinc-300 rounded text-center text-xs font-bold" />p
-                    <span class="text-xs text-zinc-600">Nghỉ:</span>
-                    <input type="number" id="grp_break_${k}" value="10" min="0" max="60" class="w-12 px-1.5 py-1 border border-zinc-300 rounded text-center text-xs font-bold" />p
+                <div class="bg-zinc-50 p-2.5 rounded-[8px] border border-zinc-200 text-xs space-y-2">
+                  <div class="flex flex-wrap items-center justify-between gap-2">
+                    <div class="flex items-center gap-2 flex-wrap">
+                      <span class="font-bold text-amber-800 bg-amber-100/90 px-2 py-0.5 rounded border border-amber-300 text-[11px] flex items-center gap-1">🌅 Buổi sáng:</span>
+                      <span class="text-zinc-600">Từ</span>
+                      <input type="text" id="grp_start_am_${k}" value="${tc.startAm || '07:30'}" onchange="autoCalculateGroupMatchTimes('${clusterKey}', '${k}', true)" class="w-16 px-1.5 py-1 border border-zinc-300 rounded text-center font-mono font-bold text-xs bg-white focus:ring-1 focus:ring-[#06301a]" placeholder="07:30" title="Giờ bắt đầu buổi sáng (HH:MM)" />
+                      <span class="text-zinc-600">Đá</span>
+                      <input type="number" id="grp_matches_am_${k}" value="${tc.matchesAm || 3}" min="1" max="30" onchange="autoCalculateGroupMatchTimes('${clusterKey}', '${k}', true)" class="w-12 px-1.5 py-1 border border-zinc-300 rounded text-center text-xs font-bold bg-white focus:ring-1 focus:ring-[#06301a]" title="Số trận đá buổi sáng" />
+                      <span class="text-zinc-600">trận</span>
+
+                      <span class="font-bold text-blue-800 bg-blue-100/90 px-2 py-0.5 rounded border border-blue-300 text-[11px] ml-1 flex items-center gap-1">🌇 Buổi chiều:</span>
+                      <span class="text-zinc-600">Từ</span>
+                      <input type="text" id="grp_start_pm_${k}" value="${tc.startPm || '14:00'}" onchange="autoCalculateGroupMatchTimes('${clusterKey}', '${k}', true)" class="w-16 px-1.5 py-1 border border-zinc-300 rounded text-center font-mono font-bold text-xs bg-white focus:ring-1 focus:ring-[#06301a]" placeholder="14:00" title="Giờ bắt đầu ca chiều (HH:MM)" />
+                    </div>
+
+                    <div class="flex items-center gap-1.5 flex-wrap">
+                      <button type="button" onclick="autoCalculateGroupMatchTimes('${clusterKey}', '${k}')" class="px-2.5 py-1.5 rounded bg-[#06301a] hover:bg-[#0a4224] text-[#8be33a] font-bold text-xs cursor-pointer shadow-xs flex items-center gap-1" title="Tự động tính lại giờ cho tất cả các trận trong bảng dựa trên cài đặt buổi sáng & chiều">⚡ Tính giờ tự động</button>
+                      <button type="button" onclick="autoGenerateGroupFixtures('${clusterKey}', '${k}')" class="px-2.5 py-1.5 rounded bg-emerald-700 hover:bg-emerald-800 text-white font-bold text-xs cursor-pointer shadow-xs" title="Tự sinh tất cả các cặp đấu vòng tròn cho các đội trong bảng">🔄 Xếp vòng tròn</button>
+                      <button type="button" onclick="addCustomGroupMatch('${clusterKey}', '${k}')" class="px-2.5 py-1.5 rounded bg-zinc-200 hover:bg-zinc-300 text-zinc-800 font-bold text-xs cursor-pointer" title="Thêm 1 trận mới">+ Trận</button>
+                    </div>
                   </div>
-                  <div class="flex items-center gap-1.5">
-                    <button type="button" onclick="autoCalculateGroupMatchTimes('${clusterKey}', '${k}')" class="px-2.5 py-1.5 rounded bg-[#06301a] hover:bg-[#0a4224] text-[#8be33a] font-bold text-xs cursor-pointer shadow-xs" title="Tự động tính lại giờ cho tất cả các trận trong bảng dựa trên giờ bắt đầu và thời gian nghỉ">⚡ Tính giờ tự động</button>
-                    <button type="button" onclick="autoGenerateGroupFixtures('${clusterKey}', '${k}')" class="px-2.5 py-1.5 rounded bg-emerald-700 hover:bg-emerald-800 text-white font-bold text-xs cursor-pointer shadow-xs" title="Tự sinh tất cả các cặp đấu vòng tròn cho các đội trong bảng">🔄 Xếp vòng tròn</button>
-                    <button type="button" onclick="addCustomGroupMatch('${clusterKey}', '${k}')" class="px-2.5 py-1.5 rounded bg-zinc-200 hover:bg-zinc-300 text-zinc-800 font-bold text-xs cursor-pointer" title="Thêm 1 trận mới">+ Trận</button>
+
+                  <div class="flex items-center gap-3 text-zinc-600 pt-1 border-t border-zinc-200/60 flex-wrap">
+                    <div class="flex items-center gap-1">
+                      <span>⏱️ Thời gian mỗi trận:</span>
+                      <input type="number" id="grp_dur_${k}" value="${tc.duration || 40}" min="10" max="120" onchange="autoCalculateGroupMatchTimes('${clusterKey}', '${k}', true)" class="w-12 px-1.5 py-0.5 border border-zinc-300 rounded text-center text-xs font-bold bg-white" />
+                      <span>phút</span>
+                    </div>
+                    <div class="flex items-center gap-1">
+                      <span>☕ Nghỉ giữa trận:</span>
+                      <input type="number" id="grp_break_${k}" value="${tc.breakMin || 10}" min="0" max="60" onchange="autoCalculateGroupMatchTimes('${clusterKey}', '${k}', true)" class="w-12 px-1.5 py-0.5 border border-zinc-300 rounded text-center text-xs font-bold bg-white" />
+                      <span>phút</span>
+                    </div>
+                    <span class="text-[11px] text-zinc-400 italic">(Các trận vượt quá số trận sáng sẽ tự động xếp vào ca chiều)</span>
                   </div>
                 </div>
 
@@ -6918,7 +7125,7 @@
                         <th class="p-1 w-8 text-center" title="Đổi chỗ Đội 1 và Đội 2">⇄</th>
                         <th class="p-2 w-18 text-center">Tỉ số</th>
                         <th class="p-2">Đội 2 (Chọn từ danh sách / Nhập)</th>
-                        <th class="p-2 w-26">Sân đấu</th>
+                        <th class="p-2 w-28">Sân đấu</th>
                         <th class="p-2 w-10 text-center">Xóa</th>
                       </tr>
                     </thead>
@@ -6933,11 +7140,7 @@
           });
         }
 
-        // TỰ ĐỘNG THIẾT LẬP CÁC CẶP ĐẤU CHUẨN:
-        // BK1: Nhất Bảng A — Nhì Bảng B
-        // BK2: Nhất Bảng B — Nhì Bảng A
-        // Tranh Hạng Ba: Thua Bán kết 1 — Thua Bán kết 2
-        // Chung Kết: Thắng Bán kết 1 • Thắng Bán kết 2
+        // Khởi tạo và chuẩn hóa các nhánh Knockout
         if (!data.semiFinal1) data.semiFinal1 = {};
         if (!data.semiFinal1.teams || data.semiFinal1.teams.includes('Nhất D') || data.semiFinal1.teams.includes('Nhất A — Nhất D')) {
           data.semiFinal1.teams = 'Nhất Bảng A — Nhì Bảng B';
@@ -6960,29 +7163,57 @@
         if (!data.finals.qualified || data.finals.qualified.includes('suất 3') || data.finals.qualified.includes('Hạng Ba')) {
           data.finals.qualified = 'Thắng Bán kết 1 • Thắng Bán kết 2';
         }
+        if (!data.finals.time) data.finals.time = 'CN 15/11 • 15:30';
 
-        // Điền giá trị vào form inputs
-        document.getElementById('sched_bk1_time').value = data.semiFinal1.time || '';
-        document.getElementById('sched_bk1_match').value = data.semiFinal1.teams || '';
-        var s1El = document.getElementById('sched_bk1_score');
-        if (s1El) s1El.value = data.semiFinal1.score || '';
+        // Nạp và đồng bộ giá trị vào 4 ô Knockout
+        // Bán Kết 1
+        var bk1ElTime = document.getElementById('sched_bk1_time');
+        if (bk1ElTime) bk1ElTime.value = data.semiFinal1.time || '';
+        var bk1ElVen = document.getElementById('sched_bk1_venue');
+        if (bk1ElVen) bk1ElVen.value = data.semiFinal1.venue || defaultKnockoutVenue;
+        var bk1ElMatch = document.getElementById('sched_bk1_match');
+        if (bk1ElMatch) bk1ElMatch.value = data.semiFinal1.teams || 'Nhất Bảng A — Nhì Bảng B';
+        var bk1ElScore = document.getElementById('sched_bk1_score');
+        if (bk1ElScore) bk1ElScore.value = data.semiFinal1.score || '';
 
-        document.getElementById('sched_bk2_time').value = data.semiFinal2.time || '';
-        document.getElementById('sched_bk2_match').value = data.semiFinal2.teams || '';
-        var s2El = document.getElementById('sched_bk2_score');
-        if (s2El) s2El.value = data.semiFinal2.score || '';
+        // Bán Kết 2
+        var bk2ElTime = document.getElementById('sched_bk2_time');
+        if (bk2ElTime) bk2ElTime.value = data.semiFinal2.time || '';
+        var bk2ElVen = document.getElementById('sched_bk2_venue');
+        if (bk2ElVen) bk2ElVen.value = data.semiFinal2.venue || defaultKnockoutVenue;
+        var bk2ElMatch = document.getElementById('sched_bk2_match');
+        if (bk2ElMatch) bk2ElMatch.value = data.semiFinal2.teams || 'Nhất Bảng B — Nhì Bảng A';
+        var bk2ElScore = document.getElementById('sched_bk2_score');
+        if (bk2ElScore) bk2ElScore.value = data.semiFinal2.score || '';
 
-        document.getElementById('sched_third_time').value = data.thirdPlace.time || '';
-        document.getElementById('sched_third_match').value = data.thirdPlace.teams || '';
+        // Tranh Hạng Ba
+        var thirdElTime = document.getElementById('sched_third_time');
+        if (thirdElTime) thirdElTime.value = data.thirdPlace.time || '';
+        var thirdElVen = document.getElementById('sched_third_venue');
+        if (thirdElVen) thirdElVen.value = data.thirdPlace.venue || defaultKnockoutVenue;
+        var thirdElMatch = document.getElementById('sched_third_match');
+        if (thirdElMatch) thirdElMatch.value = data.thirdPlace.teams || 'Thua Bán kết 1 — Thua Bán kết 2';
+        var thirdElScore = document.getElementById('sched_third_score');
+        if (thirdElScore) thirdElScore.value = data.thirdPlace.score || '';
 
-        document.getElementById('sched_finals_venue').value = data.finals.venue || '';
-        document.getElementById('sched_finals_qual').value = data.finals.qualified || '';
+        // Chung Kết
+        var finElTime = document.getElementById('sched_finals_time');
+        if (finElTime) finElTime.value = data.finals.time || '';
+        var finElVen = document.getElementById('sched_finals_venue');
+        if (finElVen) finElVen.value = data.finals.venue || defaultKnockoutVenue;
+        var finElQual = document.getElementById('sched_finals_qual');
+        if (finElQual) finElQual.value = data.finals.qualified || 'Thắng Bán kết 1 — Thắng Bán kết 2';
+        var finElScore = document.getElementById('sched_finals_score');
+        if (finElScore) finElScore.value = data.finals.score || '';
 
         // Nạp sơ đồ thi đấu dạng nhánh kẻ ở dưới cùng
         var branchContent = document.getElementById('adminKnockoutBranchContent');
         if (branchContent) {
           branchContent.innerHTML = renderTournamentBranchSvg(clusterKey, data);
         }
+
+        // Tự động gắn bộ lắng nghe lưu sau 3 giây
+        attachScheduleAutoSaveListener();
       }
 
       function saveScheduleConfigFromAdmin(silent) {
@@ -6993,6 +7224,8 @@
 
         var data = appConfig.scheduleData[clusterKey];
         data.clusterName = clusterKey;
+
+        var tournamentVenue = (appConfig.diaDiem || '').trim();
 
         var fmtEl = document.getElementById('adminTournFormat');
         if (fmtEl) data.format = fmtEl.value;
@@ -7039,7 +7272,7 @@
 
           var existingMatches = (data.groups[k] && data.groups[k].matches) ? data.groups[k].matches : [];
           var updatedMatches = [];
-          for (var mIdx = 0; mIdx < 50; mIdx++) {
+          for (var mIdx = 0; mIdx < 60; mIdx++) {
             var timeEl = document.getElementById('m_time_' + k + '_' + mIdx);
             if (!timeEl) break;
             var t1El = document.getElementById('m_t1_' + k + '_' + mIdx);
@@ -7053,7 +7286,7 @@
               team1: t1El ? t1El.value.trim() : '',
               score: scEl ? scEl.value.trim() : '',
               team2: t2El ? t2El.value.trim() : '',
-              venue: venEl ? venEl.value.trim() : clusterKey,
+              venue: venEl ? venEl.value.trim() : (tournamentVenue || clusterKey),
               status: scEl && scEl.value.trim() ? 'FINISHED' : 'SCHEDULED'
             });
           }
@@ -7062,19 +7295,34 @@
             updatedMatches = existingMatches;
           }
 
+          var startAmEl = document.getElementById('grp_start_am_' + k);
+          var matchesAmEl = document.getElementById('grp_matches_am_' + k);
+          var startPmEl = document.getElementById('grp_start_pm_' + k);
+          var durEl = document.getElementById('grp_dur_' + k);
+          var breakEl = document.getElementById('grp_break_' + k);
+
+          var timeConfig = {
+            startAm: startAmEl ? startAmEl.value.trim() : '07:30',
+            matchesAm: matchesAmEl ? parseInt(matchesAmEl.value, 10) || 3 : 3,
+            startPm: startPmEl ? startPmEl.value.trim() : '14:00',
+            duration: durEl ? parseInt(durEl.value, 10) || 40 : 40,
+            breakMin: breakEl ? parseInt(breakEl.value, 10) || 10 : 10
+          };
+
           if (!data.groups) data.groups = {};
           data.groups[k] = {
             title: 'Bảng ' + k,
             matchCount: updatedMatches.length > 0 ? (updatedMatches.length + ' trận') : countVal,
             teams: teams,
-            matches: updatedMatches
+            matches: updatedMatches,
+            timeConfig: timeConfig
           };
         });
 
         data.semiFinal1 = {
           title: 'Bán kết 1 • Trận 60',
           time: document.getElementById('sched_bk1_time') ? document.getElementById('sched_bk1_time').value.trim() : '',
-          venue: clusterKey,
+          venue: document.getElementById('sched_bk1_venue') ? document.getElementById('sched_bk1_venue').value.trim() : (tournamentVenue || clusterKey),
           teams: document.getElementById('sched_bk1_match') ? document.getElementById('sched_bk1_match').value.trim() : '',
           score: document.getElementById('sched_bk1_score') ? document.getElementById('sched_bk1_score').value.trim() : ''
         };
@@ -7082,7 +7330,7 @@
         data.semiFinal2 = {
           title: 'Bán kết 2 • Trận 61',
           time: document.getElementById('sched_bk2_time') ? document.getElementById('sched_bk2_time').value.trim() : '',
-          venue: clusterKey,
+          venue: document.getElementById('sched_bk2_venue') ? document.getElementById('sched_bk2_venue').value.trim() : (tournamentVenue || clusterKey),
           teams: document.getElementById('sched_bk2_match') ? document.getElementById('sched_bk2_match').value.trim() : '',
           score: document.getElementById('sched_bk2_score') ? document.getElementById('sched_bk2_score').value.trim() : ''
         };
@@ -7090,26 +7338,34 @@
         data.thirdPlace = {
           title: 'Tranh Hạng Ba • Trận 62',
           time: document.getElementById('sched_third_time') ? document.getElementById('sched_third_time').value.trim() : '',
-          venue: clusterKey,
-          teams: document.getElementById('sched_third_match') ? document.getElementById('sched_third_match').value.trim() : ''
+          venue: document.getElementById('sched_third_venue') ? document.getElementById('sched_third_venue').value.trim() : (tournamentVenue || clusterKey),
+          teams: document.getElementById('sched_third_match') ? document.getElementById('sched_third_match').value.trim() : '',
+          score: document.getElementById('sched_third_score') ? document.getElementById('sched_third_score').value.trim() : ''
         };
 
         data.finals = {
           title: 'Vòng chung kết',
-          venue: document.getElementById('sched_finals_venue') ? document.getElementById('sched_finals_venue').value.trim() : '',
-          qualified: document.getElementById('sched_finals_qual') ? document.getElementById('sched_finals_qual').value.trim() : ''
+          time: document.getElementById('sched_finals_time') ? document.getElementById('sched_finals_time').value.trim() : '',
+          venue: document.getElementById('sched_finals_venue') ? document.getElementById('sched_finals_venue').value.trim() : (tournamentVenue || clusterKey),
+          qualified: document.getElementById('sched_finals_qual') ? document.getElementById('sched_finals_qual').value.trim() : '',
+          score: document.getElementById('sched_finals_score') ? document.getElementById('sched_finals_score').value.trim() : ''
         };
 
+        // Lưu vào cấu hình hệ thống
         saveAppConfig(appConfig);
         renderOngoingShowcase();
+
+        // Cập nhật lại sơ đồ nhánh ở dưới
+        var branchContent = document.getElementById('adminKnockoutBranchContent');
+        if (branchContent) {
+          branchContent.innerHTML = renderTournamentBranchSvg(clusterKey, data);
+        }
+
         if (!silent) {
-          alert('Đã lưu cấu hình thể thức & lịch thi đấu ' + clusterKey + ' thành công!');
+          alert('💾 Đã lưu cấu hình thể thức & lịch thi đấu ' + clusterKey + ' thành công!');
         }
       }
 
-      // ---------------------------------------------------------
-      // KHU VỰC CÁC GIẢI ĐANG DIỄN RA & LỊCH THI ĐẤU TRỰC TIẾP
-      // ---------------------------------------------------------
       function renderOngoingShowcase() {
         var section = document.getElementById('ongoingTournamentsSection');
         var container = document.getElementById('ongoingCardsContainer');

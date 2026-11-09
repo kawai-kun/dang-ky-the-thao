@@ -410,6 +410,19 @@
           padding: 0 !important;
         }
 
+        /* Khi in Lịch & Sơ đồ thi đấu */
+        body.print-schedule main,
+        body.print-schedule #step3Section,
+        body.print-schedule #step3ReceiptBox {
+          display: none !important;
+        }
+        body.print-schedule #schedulePrintModal {
+          position: static !important;
+          display: block !important;
+          background: white !important;
+          padding: 0 !important;
+        }
+
         /* Khi in Phiếu Tiếp Nhận bình thường */
         body:not(.print-match-sheet):not(.print-badges) #step3Section,
         body:not(.print-match-sheet):not(.print-badges) #step3ReceiptBox {
@@ -1587,6 +1600,14 @@
                   </button>
                   <button
                     type="button"
+                    onclick="openSchedulePrintModal()"
+                    class="px-2.5 py-1 rounded-[6px] bg-blue-600 hover:bg-blue-700 text-white font-bold text-[11px] flex items-center gap-1 cursor-pointer shadow-subtle"
+                    title="Tải toàn bộ lịch thi đấu và sơ đồ nhánh đấu thành file PDF hoặc in giấy A4 để gửi cho các đoàn"
+                  >
+                    <span>📄 Xuất File PDF / In Lịch Đấu</span>
+                  </button>
+                  <button
+                    type="button"
                     onclick="resetScheduleGroupsToEmpty()"
                     class="px-2.5 py-1 rounded-[6px] bg-zinc-100 hover:bg-rose-50 text-rose-700 font-semibold text-[11px] flex items-center gap-1 cursor-pointer border border-zinc-200"
                     title="Xóa toàn bộ đội trong bảng đấu để làm mới"
@@ -2318,6 +2339,16 @@
             </div>
 
             <button
+              type="button"
+              onclick="openSchedulePrintModal(activeScheduleCluster)"
+              class="px-3 py-1.5 rounded-[8px] bg-[#8be33a] hover:bg-[#9ef04a] text-[#06301a] font-black text-xs flex items-center gap-1.5 shadow-[0_0_12px_rgba(139,227,58,0.45)] cursor-pointer transition-all hover:scale-105 active:scale-95"
+              title="Tải toàn bộ lịch thi đấu và sơ đồ nhánh đấu thành file PDF hoặc in giấy A4 để gửi cho các đội"
+            >
+              <svg class="w-4 h-4 text-[#06301a]" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5M16.5 12L12 16.5m0 0L7.5 12m4.5 4.5V3"/></svg>
+              <span>Tải Lịch Đấu (PDF)</span>
+            </button>
+
+            <button
               onclick="closeScheduleModal()"
               class="w-8 h-8 rounded-[8px] bg-[#041f11] hover:bg-[#0a4224] text-white flex items-center justify-center border border-[#d6e0d8]/30 transition-colors cursor-pointer ml-1"
               title="Đóng sơ đồ"
@@ -2390,6 +2421,31 @@
         </div>
         <div id="badgesPrintArea" class="p-6 overflow-y-auto bg-zinc-100">
           <!-- Dynamic injected via renderBadges() -->
+        </div>
+      </div>
+    </div>
+
+    <!-- MODAL 3: IN / TẢI LỊCH THI ĐẤU & SƠ ĐỒ NHÁNH ĐẤU (PDF / A4) -->
+    <div id="schedulePrintModal" class="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm hidden flex items-center justify-center p-2 sm:p-4 overflow-y-auto">
+      <div class="bg-white rounded-[14px] max-w-4xl w-full max-h-[92vh] flex flex-col shadow-2xl overflow-hidden border border-zinc-300 text-xs">
+        <div class="bg-[#06301a] text-white p-4 flex items-center justify-between no-print border-b border-[#8be33a]/30">
+          <div class="flex items-center gap-2">
+            <span class="text-lg">📄</span>
+            <div>
+              <h3 class="font-bold text-sm text-white">Lịch Thi Đấu & Sơ Đồ Nhánh Đấu (Bản In / Tải PDF)</h3>
+              <p class="text-[11px] text-zinc-300">File văn bản chuẩn ban hành gửi các đoàn, vận động viên và tổ trọng tài</p>
+            </div>
+          </div>
+          <div class="flex items-center gap-2">
+            <button onclick="triggerPrintSchedule()" class="px-3 py-1.5 rounded-[6px] bg-[#8be33a] hover:bg-[#9ef04a] text-[#06301a] font-black text-xs flex items-center gap-1.5 cursor-pointer shadow-sm">
+              <svg class="w-4 h-4 text-[#06301a]" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M6.72 13.829c-.24.03-.48.062-.72.096m.72-.096a42.415 42.415 0 0110.56 0m-10.56 0L6.34 18m10.94-4.171c.24.03.48.062.72.096m-.72-.096L17.66 18m0 0l.229 2.523a1.125 1.125 0 01-1.12 1.227H7.231c-.662 0-1.18-.568-1.12-1.227L6.34 18m11.318 0h1.091A2.25 2.25 0 0021 15.75V9.456c0-1.081-.768-2.015-1.837-2.175a48.055 48.055 0 00-1.913-.247M6.34 18H5.25A2.25 2.25 0 013 15.75V9.456c0-1.081.768-2.015 1.837-2.175a48.041 48.041 0 011.913-.247m10.5 0a48.536 48.536 0 00-10.5 0m10.5 0V3.375c0-.621-.504-1.125-1.125-1.125h-8.25c-.621 0-1.125.504-1.125 1.125v3.659M18 10.5h.008v.008H18V10.5zm-3 0h.008v.008H15V10.5z"/></svg>
+              <span>🖨️ In / Tải PDF (A4)</span>
+            </button>
+            <button onclick="closeSchedulePrintModal()" class="w-8 h-8 rounded-[6px] bg-white/10 hover:bg-white/20 text-white flex items-center justify-center cursor-pointer">✕</button>
+          </div>
+        </div>
+        <div id="schedulePrintArea" class="p-6 overflow-y-auto space-y-5 bg-white text-zinc-900 font-sans">
+          <!-- Dynamically populated via openSchedulePrintModal(clusterKey) -->
         </div>
       </div>
     </div>
@@ -5451,7 +5507,8 @@
 
       // =========================================================
       // NÂNG CẤP HỆ THỐNG LỊCH THI ĐẤU & PHÂN BẢNG TOURNAMENT VN
-      // (1 SÂN 1 BẢNG, TÍNH GIỜ TỰ ĐỘNG, ĐÁ ĐỒNG THỜI, LÊN LỊCH TRƯỚC)
+      // (1 SÂN 1 BẢNG, TÍNH GIỜ TỰ ĐỘNG, ĐÁ ĐỒNG THỜI, LÊN LỊCH TRƯỚC,
+      //  TỰ ĐIỀU CHỈNH TRẬN ĐẤU, ĐỔI THỨ TỰ, XUẤT FILE PDF CHUẨN BAN HÀNH)
       // =========================================================
 
       function generateRoundRobinFixtures(teams, defaultVenue) {
@@ -5506,6 +5563,34 @@
         return times;
       }
 
+      function swapMatchTeamsRow(clusterKey, groupKey, idx) {
+        saveScheduleConfigFromAdmin(true);
+        var data = appConfig.scheduleData[clusterKey];
+        if (!data || !data.groups || !data.groups[groupKey] || !data.groups[groupKey].matches) return;
+        var m = data.groups[groupKey].matches[idx];
+        if (!m) return;
+        var temp = m.team1;
+        m.team1 = m.team2;
+        m.team2 = temp;
+        saveAppConfig(appConfig);
+        loadAdminScheduleEditor(clusterKey);
+        renderOngoingShowcase();
+      }
+
+      function moveMatchRow(clusterKey, groupKey, fromIdx, direction) {
+        saveScheduleConfigFromAdmin(true);
+        var data = appConfig.scheduleData[clusterKey];
+        if (!data || !data.groups || !data.groups[groupKey] || !data.groups[groupKey].matches) return;
+        var matches = data.groups[groupKey].matches;
+        var toIdx = fromIdx + direction;
+        if (toIdx < 0 || toIdx >= matches.length) return;
+        var item = matches.splice(fromIdx, 1)[0];
+        matches.splice(toIdx, 0, item);
+        saveAppConfig(appConfig);
+        loadAdminScheduleEditor(clusterKey);
+        renderOngoingShowcase();
+      }
+
       function openBatchTeamsDrawModal() {
         var modal = document.getElementById('batchTeamsDrawModal');
         if (modal) {
@@ -5542,7 +5627,6 @@
         var clSelect = document.getElementById('adminScheduleClusterSelect');
         var venueKey = clSelect ? clSelect.value : 'Sân 1';
 
-        // Shuffle teams randomly
         var shuffled = lines.slice().sort(function() { return 0.5 - Math.random(); });
 
         if (!appConfig.scheduleData) appConfig.scheduleData = {};
@@ -5564,7 +5648,6 @@
           };
         }
 
-        // Distribute teams evenly
         shuffled.forEach(function(teamName, idx) {
           var targetGIndex = idx % groupsCount;
           var gKey = groupLetters[targetGIndex];
@@ -5577,7 +5660,6 @@
           });
         });
 
-        // Generate round-robin fixtures & calculated times for each group
         Object.keys(data.groups).forEach(function(gKey) {
           var grp = data.groups[gKey];
           var fixtures = generateRoundRobinFixtures(grp.teams, venueKey);
@@ -5786,6 +5868,220 @@
         renderOngoingShowcase();
       }
 
+      // ---------------------------------------------------------
+      // IN & TẢI FILE PDF LỊCH THI ĐẤU & SƠ ĐỒ NHÁNH ĐẤU CHUẨN BAN HÀNH
+      // ---------------------------------------------------------
+      function openSchedulePrintModal(clusterKey) {
+        var cKey = clusterKey || activeScheduleCluster || 'Sân 1';
+        var modal = document.getElementById('schedulePrintModal');
+        var area = document.getElementById('schedulePrintArea');
+        if (!modal || !area) return;
+
+        var data = (appConfig.scheduleData && appConfig.scheduleData[cKey]) ? appConfig.scheduleData[cKey] : (DEFAULT_CONFIG.scheduleData && DEFAULT_CONFIG.scheduleData[cKey] ? DEFAULT_CONFIG.scheduleData[cKey] : {});
+        var groups = data.groups || {};
+        var groupKeys = Object.keys(groups);
+        if (groupKeys.length === 0) groupKeys = ['A'];
+
+        // 1. Group Standings Tables
+        var groupStandingsHtml = groupKeys.map(function(k) {
+          var grp = groups[k] || { title: 'Bảng ' + k, teams: [] };
+          var rows = (grp.teams || []).map(function(t, idx) {
+            return `
+              <tr class="border-b border-zinc-200 text-xs">
+                <td class="p-1.5 text-center font-bold">${idx + 1}</td>
+                <td class="p-1.5 text-center font-mono font-bold">${t.code || (k + (idx + 1))}</td>
+                <td class="p-1.5 font-semibold text-zinc-900">${t.name}</td>
+                <td class="p-1.5 text-center font-bold font-mono text-emerald-800">${t.points || '0đ'}</td>
+              </tr>
+            `;
+          }).join('');
+
+          return `
+            <div class="border border-zinc-300 rounded-[8px] overflow-hidden">
+              <div class="bg-zinc-100 p-2 border-b border-zinc-300 flex items-center justify-between">
+                <strong class="text-xs uppercase text-zinc-900 font-bold">${grp.title || 'Bảng ' + k} (${cKey})</strong>
+                <span class="text-[11px] text-zinc-600 font-medium">${(grp.teams || []).length} Đội tham gia</span>
+              </div>
+              <table class="w-full text-left border-collapse">
+                <thead>
+                  <tr class="bg-zinc-50 text-[10px] uppercase font-bold text-zinc-600 border-b border-zinc-200">
+                    <th class="p-1.5 w-10 text-center">STT</th>
+                    <th class="p-1.5 w-16 text-center">Mã đội</th>
+                    <th class="p-1.5">Tên đội bóng / Đơn vị</th>
+                    <th class="p-1.5 w-18 text-center">Điểm số</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  ${rows || '<tr><td colspan="4" class="p-2 text-center text-zinc-400">Chưa có danh sách</td></tr>'}
+                </tbody>
+              </table>
+            </div>
+          `;
+        }).join('');
+
+        // 2. Matches Table
+        var allMatches = [];
+        groupKeys.forEach(function(k) {
+          var grp = groups[k];
+          if (grp && grp.matches) {
+            grp.matches.forEach(function(m) {
+              allMatches.push({
+                stage: grp.title || ('Bảng ' + k),
+                time: m.time || '07:30',
+                team1: m.team1,
+                team2: m.team2,
+                score: m.score || '',
+                venue: m.venue || cKey
+              });
+            });
+          }
+        });
+
+        // Add Knockout matches
+        if (data.semiFinal1 && data.semiFinal1.teams) {
+          allMatches.push({
+            stage: 'Bán Kết 1',
+            time: data.semiFinal1.time || '08:00',
+            team1: data.semiFinal1.teams.split('—')[0] ? data.semiFinal1.teams.split('—')[0].trim() : 'Nhất A',
+            team2: data.semiFinal1.teams.split('—')[1] ? data.semiFinal1.teams.split('—')[1].trim() : 'Nhì B',
+            score: data.semiFinal1.score || '',
+            venue: data.semiFinal1.venue || cKey
+          });
+        }
+        if (data.semiFinal2 && data.semiFinal2.teams) {
+          allMatches.push({
+            stage: 'Bán Kết 2',
+            time: data.semiFinal2.time || '09:15',
+            team1: data.semiFinal2.teams.split('—')[0] ? data.semiFinal2.teams.split('—')[0].trim() : 'Nhất B',
+            team2: data.semiFinal2.teams.split('—')[1] ? data.semiFinal2.teams.split('—')[1].trim() : 'Nhì A',
+            score: data.semiFinal2.score || '',
+            venue: data.semiFinal2.venue || cKey
+          });
+        }
+        if (data.thirdPlace && data.thirdPlace.teams) {
+          allMatches.push({
+            stage: 'Tranh Hạng 3',
+            time: data.thirdPlace.time || '14:00',
+            team1: data.thirdPlace.teams.split('—')[0] ? data.thirdPlace.teams.split('—')[0].trim() : 'Thua BK1',
+            team2: data.thirdPlace.teams.split('—')[1] ? data.thirdPlace.teams.split('—')[1].trim() : 'Thua BK2',
+            score: '',
+            venue: data.thirdPlace.venue || cKey
+          });
+        }
+
+        var matchRowsHtml = allMatches.map(function(m, idx) {
+          return `
+            <tr class="border-b border-zinc-200 text-xs">
+              <td class="p-1.5 text-center font-bold">${idx + 1}</td>
+              <td class="p-1.5 text-center font-mono font-bold text-[#06301a]">${m.time}</td>
+              <td class="p-1.5 font-medium text-zinc-700">${m.stage}</td>
+              <td class="p-1.5 font-bold text-right text-zinc-900">${m.team1}</td>
+              <td class="p-1.5 text-center font-mono font-bold px-2 ${m.score ? 'bg-amber-100 text-amber-900' : 'text-zinc-400'}">${m.score || 'vs'}</td>
+              <td class="p-1.5 font-bold text-left text-zinc-900">${m.team2}</td>
+              <td class="p-1.5 text-center text-zinc-700 font-medium">${m.venue}</td>
+              <td class="p-1.5 text-center text-[10px] text-zinc-400">Chính thức</td>
+            </tr>
+          `;
+        }).join('');
+
+        area.innerHTML = `
+          <!-- Quốc Hiệu & Tiêu Ngữ -->
+          <div class="border-b-2 border-zinc-800 pb-3">
+            <div class="flex justify-between items-start">
+              <div class="text-center font-bold text-xs space-y-0.5">
+                <p class="uppercase">BAN TỔ CHỨC GIẢI THỂ THAO</p>
+                <p class="uppercase text-[11px] font-extrabold text-[#06301a]">CỤM THI ĐẤU: ${cKey}</p>
+                <p class="text-[10px] font-normal italic">Số: ......./TB-BTC</p>
+              </div>
+              <div class="text-center font-bold text-xs space-y-0.5">
+                <p class="uppercase">CỘNG HÒA XÃ HỘI CHỦ NGHĨA VIỆT NAM</p>
+                <p class="text-[11px] underline">Độc lập - Tự do - Hạnh phúc</p>
+                <p class="text-[10px] font-normal italic pt-0.5">Ngày ..... tháng ..... năm 2026</p>
+              </div>
+            </div>
+
+            <div class="text-center pt-3 space-y-1">
+              <h2 class="text-base sm:text-lg font-black uppercase tracking-tight text-zinc-900">BẢNG THÔNG BÁO LỊCH THI ĐẤU & SƠ ĐỒ NHÁNH ĐẤU CHÍNH THỨC</h2>
+              <p class="text-xs font-bold text-emerald-800">${appConfig.tenGiai || 'GIẢI THỂ THAO PHONG TRÀO NĂM 2026'}</p>
+              <p class="text-[11px] text-zinc-600 font-medium">Khai mạc: ${appConfig.ngayKhaiMac || '07h30'} • Địa điểm: ${appConfig.diaDiem || 'Sân vận động trung tâm'} • Khu vực: ${cKey}</p>
+            </div>
+          </div>
+
+          <!-- PHẦN I: DANH SÁCH & BẢNG ĐIỂM -->
+          <div class="space-y-2">
+            <h4 class="font-bold text-xs uppercase text-zinc-900 flex items-center gap-1.5 border-l-4 border-[#06301a] pl-2">
+              <span>I. DANH SÁCH & BẢNG ĐIỂM CÁC BẢNG ĐẤU (${cKey})</span>
+            </h4>
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+              ${groupStandingsHtml}
+            </div>
+          </div>
+
+          <!-- PHẦN II: LỊCH THI ĐẤU CHI TIẾT TỪNG TRẬN -->
+          <div class="space-y-2 pt-2">
+            <h4 class="font-bold text-xs uppercase text-zinc-900 flex items-center gap-1.5 border-l-4 border-[#06301a] pl-2">
+              <span>II. LỊCH THI ĐẤU CHI TIẾT TỪNG TRẬN (LỊCH TRÌNH CHÍNH THỨC)</span>
+            </h4>
+            <div class="border border-zinc-300 rounded-[8px] overflow-hidden">
+              <table class="w-full text-left border-collapse">
+                <thead>
+                  <tr class="bg-zinc-100 text-[10px] uppercase font-bold text-zinc-700 border-b border-zinc-300">
+                    <th class="p-2 w-10 text-center">Trận</th>
+                    <th class="p-2 w-18 text-center">Giờ đấu</th>
+                    <th class="p-2 w-28">Vòng / Bảng</th>
+                    <th class="p-2 text-right">Đội 1</th>
+                    <th class="p-2 w-16 text-center">Tỉ số</th>
+                    <th class="p-2 text-left">Đội 2</th>
+                    <th class="p-2 w-24 text-center">Sân đấu</th>
+                    <th class="p-2 w-20 text-center">Ghi chú</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  ${matchRowsHtml || '<tr><td colspan="8" class="p-3 text-center text-zinc-400">Chưa có trận đấu nào</td></tr>'}
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <!-- PHẦN III: QUY ĐỊNH & CHỮ KÝ -->
+          <div class="pt-3 border-t border-zinc-300 space-y-3">
+            <div class="p-2.5 rounded bg-zinc-50 border border-zinc-200 text-[11px] text-zinc-600 leading-relaxed space-y-0.5">
+              <strong class="text-zinc-900 block font-bold">LƯU Ý DÀNH CHO CÁC ĐOÀN VÀ VẬN ĐỘNG VIÊN:</strong>
+              <p>1. Các đội bóng phải có mặt trước giờ thi đấu 20 phút để nộp thẻ VĐV và làm thủ tục điểm danh cùng Tổ Trọng Tài.</p>
+              <p>2. Trang phục thi đấu phải đúng quy định Điều lệ giải. Mọi khiếu nại phải nộp bằng văn bản trong vòng 15 phút sau khi kết thúc trận.</p>
+              <p>3. Tinh thần thi đấu: Đoàn kết - Trung thực - Cao thượng - Đúng luật.</p>
+            </div>
+
+            <div class="grid grid-cols-2 gap-4 text-center text-xs font-bold pt-4">
+              <div class="space-y-16">
+                <p class="uppercase">TỔ TRỌNG TÀI ĐIỀU HÀNH</p>
+                <p class="font-normal italic text-zinc-500">(Ký và ghi rõ họ tên)</p>
+              </div>
+              <div class="space-y-16">
+                <p class="uppercase">TM. BAN TỔ CHỨC GIẢI<br/><span class="text-[11px] text-zinc-500 font-normal">TRƯỞNG BAN</span></p>
+                <p class="font-normal italic text-zinc-500">(Ký tên và đóng dấu)</p>
+              </div>
+            </div>
+          </div>
+        `;
+
+        modal.classList.remove('hidden');
+      }
+
+      function closeSchedulePrintModal() {
+        var modal = document.getElementById('schedulePrintModal');
+        if (modal) modal.classList.add('hidden');
+        document.body.classList.remove('print-schedule');
+      }
+
+      function triggerPrintSchedule() {
+        document.body.classList.add('print-schedule');
+        window.print();
+        setTimeout(function() {
+          document.body.classList.remove('print-schedule');
+        }, 1000);
+      }
+
       function renderScheduleDiagram(clusterKey) {
         var container = document.getElementById('scheduleBracketContainer');
         if (!container) return;
@@ -5802,7 +6098,6 @@
         var bk2 = data.semiFinal2 || { title: 'Bán kết 2 • Trận 61', time: 'CN 15/11 • 09:15', venue: 'Sân 1', teams: 'Nhất B — Nhì A' };
         var third = data.thirdPlace || { title: 'Tranh suất 3 • Trận 62', time: 'CN 15/11 • 14:00', venue: 'Sân 1', teams: 'Thua BK1 — Thua BK2' };
         var fin = data.finals || { title: 'Vòng chung kết', venue: 'Khu thể thao trung tâm', qualified: 'Thắng Bán kết 1 • Thắng Bán kết 2 • Thắng Tranh suất 3' };
-        var venue = data.venueDetail || { name: clusterKey, address: 'Địa điểm tổ chức thi đấu chính thức' };
 
         function renderGroupCard(g, gKey) {
           var teamRows = (g.teams || []).map(function(t, idx) {
@@ -6180,7 +6475,6 @@
         var clSelect = document.getElementById('adminScheduleClusterSelect');
         var venueKey = clSelect ? clSelect.value : 'Sân 1';
 
-        // Lấy danh sách đoàn/đội từ hồ sơ đăng ký
         var list = (appConfig.hoSoDangKy || []).map(function(h) {
           return h.tenDoan || h.tenDonVi;
         }).filter(function(v, idx, arr) {
@@ -6197,7 +6491,6 @@
           return;
         }
 
-        // Shuffle teams
         var shuffled = list.slice().sort(function() { return 0.5 - Math.random(); });
 
         if (!appConfig.scheduleData) appConfig.scheduleData = {};
@@ -6230,7 +6523,6 @@
           });
         });
 
-        // Tạo fixtures cho mỗi bảng
         Object.keys(data.groups).forEach(function(gKey) {
           var grp = data.groups[gKey];
           var fixtures = generateRoundRobinFixtures(grp.teams, venueKey);
@@ -6330,11 +6622,9 @@
           }
         }
 
-        // Available venues list for match venue dropdown
         var venueKeys = Object.keys(appConfig.scheduleData || {});
         if (venueKeys.length === 0) venueKeys = ['Sân 1', 'Sân 2', 'Sân 3'];
 
-        // Groups editor
         var grpGrid = document.getElementById('adminGroupsEditorGrid');
         if (grpGrid) {
           grpGrid.innerHTML = '';
@@ -6349,25 +6639,42 @@
 
             var matches = g.matches || [];
 
+            // Datalist options for auto-completing team names
+            var teamDatalistOptions = (g.teams || []).map(function(t) {
+              return `<option value="${t.name}">`;
+            }).join('');
+
             var matchRowsHtml = matches.map(function(m, idx) {
               var venueOptions = venueKeys.map(function(v) {
                 return `<option value="${v}" ${m.venue === v ? 'selected' : ''}>${v}</option>`;
               }).join('');
 
+              var isFirst = idx === 0;
+              var isLast = idx === matches.length - 1;
+
               return `
                 <tr class="border-b border-zinc-100 hover:bg-zinc-50/70 text-xs">
-                  <td class="p-1 text-center font-mono text-zinc-400 font-bold">${idx + 1}</td>
+                  <td class="p-1 text-center font-mono text-zinc-500 font-bold whitespace-nowrap">
+                    <div class="inline-flex items-center gap-0.5">
+                      <button type="button" onclick="moveMatchRow('${clusterKey}', '${k}', ${idx}, -1)" ${isFirst ? 'disabled class="opacity-20 cursor-not-allowed"' : 'class="hover:text-emerald-700 cursor-pointer"'} title="Chuyển trận lên trước">▲</button>
+                      <span class="w-3 text-center">${idx + 1}</span>
+                      <button type="button" onclick="moveMatchRow('${clusterKey}', '${k}', ${idx}, 1)" ${isLast ? 'disabled class="opacity-20 cursor-not-allowed"' : 'class="hover:text-emerald-700 cursor-pointer"'} title="Chuyển trận xuống sau">▼</button>
+                    </div>
+                  </td>
                   <td class="p-1">
                     <input type="text" id="m_time_${k}_${idx}" value="${m.time || '07:30'}" class="w-16 px-1.5 py-1 text-center font-mono font-bold border border-zinc-200 rounded text-xs focus:ring-1 focus:ring-[#06301a]" title="Giờ đá (HH:MM)" />
                   </td>
                   <td class="p-1">
-                    <input type="text" id="m_t1_${k}_${idx}" value="${m.team1 || ''}" class="w-full px-1.5 py-1 border border-zinc-200 rounded text-xs font-medium" placeholder="Đội 1" />
+                    <input list="team_list_${k}" id="m_t1_${k}_${idx}" value="${m.team1 || ''}" class="w-full px-1.5 py-1 border border-zinc-200 rounded text-xs font-semibold text-zinc-900" placeholder="Chọn / Nhập Đội 1" title="Nhấp đúp để chọn từ danh sách đội trong bảng" />
+                  </td>
+                  <td class="p-0.5 text-center">
+                    <button type="button" onclick="swapMatchTeamsRow('${clusterKey}', '${k}', ${idx})" class="p-1 text-zinc-400 hover:text-emerald-700 hover:bg-emerald-50 rounded cursor-pointer transition-colors" title="Đổi chỗ Đội 1 ⇄ Đội 2">⇄</button>
                   </td>
                   <td class="p-1">
                     <input type="text" id="m_sc_${k}_${idx}" value="${m.score || ''}" placeholder="Tỷ số" class="w-14 px-1 py-1 text-center font-mono font-bold border border-amber-300 bg-amber-50/40 rounded text-xs text-amber-900" title="Để trống nếu chưa thi đấu (VD: 2 - 1)" />
                   </td>
                   <td class="p-1">
-                    <input type="text" id="m_t2_${k}_${idx}" value="${m.team2 || ''}" class="w-full px-1.5 py-1 border border-zinc-200 rounded text-xs font-medium" placeholder="Đội 2" />
+                    <input list="team_list_${k}" id="m_t2_${k}_${idx}" value="${m.team2 || ''}" class="w-full px-1.5 py-1 border border-zinc-200 rounded text-xs font-semibold text-zinc-900" placeholder="Chọn / Nhập Đội 2" title="Nhấp đúp để chọn từ danh sách đội trong bảng" />
                   </td>
                   <td class="p-1">
                     <select id="m_ven_${k}_${idx}" class="w-20 px-1 py-1 border border-zinc-200 rounded text-[11px] bg-white font-medium">
@@ -6384,6 +6691,11 @@
             var box = document.createElement('div');
             box.className = 'p-3.5 rounded-[10px] bg-white border border-zinc-200 shadow-sm space-y-3';
             box.innerHTML = `
+              <!-- Datalist gợi ý chọn đội -->
+              <datalist id="team_list_${k}">
+                ${teamDatalistOptions}
+              </datalist>
+
               <div class="flex items-center justify-between border-b border-zinc-100 pb-2">
                 <div class="flex items-center gap-1.5">
                   <span class="w-2.5 h-2.5 rounded-full bg-[#06301a]"></span>
@@ -6420,22 +6732,23 @@
                   </div>
                 </div>
 
-                <!-- Bảng các trận đấu -->
+                <!-- Bảng các trận đấu có hoán đổi và đổi thứ tự -->
                 <div class="overflow-x-auto border border-zinc-200 rounded-[6px]">
                   <table class="w-full text-left border-collapse">
                     <thead>
                       <tr class="bg-zinc-100 text-[10px] font-bold text-zinc-600 border-b border-zinc-200">
-                        <th class="p-1 w-6 text-center">#</th>
+                        <th class="p-1 w-12 text-center" title="Thứ tự & Đẩy trận lên/xuống">#</th>
                         <th class="p-1 w-18 text-center">Giờ</th>
-                        <th class="p-1">Đội 1</th>
+                        <th class="p-1">Đội 1 (Chọn/Sửa)</th>
+                        <th class="p-0.5 w-6 text-center" title="Đổi chỗ Đội 1 và Đội 2">⇄</th>
                         <th class="p-1 w-14 text-center">Tỉ số</th>
-                        <th class="p-1">Đội 2</th>
+                        <th class="p-1">Đội 2 (Chọn/Sửa)</th>
                         <th class="p-1 w-20">Sân</th>
                         <th class="p-1 w-8 text-center">Xóa</th>
                       </tr>
                     </thead>
                     <tbody>
-                      ${matchRowsHtml || '<tr><td colspan="7" class="p-2 text-center text-zinc-400 text-[11px]">Chưa có trận nào. Bấm <strong>🔄 Xếp vòng tròn</strong> hoặc <strong>+ Trận</strong> để tạo lịch.</td></tr>'}
+                      ${matchRowsHtml || '<tr><td colspan="8" class="p-2 text-center text-zinc-400 text-[11px]">Chưa có trận nào. Bấm <strong>🔄 Xếp vòng tròn</strong> hoặc <strong>+ Trận</strong> để tạo lịch.</td></tr>'}
                     </tbody>
                   </table>
                 </div>
@@ -6443,6 +6756,94 @@
             `;
             grpGrid.appendChild(box);
           });
+
+          // NẾU CHỈ CÓ 1 BẢNG (1 SÂN 1 BẢNG), KẺ SƠ ĐỒ THI ĐẤU TRỰC QUAN VÀO KHOẢNG TRỐNG CỘT BÊN CẠNH
+          if (groupKeys.length === 1) {
+            var firstKey = groupKeys[0];
+            var firstGrp = data.groups[firstKey] || { title: 'Bảng ' + firstKey, teams: [], matches: [] };
+            var diagBox = document.createElement('div');
+            diagBox.className = 'p-3.5 rounded-[10px] bg-gradient-to-br from-emerald-50/70 via-white to-zinc-50 border border-emerald-300 shadow-sm space-y-3';
+            diagBox.innerHTML = `
+              <div class="flex items-center justify-between border-b border-emerald-200/70 pb-2">
+                <div class="flex items-center gap-2">
+                  <span class="w-7 h-7 rounded-[8px] bg-[#06301a] text-[#8be33a] flex items-center justify-center text-xs font-bold shadow-subtle">📊</span>
+                  <div>
+                    <h4 class="font-extrabold text-xs text-zinc-900 uppercase tracking-tight">Sơ Đồ Thi Đấu Trực Quan (${clusterKey})</h4>
+                    <p class="text-[10px] text-zinc-500">Sơ đồ nhánh đấu, tiến trình và đường đi tiếp vào Bán kết</p>
+                  </div>
+                </div>
+                <button type="button" onclick="openSchedulePrintModal('${clusterKey}')" class="px-2.5 py-1 rounded bg-[#06301a] hover:bg-[#0a4224] text-[#8be33a] font-bold text-[11px] flex items-center gap-1 cursor-pointer shadow-subtle border border-[#8be33a]/30" title="Xuất toàn bộ sơ đồ và lịch thi đấu thành file PDF hoặc in giấy A4">
+                  <span>📄 Xuất PDF / In A4</span>
+                </button>
+              </div>
+
+              <!-- Sơ đồ đường đi tiến trình -->
+              <div class="p-3 bg-white rounded-[8px] border border-zinc-200 space-y-2.5">
+                <div class="flex items-center justify-between text-xs">
+                  <span class="font-bold text-zinc-800 flex items-center gap-1.5">
+                    <span class="w-2 h-2 rounded-full bg-[#06301a]"></span>
+                    <span>${firstGrp.title || 'Bảng A'} (${(firstGrp.teams || []).length} đội)</span>
+                  </span>
+                  <span class="text-[10px] font-semibold text-emerald-800 bg-emerald-50 px-2 py-0.5 rounded border border-emerald-200">Đấu vòng tròn 1 lượt</span>
+                </div>
+
+                <div class="grid grid-cols-3 gap-2 text-center text-[11px] pt-1">
+                  <div class="p-2 rounded bg-zinc-50 border border-zinc-200 space-y-0.5">
+                    <div class="font-bold text-zinc-900 text-[10px] uppercase">1. Vòng Bảng</div>
+                    <div class="text-[10px] text-zinc-600">${(firstGrp.teams || []).length} đội thi đấu</div>
+                    <div class="font-mono font-bold text-emerald-700 text-xs">${firstGrp.matchCount || '3 trận'}</div>
+                  </div>
+                  <div class="p-2 rounded bg-emerald-50/70 border border-emerald-200 space-y-0.5">
+                    <div class="font-bold text-emerald-900 text-[10px] uppercase">2. Bán Kết</div>
+                    <div class="text-[10px] text-emerald-700">Nhất A & Nhì A</div>
+                    <div class="font-bold text-emerald-800 text-[10px] truncate">${data.semiFinal1 ? (data.semiFinal1.time ? data.semiFinal1.time.split('•')[1] || data.semiFinal1.time : '08:00') : '08:00'}</div>
+                  </div>
+                  <div class="p-2 rounded bg-amber-50 border border-amber-300 space-y-0.5">
+                    <div class="font-bold text-amber-900 text-[10px] uppercase">3. Chung Kết 🏆</div>
+                    <div class="text-[10px] text-amber-700">Cúp Vô Địch</div>
+                    <div class="font-bold text-amber-800 text-[10px] truncate">${data.finals ? (data.finals.venue || clusterKey) : clusterKey}</div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Thẻ trận Bán kết & Chung kết tóm tắt -->
+              <div class="space-y-2 text-xs">
+                <div class="p-2.5 rounded-[8px] bg-white border border-zinc-200 flex items-center justify-between">
+                  <div class="space-y-0.5">
+                    <div class="font-bold text-zinc-900 text-[11px] flex items-center gap-1">
+                      <span class="w-1.5 h-1.5 rounded-full bg-emerald-600"></span>
+                      <span>Bán kết 1:</span>
+                    </div>
+                    <div class="text-zinc-600 text-[11px] font-medium pl-2.5">${data.semiFinal1 ? (data.semiFinal1.teams || 'Nhất Bảng A — Nhì Bảng B') : 'Nhất Bảng A — Nhì Bảng B'}</div>
+                  </div>
+                  <span class="font-mono text-[10px] font-bold text-[#06301a] bg-[#8be33a]/30 px-1.5 py-0.5 rounded">${data.semiFinal1 ? (data.semiFinal1.time || '08:00') : '08:00'}</span>
+                </div>
+
+                <div class="p-2.5 rounded-[8px] bg-white border border-zinc-200 flex items-center justify-between">
+                  <div class="space-y-0.5">
+                    <div class="font-bold text-zinc-900 text-[11px] flex items-center gap-1">
+                      <span class="w-1.5 h-1.5 rounded-full bg-emerald-600"></span>
+                      <span>Bán kết 2:</span>
+                    </div>
+                    <div class="text-zinc-600 text-[11px] font-medium pl-2.5">${data.semiFinal2 ? (data.semiFinal2.teams || 'Nhất Bảng B — Nhì Bảng A') : 'Nhất Bảng B — Nhì Bảng A'}</div>
+                  </div>
+                  <span class="font-mono text-[10px] font-bold text-[#06301a] bg-[#8be33a]/30 px-1.5 py-0.5 rounded">${data.semiFinal2 ? (data.semiFinal2.time || '09:15') : '09:15'}</span>
+                </div>
+
+                <div class="p-2.5 rounded-[8px] bg-amber-50/80 border border-amber-300 flex items-center justify-between">
+                  <div class="space-y-0.5">
+                    <div class="font-bold text-amber-900 text-[11px] flex items-center gap-1">
+                      <span>👑</span>
+                      <span>Vòng Chung Kết:</span>
+                    </div>
+                    <div class="text-zinc-700 text-[11px] font-medium pl-4">${data.finals ? (data.finals.qualified || 'Thắng Bán kết 1 • Thắng Bán kết 2') : 'Thắng BK1 • Thắng BK2'}</div>
+                  </div>
+                  <span class="font-bold text-[10px] text-amber-800 bg-amber-100 px-1.5 py-0.5 rounded border border-amber-300">Cúp Vàng 🏆</span>
+                </div>
+              </div>
+            `;
+            grpGrid.appendChild(diagBox);
+          }
         }
 
         // BK1
@@ -6523,7 +6924,6 @@
             });
           }
 
-          // Read matches from table
           var existingMatches = (data.groups[k] && data.groups[k].matches) ? data.groups[k].matches : [];
           var updatedMatches = [];
           for (var mIdx = 0; mIdx < 50; mIdx++) {
@@ -6596,7 +6996,6 @@
 
       // ---------------------------------------------------------
       // KHU VỰC CÁC GIẢI ĐANG DIỄN RA & LỊCH THI ĐẤU TRỰC TIẾP
-      // (ĐỒNG BỘ TẤT CẢ CÁC SÂN ĐÁ CÙNG LÚC & VÒNG BẢNG)
       // ---------------------------------------------------------
       function renderOngoingShowcase() {
         var section = document.getElementById('ongoingTournamentsSection');
@@ -6665,7 +7064,7 @@
           container.appendChild(card);
         });
 
-        // TỔNG HỢP LỊCH THI ĐẤU TỪ TOÀN BỘ CÁC SÂN & BẢNG (ĐỒNG THỜI & NỐI TIẾP)
+        // TỔNG HỢP LỊCH THI ĐẤU TỪ TOÀN BỘ CÁC SÂN & BẢNG
         if (fixturesContainer) {
           var realMatches = [];
           var schedData = appConfig.scheduleData || {};
@@ -6674,7 +7073,6 @@
             var vData = schedData[cKey];
             if (!vData) return;
 
-            // 1. Lấy tất cả các trận vòng bảng của sân này
             if (vData.groups) {
               Object.keys(vData.groups).forEach(function(gKey) {
                 var grp = vData.groups[gKey];
@@ -6696,7 +7094,6 @@
               });
             }
 
-            // 2. Lấy Bán kết & Tranh suất 3 của sân này
             if (vData.semiFinal1 && vData.semiFinal1.time && vData.semiFinal1.teams) {
               realMatches.push({
                 time: vData.semiFinal1.time.includes('•') ? vData.semiFinal1.time.split('•')[1].trim() : vData.semiFinal1.time,
@@ -6732,7 +7129,6 @@
             }
           });
 
-          // Sắp xếp các trận theo giờ tăng dần (các trận cùng giờ trên các sân khác nhau sẽ hiển thị cạnh nhau)
           realMatches.sort(function(a, b) {
             var timeA = a.time.replace(/[^0-9:]/g, '');
             var timeB = b.time.replace(/[^0-9:]/g, '');
@@ -6773,14 +7169,16 @@
                   </div>
                 </div>
 
-                <button
-                  type="button"
-                  onclick="openScheduleModal()"
-                  class="text-[#8be33a] hover:text-white font-bold text-xs flex items-center gap-1 cursor-pointer self-end md:self-center flex-shrink-0"
-                >
-                  <span>Xem sơ đồ nhánh</span>
-                  <span>→</span>
-                </button>
+                <div class="flex items-center gap-2 self-end md:self-center flex-shrink-0">
+                  <button
+                    type="button"
+                    onclick="openScheduleModal()"
+                    class="text-[#8be33a] hover:text-white font-bold text-xs flex items-center gap-1 cursor-pointer"
+                  >
+                    <span>Xem sơ đồ nhánh</span>
+                    <span>→</span>
+                  </button>
+                </div>
               `;
               fixturesContainer.appendChild(row);
             });

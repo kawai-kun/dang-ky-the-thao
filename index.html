@@ -410,6 +410,16 @@
           padding: 0 !important;
         }
 
+        /* Chế độ chỉnh sửa trực tiếp trên bản in Lịch thi đấu */
+        .print-edit-active {
+          outline: 2px dashed #ea580c !important;
+          outline-offset: -2px;
+        }
+        .print-edit-active [contenteditable="true"]:focus {
+          outline: 2px solid #06301a !important;
+          background-color: rgba(254, 243, 199, 0.4) !important;
+        }
+
         /* Khi in Lịch & Sơ đồ thi đấu */
         body.print-schedule main,
         body.print-schedule #step3Section,
@@ -2515,6 +2525,10 @@
             </div>
           </div>
           <div class="flex items-center gap-2">
+            <button id="btnTogglePrintEdit" type="button" onclick="toggleSchedulePrintEditMode()" class="px-3 py-1.5 rounded-[6px] bg-white/10 hover:bg-white/20 text-white font-bold text-xs flex items-center gap-1.5 cursor-pointer border border-white/20 transition-all shadow-sm" title="Bật/Tắt chế độ chỉnh sửa trực tiếp nội dung trên bản in trước khi xuất PDF">
+              <span id="iconTogglePrintEdit">✏️</span>
+              <span id="textTogglePrintEdit">Chỉnh Sửa Trước Khi In</span>
+            </button>
             <button onclick="triggerPrintSchedule()" class="px-3 py-1.5 rounded-[6px] bg-[#8be33a] hover:bg-[#9ef04a] text-[#06301a] font-black text-xs flex items-center gap-1.5 cursor-pointer shadow-sm">
               <svg class="w-4 h-4 text-[#06301a]" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M6.72 13.829c-.24.03-.48.062-.72.096m.72-.096a42.415 42.415 0 0110.56 0m-10.56 0L6.34 18m10.94-4.171c.24.03.48.062.72.096m-.72-.096L17.66 18m0 0l.229 2.523a1.125 1.125 0 01-1.12 1.227H7.231c-.662 0-1.18-.568-1.12-1.227L6.34 18m11.318 0h1.091A2.25 2.25 0 0021 15.75V9.456c0-1.081-.768-2.015-1.837-2.175a48.055 48.055 0 00-1.913-.247M6.34 18H5.25A2.25 2.25 0 013 15.75V9.456c0-1.081.768-2.015 1.837-2.175a48.041 48.041 0 011.913-.247m10.5 0a48.536 48.536 0 00-10.5 0m10.5 0V3.375c0-.621-.504-1.125-1.125-1.125h-8.25c-.621 0-1.125.504-1.125 1.125v3.659M18 10.5h.008v.008H18V10.5zm-3 0h.008v.008H15V10.5z"/></svg>
               <span>🖨️ In / Tải PDF (A4)</span>
@@ -6238,13 +6252,13 @@
           }
         });
 
-        // Add Knockout matches
+        // Add Knockout matches (Bán Kết 1, Bán Kết 2, Tranh Hạng Ba, Chung Kết)
         if (data.semiFinal1 && data.semiFinal1.teams) {
           allMatches.push({
             stage: 'Bán Kết 1',
             time: data.semiFinal1.time || '08:00',
-            team1: data.semiFinal1.teams.split('—')[0] ? data.semiFinal1.teams.split('—')[0].trim() : 'Nhất A',
-            team2: data.semiFinal1.teams.split('—')[1] ? data.semiFinal1.teams.split('—')[1].trim() : 'Nhì B',
+            team1: data.semiFinal1.teams.split('—')[0] ? data.semiFinal1.teams.split('—')[0].trim() : (data.semiFinal1.teams.split('-')[0] ? data.semiFinal1.teams.split('-')[0].trim() : 'Nhất Bảng A'),
+            team2: data.semiFinal1.teams.split('—')[1] ? data.semiFinal1.teams.split('—')[1].trim() : (data.semiFinal1.teams.split('-')[1] ? data.semiFinal1.teams.split('-')[1].trim() : 'Nhì Bảng B'),
             score: data.semiFinal1.score || '',
             venue: data.semiFinal1.venue || cKey
           });
@@ -6253,48 +6267,113 @@
           allMatches.push({
             stage: 'Bán Kết 2',
             time: data.semiFinal2.time || '09:15',
-            team1: data.semiFinal2.teams.split('—')[0] ? data.semiFinal2.teams.split('—')[0].trim() : 'Nhất B',
-            team2: data.semiFinal2.teams.split('—')[1] ? data.semiFinal2.teams.split('—')[1].trim() : 'Nhì A',
+            team1: data.semiFinal2.teams.split('—')[0] ? data.semiFinal2.teams.split('—')[0].trim() : (data.semiFinal2.teams.split('-')[0] ? data.semiFinal2.teams.split('-')[0].trim() : 'Nhất Bảng B'),
+            team2: data.semiFinal2.teams.split('—')[1] ? data.semiFinal2.teams.split('—')[1].trim() : (data.semiFinal2.teams.split('-')[1] ? data.semiFinal2.teams.split('-')[1].trim() : 'Nhì Bảng A'),
             score: data.semiFinal2.score || '',
             venue: data.semiFinal2.venue || cKey
           });
         }
         if (data.thirdPlace && data.thirdPlace.teams) {
           allMatches.push({
-            stage: 'Tranh Hạng 3',
+            stage: 'Tranh Hạng Ba (HCĐ) 🥉',
             time: data.thirdPlace.time || '14:00',
-            team1: data.thirdPlace.teams.split('—')[0] ? data.thirdPlace.teams.split('—')[0].trim() : 'Thua BK1',
-            team2: data.thirdPlace.teams.split('—')[1] ? data.thirdPlace.teams.split('—')[1].trim() : 'Thua BK2',
-            score: '',
+            team1: data.thirdPlace.teams.split('—')[0] ? data.thirdPlace.teams.split('—')[0].trim() : (data.thirdPlace.teams.split('-')[0] ? data.thirdPlace.teams.split('-')[0].trim() : 'Thua Bán kết 1'),
+            team2: data.thirdPlace.teams.split('—')[1] ? data.thirdPlace.teams.split('—')[1].trim() : (data.thirdPlace.teams.split('-')[1] ? data.thirdPlace.teams.split('-')[1].trim() : 'Thua Bán kết 2'),
+            score: data.thirdPlace.score || '',
             venue: data.thirdPlace.venue || cKey
           });
         }
 
+        // 4. Trận Chung Kết (Tranh Cúp Vàng)
+        if (data.finals) {
+          var finTeams = data.finals.qualified || 'Thắng Bán kết 1 — Thắng Bán kết 2';
+          var finT1 = 'Thắng Bán kết 1';
+          var finT2 = 'Thắng Bán kết 2';
+          if (finTeams.includes('—')) {
+            var parts = finTeams.split('—');
+            finT1 = parts[0].trim();
+            finT2 = parts[1].trim();
+          } else if (finTeams.includes(' - ')) {
+            var parts = finTeams.split(' - ');
+            finT1 = parts[0].trim();
+            finT2 = parts[1].trim();
+          } else if (finTeams.includes('•')) {
+            var parts = finTeams.split('•');
+            finT1 = parts[0].trim();
+            finT2 = parts[1].trim();
+          }
+
+          allMatches.push({
+            stage: 'Chung Kết (Cúp Vàng) 🏆',
+            time: data.finals.time || '15:30',
+            team1: finT1,
+            team2: finT2,
+            score: data.finals.score || '',
+            venue: data.finals.venue || cKey,
+            isFinal: true
+          });
+        }
+
         var matchRowsHtml = allMatches.map(function(m, idx) {
+          var isFinal = m.isFinal;
+          var isThird = m.stage.includes('Hạng Ba') || m.stage.includes('Hạng 3');
+          var isSemi = m.stage.includes('Bán Kết');
+          var rowClass = isFinal ? 'bg-amber-50/70 font-semibold' : (isThird ? 'bg-amber-50/30' : (isSemi ? 'bg-emerald-50/30' : ''));
+          var badgeTag = isFinal
+            ? '<span class="px-1.5 py-0.5 rounded bg-amber-400 text-[#06301a] font-black text-[9px] uppercase border border-amber-500 shadow-2xs">Tranh Cúp</span>'
+            : (isThird ? '<span class="px-1.5 py-0.5 rounded bg-amber-100 text-amber-900 font-bold text-[9px] border border-amber-300">Tranh HCĐ</span>'
+            : (isSemi ? '<span class="px-1.5 py-0.5 rounded bg-emerald-100 text-emerald-800 font-bold text-[9px] border border-emerald-300">Bán Kết</span>'
+            : '<span class="text-[10px] text-zinc-400 font-normal">Chính thức</span>'));
+
           return `
-            <tr class="border-b border-zinc-200 text-xs">
-              <td class="p-1.5 text-center font-bold">${idx + 1}</td>
+            <tr class="border-b border-zinc-200 text-xs ${rowClass}">
+              <td class="p-1.5 text-center font-bold text-zinc-600">${idx + 1}</td>
               <td class="p-1.5 text-center font-mono font-bold text-[#06301a]">${m.time}</td>
-              <td class="p-1.5 font-medium text-zinc-700">${m.stage}</td>
+              <td class="p-1.5 font-bold ${isFinal ? 'text-amber-900' : (isSemi ? 'text-emerald-900' : 'text-zinc-700')}">${m.stage}</td>
               <td class="p-1.5 font-bold text-right text-zinc-900">${m.team1}</td>
               <td class="p-1.5 text-center font-mono font-bold px-2 ${m.score ? 'bg-amber-100 text-amber-900' : 'text-zinc-400'}">${m.score || 'vs'}</td>
               <td class="p-1.5 font-bold text-left text-zinc-900">${m.team2}</td>
               <td class="p-1.5 text-center text-zinc-700 font-medium">${m.venue}</td>
-              <td class="p-1.5 text-center text-[10px] text-zinc-400">Chính thức</td>
+              <td class="p-1.5 text-center">${badgeTag}</td>
             </tr>
           `;
         }).join('');
 
+        // Reset trạng thái chỉnh sửa về mặc định khi mở modal
+        isSchedulePrintEditing = false;
+        var btn = document.getElementById('btnTogglePrintEdit');
+        if (btn) {
+          btn.classList.remove('bg-amber-500', 'hover:bg-amber-600', 'text-zinc-950');
+          btn.classList.add('bg-white/10', 'hover:bg-white/20', 'text-white');
+          var icon = document.getElementById('iconTogglePrintEdit');
+          var text = document.getElementById('textTogglePrintEdit');
+          if (icon) icon.innerText = '✏️';
+          if (text) text.innerText = 'Chỉnh Sửa Trước Khi In';
+        }
+        area.removeAttribute('contenteditable');
+        area.classList.remove('print-edit-active');
+
         area.innerHTML = `
-          <!-- Quốc Hiệu & Tiêu Ngữ -->
-          <div class="border-b-2 border-zinc-800 pb-3">
-            <div class="flex justify-between items-start">
-              <div class="text-center font-bold text-xs space-y-0.5">
-                <p class="uppercase">BAN TỔ CHỨC GIẢI THỂ THAO</p>
-                <p class="uppercase text-[11px] font-extrabold text-[#06301a]">CỤM THI ĐẤU: ${cKey}</p>
-                <p class="text-[10px] font-normal italic">Số: ......./TB-BTC</p>
+          <!-- Thanh hướng dẫn khi bật chế độ chỉnh sửa (không in) -->
+          <div id="printEditTipBanner" class="p-3 rounded-[8px] bg-amber-50 border border-amber-300 text-amber-950 text-xs flex items-center justify-between no-print hidden mb-3">
+            <div class="flex items-center gap-2">
+              <span class="text-base">✏️</span>
+              <div>
+                <strong class="text-amber-900">Chế độ chỉnh sửa trực tiếp đang BẬT:</strong> Bạn có thể nhấp chuột trực tiếp vào bất kỳ dòng chữ nào bên dưới (tiêu đề, số hiệu công văn, ngày tháng, giờ đấu, tên đội, quy định, chữ ký...) để sửa nhanh trước khi xuất PDF.
               </div>
-              <div class="text-center font-bold text-xs space-y-0.5">
+            </div>
+            <span class="text-[10px] text-amber-800 font-bold bg-amber-200/70 px-2 py-0.5 rounded border border-amber-300 uppercase">Chỉ hiện trên màn hình • Không in ra giấy</span>
+          </div>
+
+          <!-- Quốc Hiệu & Tiêu Ngữ -->
+          <div class="border-b-2 border-zinc-800 pb-4 space-y-2">
+            <div class="grid grid-cols-2 text-xs font-bold leading-normal">
+              <div>
+                <p class="uppercase">BAN TỔ CHỨC GIẢI THỂ THAO</p>
+                <p class="text-emerald-800 uppercase">CỤM THI ĐẤU: ${cKey}</p>
+                <p class="text-[11px] font-normal italic text-zinc-500">Số: ..... /TB-BTC</p>
+              </div>
+              <div class="text-right">
                 <p class="uppercase">CỘNG HÒA XÃ HỘI CHỦ NGHĨA VIỆT NAM</p>
                 <p class="text-[11px] underline">Độc lập - Tự do - Hạnh phúc</p>
                 <p class="text-[10px] font-normal italic pt-0.5">Ngày ..... tháng ..... năm 2026</p>
@@ -6318,7 +6397,7 @@
             </div>
           </div>
 
-          <!-- PHẦN II: LỊCH THI ĐẤU CHI TIẾT TỪNG TRẬN -->
+          <!-- PHẦN II: LỊCH THI ĐẤU CHI TIẾT TỪNG TRẬN (ĐÃ BAO GỒM CHUNG KẾT & TRANH HẠNG BA) -->
           <div class="space-y-2 pt-2">
             <h4 class="font-bold text-xs uppercase text-zinc-900 flex items-center gap-1.5 border-l-4 border-[#06301a] pl-2">
               <span>II. LỊCH THI ĐẤU CHI TIẾT TỪNG TRẬN (LỊCH TRÌNH CHÍNH THỨC)</span>
@@ -6328,8 +6407,8 @@
                 <thead>
                   <tr class="bg-zinc-100 text-[10px] uppercase font-bold text-zinc-700 border-b border-zinc-300">
                     <th class="p-2 w-10 text-center">Trận</th>
-                    <th class="p-2 w-18 text-center">Giờ đấu</th>
-                    <th class="p-2 w-28">Vòng / Bảng</th>
+                    <th class="p-2 w-20 text-center">Giờ đấu</th>
+                    <th class="p-2 w-32">Vòng / Bảng</th>
                     <th class="p-2 text-right">Đội 1</th>
                     <th class="p-2 w-16 text-center">Tỉ số</th>
                     <th class="p-2 text-left">Đội 2</th>
@@ -6377,9 +6456,55 @@
         modal.classList.remove('hidden');
       }
 
+      var isSchedulePrintEditing = false;
+
+      function toggleSchedulePrintEditMode() {
+        var area = document.getElementById('schedulePrintArea');
+        var btn = document.getElementById('btnTogglePrintEdit');
+        var icon = document.getElementById('iconTogglePrintEdit');
+        var text = document.getElementById('textTogglePrintEdit');
+        var banner = document.getElementById('printEditTipBanner');
+        if (!area || !btn) return;
+
+        isSchedulePrintEditing = !isSchedulePrintEditing;
+
+        if (isSchedulePrintEditing) {
+          area.setAttribute('contenteditable', 'true');
+          area.classList.add('print-edit-active');
+          btn.classList.remove('bg-white/10', 'hover:bg-white/20', 'text-white');
+          btn.classList.add('bg-amber-500', 'hover:bg-amber-600', 'text-zinc-950');
+          if (icon) icon.innerText = '💾';
+          if (text) text.innerText = 'Xong Chỉnh Sửa';
+          if (banner) banner.classList.remove('hidden');
+        } else {
+          area.removeAttribute('contenteditable');
+          area.classList.remove('print-edit-active');
+          btn.classList.remove('bg-amber-500', 'hover:bg-amber-600', 'text-zinc-950');
+          btn.classList.add('bg-white/10', 'hover:bg-white/20', 'text-white');
+          if (icon) icon.innerText = '✏️';
+          if (text) text.innerText = 'Chỉnh Sửa Trước Khi In';
+          if (banner) banner.classList.add('hidden');
+        }
+      }
+
       function closeSchedulePrintModal() {
         var modal = document.getElementById('schedulePrintModal');
         if (modal) modal.classList.add('hidden');
+        var area = document.getElementById('schedulePrintArea');
+        if (area) {
+          area.removeAttribute('contenteditable');
+          area.classList.remove('print-edit-active');
+        }
+        var btn = document.getElementById('btnTogglePrintEdit');
+        if (btn) {
+          btn.classList.remove('bg-amber-500', 'hover:bg-amber-600', 'text-zinc-950');
+          btn.classList.add('bg-white/10', 'hover:bg-white/20', 'text-white');
+          var icon = document.getElementById('iconTogglePrintEdit');
+          var text = document.getElementById('textTogglePrintEdit');
+          if (icon) icon.innerText = '✏️';
+          if (text) text.innerText = 'Chỉnh Sửa Trước Khi In';
+        }
+        isSchedulePrintEditing = false;
         document.body.classList.remove('print-schedule');
       }
 

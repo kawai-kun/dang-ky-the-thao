@@ -5917,8 +5917,24 @@
         for (var i = 1; i <= num; i++) {
           grp.teams.push({
             stt: String(i),
-            code: groupKey + i,
-            name: 'Đội ' + groupKey + i,
+            code: (function() {
+              var tEl = document.getElementById('admin_grp_title_' + groupKey);
+              var pfx = groupKey;
+              if (tEl && tEl.value) {
+                var m = tEl.value.trim().match(/([A-Za-z0-9]+)$/);
+                if (m) pfx = m[1].toUpperCase();
+              }
+              return pfx + i;
+            })(),
+            name: (function() {
+              var tEl = document.getElementById('admin_grp_title_' + groupKey);
+              var pfx = groupKey;
+              if (tEl && tEl.value) {
+                var m = tEl.value.trim().match(/([A-Za-z0-9]+)$/);
+                if (m) pfx = m[1].toUpperCase();
+              }
+              return 'Đội ' + pfx + i;
+            })(),
             points: '0đ'
           });
         }
@@ -6365,25 +6381,34 @@
             <span class="text-[10px] text-amber-800 font-bold bg-amber-200/70 px-2 py-0.5 rounded border border-amber-300 uppercase">Chỉ hiện trên màn hình • Không in ra giấy</span>
           </div>
 
-          <!-- Quốc Hiệu & Tiêu Ngữ -->
-          <div class="border-b-2 border-zinc-800 pb-4 space-y-2">
-            <div class="grid grid-cols-2 text-xs font-bold leading-normal">
-              <div>
-                <p class="uppercase">BAN TỔ CHỨC GIẢI THỂ THAO</p>
-                <p class="text-emerald-800 uppercase">CỤM THI ĐẤU: ${cKey}</p>
-                <p class="text-[11px] font-normal italic text-zinc-500">Số: ..... /TB-BTC</p>
+          <!-- QUỐC HIỆU, TIÊU NGỮ & TÊN CƠ QUAN CHUẨN NGHỊ ĐỊNH 30/2020/NĐ-CP -->
+          <div class="pb-3 border-b border-zinc-300 space-y-3" style="font-family: 'Times New Roman', Times, serif;">
+            <div class="grid grid-cols-12 gap-2 items-start text-zinc-950">
+              <!-- Cột trái (5/12): Cơ quan ban hành & Số hiệu văn bản (Canh giữa cân đối theo NĐ 30) -->
+              <div class="col-span-5 text-center flex flex-col items-center">
+                <p class="text-xs uppercase font-normal tracking-tight text-zinc-700 leading-tight">BAN TỔ CHỨC GIẢI THỂ THAO</p>
+                <p class="text-[13px] font-bold uppercase tracking-tight text-zinc-950 leading-tight mt-0.5">CỤM THI ĐẤU: ${cKey}</p>
+                <!-- Đường kẻ phân cách cơ quan (dài 1/3 đến 1/2 dòng chữ theo NĐ 30) -->
+                <div class="w-20 border-b border-zinc-800 my-1"></div>
+                <p class="text-[11px] font-normal text-zinc-800">Số: ..... /TB-BTC</p>
               </div>
-              <div class="text-right">
-                <p class="uppercase">CỘNG HÒA XÃ HỘI CHỦ NGHĨA VIỆT NAM</p>
-                <p class="text-[11px] underline">Độc lập - Tự do - Hạnh phúc</p>
-                <p class="text-[10px] font-normal italic pt-0.5">Ngày ..... tháng ..... năm 2026</p>
+
+              <!-- Cột phải (7/12): Quốc hiệu & Tiêu ngữ & Ngày tháng (Canh giữa cân đối theo NĐ 30) -->
+              <div class="col-span-7 text-center flex flex-col items-center">
+                <p class="text-xs sm:text-[13px] font-bold uppercase tracking-normal text-zinc-950 leading-tight">CỘNG HÒA XÃ HỘI CHỦ NGHĨA VIỆT NAM</p>
+                <p class="text-[13px] sm:text-[14px] font-bold text-zinc-950 leading-tight mt-0.5">Độc lập - Tự do - Hạnh phúc</p>
+                <!-- Đường kẻ ngang nét liền dưới tiêu ngữ, độ dài bằng đúng độ dài dòng chữ Tiêu ngữ -->
+                <div class="w-36 sm:w-44 border-b-[1.5px] border-zinc-950 my-1"></div>
+                <p class="text-xs font-normal italic text-zinc-800">......, ngày ..... tháng ..... năm 2026</p>
               </div>
             </div>
 
-            <div class="text-center pt-3 space-y-1">
-              <h2 class="text-base sm:text-lg font-black uppercase tracking-tight text-zinc-900">BẢNG THÔNG BÁO LỊCH THI ĐẤU & SƠ ĐỒ NHÁNH ĐẤU CHÍNH THỨC</h2>
-              <p class="text-xs font-bold text-emerald-800">${appConfig.tenGiai || 'GIẢI THỂ THAO PHONG TRÀO NĂM 2026'}</p>
-              <p class="text-[11px] text-zinc-600 font-medium">Khai mạc: ${appConfig.ngayKhaiMac || '07h30'} • Địa điểm: ${appConfig.diaDiem || 'Sân vận động trung tâm'} • Khu vực: ${cKey}</p>
+            <!-- Tiêu đề văn bản: THÔNG BÁO CHÍNH THỨC (Chuẩn NĐ 30) -->
+            <div class="text-center pt-1 space-y-1">
+              <h2 class="text-base sm:text-lg font-bold uppercase tracking-wide text-zinc-950">THÔNG BÁO</h2>
+              <p class="text-xs sm:text-[13px] font-bold uppercase text-emerald-900 tracking-tight">LỊCH THI ĐẤU VÀ SƠ ĐỒ NHÁNH ĐẤU CHÍNH THỨC</p>
+              <p class="text-xs font-bold uppercase text-[#06301a]">${appConfig.tenGiai || 'GIẢI THỂ THAO PHONG TRÀO NĂM 2026'}</p>
+              <p class="text-[11px] text-zinc-600 font-normal italic">Khai mạc: ${appConfig.ngayKhaiMac || '07h30'} • Địa điểm: ${appConfig.diaDiem || 'Sân vận động trung tâm'} • Cụm sân: ${cKey}</p>
             </div>
           </div>
 
@@ -6937,8 +6962,12 @@
 
         for (var g = 0; g < grpCount; g++) {
           var k = groupLetters[g];
+          var titleInput = document.getElementById('admin_grp_title_' + k);
+          var grpTitle = titleInput ? titleInput.value.trim() : (data.groups[k] ? data.groups[k].title : ('Bảng ' + k));
+          if (!grpTitle) grpTitle = 'Bảng ' + k;
+
           data.groups[k] = {
-            title: 'Bảng ' + k,
+            title: grpTitle,
             matchCount: '0 trận',
             teams: [],
             matches: []
@@ -7104,8 +7133,15 @@
           var groupKeys = Object.keys(data.groups || {});
           if (groupKeys.length === 0) groupKeys = ['A'];
 
+          var numMatch = clusterKey.match(/\d+/);
+          var clusterNum = numMatch ? parseInt(numMatch[0], 10) : (venueKeys.indexOf(clusterKey) >= 0 ? venueKeys.indexOf(clusterKey) + 1 : 1);
+          var suggestedLetter = String.fromCharCode(64 + Math.min(clusterNum, 26));
+
           groupKeys.forEach(function(k) {
-            var g = data.groups && data.groups[k] ? data.groups[k] : { title: 'Bảng ' + k, teams: [], matches: [] };
+            var g = data.groups && data.groups[k] ? data.groups[k] : { title: '', teams: [], matches: [] };
+            var autoTitle = 'Bảng ' + (k === 'A' && suggestedLetter !== 'A' ? suggestedLetter : k);
+            var currentTitle = g.title ? ((g.title === 'Bảng A' && suggestedLetter !== 'A') ? autoTitle : g.title) : autoTitle;
+            if (!g.title) g.title = currentTitle;
             var teamLines = (g.teams || []).map(function(t) {
               return (t.code ? t.code + '. ' : '') + t.name + ' | ' + (t.points || '0đ');
             }).join('\n');
@@ -7182,7 +7218,10 @@
               <div class="flex flex-col sm:flex-row sm:items-center justify-between border-b border-zinc-100 pb-2.5 gap-2">
                 <div class="flex items-center gap-2">
                   <span class="w-3 h-3 rounded-full bg-[#06301a]"></span>
-                  <strong class="font-bold text-zinc-900 text-sm sm:text-base">${g.title || 'Bảng ' + k}</strong>
+                  <div class="flex items-center gap-1.5">
+                    <span class="text-xs font-bold text-zinc-700">Tên Bảng:</span>
+                    <input type="text" id="admin_grp_title_${k}" value="${currentTitle}" onchange="saveScheduleConfigFromAdmin(true)" class="w-28 sm:w-36 px-2 py-0.5 border border-zinc-300 rounded font-black text-xs sm:text-sm text-zinc-900 bg-white focus:ring-1 focus:ring-[#06301a] shadow-2xs" placeholder="VD: Bảng B" title="Nhấp vào để đổi tên Bảng (Ví dụ: Bảng B, Bảng C...)" />
+                  </div>
                   <span class="text-[11px] font-bold px-2 py-0.5 rounded bg-emerald-50 text-emerald-800 border border-emerald-200">${clusterKey}</span>
                 </div>
                 <div class="flex items-center gap-1.5 flex-wrap">

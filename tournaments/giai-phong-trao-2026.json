@@ -1,15 +1,15 @@
 {
-  "tenGiai": "GIẢI THỂ THAO PHONG TRÀO NĂM 2026",
+  "tenGiai": "GIẢI BÓNG ĐÁ \"VĂN HÓA - ĐOÀN KẾT\" LẦN THỨ I 2026",
   "chuDe": "CỔNG TIẾP NHẬN HỒ SƠ ĐĂNG KÝ VẬN ĐỘNG VIÊN TRỰC TUYẾN",
-  "ngayKhaiMac": "07h30 • 15/11/2026",
-  "diaDiem": "Trung tâm Huấn luyện & Thi đấu TDTT",
-  "hanChot": "2026-11-15T00:00",
+  "ngayKhaiMac": "07h30 • 21/11/2026",
+  "diaDiem": "SÂN CỎ NHÂN TẠO QT",
+  "hanChot": "2026-11-20T23:59",
   "hotline": "0984.724.131",
   "scriptUrl": "",
   "banners": [
     {
       "id": "b1",
-      "title": "GIẢI THỂ THAO PHONG TRÀO NĂM 2026",
+      "title": "GIẢI BÓNG ĐÁ \"VĂN HÓA - ĐOÀN KẾT\" LẦN THỨ I 2026",
       "subtitle": "SÔI ĐỘNG - ĐOÀN KẾT - TRUNG THỰC - CAO THƯỢNG",
       "img": "https://images.unsplash.com/photo-1461896836934-ffe607ba8211?auto=format&fit=crop&w=1600&q=80"
     },
@@ -29,158 +29,335 @@
   "scheduleData": {
     "Sân 1": {
       "clusterName": "Sân 1",
+      "groupsCount": 1,
+      "format": "ROUND_ROBIN_KNOCKOUT",
+      "advanceRule": "TOP_2",
       "groups": {
         "A": {
           "title": "Bảng A",
           "matchCount": "6 trận",
-          "teams": []
-        },
-        "D": {
-          "title": "Bảng D",
-          "matchCount": "3 trận",
-          "teams": []
-        },
-        "B": {
-          "title": "Bảng B",
-          "matchCount": "3 trận",
-          "teams": []
-        },
-        "C": {
-          "title": "Bảng C",
-          "matchCount": "3 trận",
-          "teams": []
+          "teams": [
+            {
+              "stt": "1",
+              "code": "A1",
+              "name": "Tân Minh",
+              "points": "0đ"
+            },
+            {
+              "stt": "2",
+              "code": "A2",
+              "name": "Tân Hiệp",
+              "points": "0đ"
+            },
+            {
+              "stt": "3",
+              "code": "A3",
+              "name": "Tàu Ô",
+              "points": "0đ"
+            },
+            {
+              "stt": "4",
+              "code": "A4",
+              "name": "Đồng Tâm",
+              "points": "0đ"
+            }
+          ],
+          "matches": [
+            {
+              "id": "M1",
+              "time": "07:30",
+              "team1": "Tân Minh",
+              "team2": "Đồng Tâm",
+              "score": "",
+              "venue": "Sân 1",
+              "status": "SCHEDULED"
+            },
+            {
+              "id": "M2",
+              "time": "08:20",
+              "team1": "Tân Hiệp",
+              "team2": "Tàu Ô",
+              "score": "",
+              "venue": "Sân 1",
+              "status": "SCHEDULED"
+            },
+            {
+              "id": "M3",
+              "time": "09:10",
+              "team1": "Tân Minh",
+              "team2": "Tàu Ô",
+              "score": "",
+              "venue": "Sân 1",
+              "status": "SCHEDULED"
+            },
+            {
+              "id": "M4",
+              "time": "10:00",
+              "team1": "Đồng Tâm",
+              "team2": "Tân Hiệp",
+              "score": "",
+              "venue": "Sân 1",
+              "status": "SCHEDULED"
+            },
+            {
+              "id": "M5",
+              "time": "10:50",
+              "team1": "Tân Minh",
+              "team2": "Tân Hiệp",
+              "score": "",
+              "venue": "Sân 1",
+              "status": "SCHEDULED"
+            },
+            {
+              "id": "M6",
+              "time": "11:40",
+              "team1": "Tàu Ô",
+              "team2": "Đồng Tâm",
+              "score": "",
+              "venue": "Sân 1",
+              "status": "SCHEDULED"
+            }
+          ],
+          "timeConfig": {
+            "startAm": "07:30",
+            "matchesAm": 3,
+            "startPm": "14:00",
+            "duration": 40,
+            "breakMin": 10
+          }
         }
       },
       "semiFinal1": {
         "title": "Bán kết 1 • Trận 60",
-        "time": "CN 15/11 • 08:00",
-        "venue": "Sân 1 - Khu thể thao",
-        "teams": "Nhất A — Nhất D"
+        "time": "CN 22/11 • 07:00",
+        "venue": "Sân 1",
+        "teams": "Nhất Bảng A — Nhì Bảng B",
+        "score": ""
       },
       "semiFinal2": {
         "title": "Bán kết 2 • Trận 61",
-        "time": "CN 15/11 • 09:15",
-        "venue": "Sân 1 - Khu thể thao",
-        "teams": "Nhất B — Nhất C"
+        "time": "CN 22/11 • 07:00",
+        "venue": "Sân 1",
+        "teams": "Nhất Bảng B — Nhì Bảng A",
+        "score": ""
       },
       "thirdPlace": {
-        "title": "Tranh suất 3 • Trận 62",
-        "time": "CN 15/11 • 14:00",
-        "venue": "Sân 1 - Khu thể thao",
-        "teams": "Thua BK1 — Thua BK2"
+        "title": "Tranh Hạng Ba • Trận 62",
+        "time": "CN 22/11 • 09:00",
+        "venue": "Sân 1",
+        "teams": "Thua Bán kết 1 — Thua Bán kết 2",
+        "score": ""
       },
       "finals": {
         "title": "Vòng chung kết",
-        "venue": "Sân 1 - Nhà Văn hóa Thanh thiếu nhi Đồng Nai CS1",
-        "qualified": "Thắng Bán kết 1 • Thắng Bán kết 2 • Thắng Tranh suất 3"
+        "time": "CN 22/11 • 10:00",
+        "venue": "Sân 1",
+        "qualified": "Thắng Bán kết 1 — Thắng Bán kết 2",
+        "score": ""
       },
       "venueDetail": {
-        "name": "Sân 1 - NVH Thanh thiếu nhi CS1",
-        "address": "Số 159 Cách Mạng Tháng 8, P. Quyết Thắng, TP. Biên Hòa, Đồng Nai"
+        "name": "Sân 1 - Sân Cỏ Nhân Tạo QT",
+        "address": "SÂN CỎ NHÂN TẠO QT"
       }
     },
     "Sân 2": {
       "clusterName": "Sân 2",
+      "groupsCount": 1,
+      "format": "ROUND_ROBIN_KNOCKOUT",
+      "advanceRule": "TOP_2",
       "groups": {
-        "A": {
-          "title": "Bảng A",
-          "matchCount": "4 trận",
-          "teams": []
-        },
-        "D": {
-          "title": "Bảng D",
-          "matchCount": "3 trận",
-          "teams": []
-        },
         "B": {
           "title": "Bảng B",
           "matchCount": "3 trận",
-          "teams": []
-        },
-        "C": {
-          "title": "Bảng C",
-          "matchCount": "3 trận",
-          "teams": []
+          "teams": [
+            {
+              "stt": "1",
+              "code": "B1",
+              "name": "Đội B1",
+              "points": "0đ"
+            },
+            {
+              "stt": "2",
+              "code": "B2",
+              "name": "Đội B2",
+              "points": "0đ"
+            },
+            {
+              "stt": "3",
+              "code": "B3",
+              "name": "Đội B3",
+              "points": "0đ"
+            }
+          ],
+          "matches": [
+            {
+              "id": "M1",
+              "time": "07:30",
+              "team1": "Đội B1",
+              "team2": "Đội B2",
+              "score": "",
+              "venue": "Sân 2",
+              "status": "SCHEDULED"
+            },
+            {
+              "id": "M2",
+              "time": "08:20",
+              "team1": "Đội B2",
+              "team2": "Đội B3",
+              "score": "",
+              "venue": "Sân 2",
+              "status": "SCHEDULED"
+            },
+            {
+              "id": "M3",
+              "time": "09:10",
+              "team1": "Đội B3",
+              "team2": "Đội B1",
+              "score": "",
+              "venue": "Sân 2",
+              "status": "SCHEDULED"
+            }
+          ],
+          "timeConfig": {
+            "startAm": "07:30",
+            "matchesAm": 3,
+            "startPm": "14:00",
+            "duration": 40,
+            "breakMin": 10
+          }
         }
       },
       "semiFinal1": {
         "title": "Bán kết 1 • Trận 30",
-        "time": "T7 14/11 • 08:30",
-        "venue": "Sân 2 - Trung tâm VHTT-TT",
-        "teams": "Nhất A — Nhất D"
+        "time": "CN 22/11 • 07:00",
+        "venue": "Sân 2",
+        "teams": "Nhất Bảng B — Nhì Bảng A",
+        "score": ""
       },
       "semiFinal2": {
         "title": "Bán kết 2 • Trận 31",
-        "time": "T7 14/11 • 09:45",
-        "venue": "Sân 2 - Trung tâm VHTT-TT",
-        "teams": "Nhất B — Nhất C"
+        "time": "CN 22/11 • 07:00",
+        "venue": "Sân 2",
+        "teams": "Nhất Bảng A — Nhì Bảng B",
+        "score": ""
       },
       "thirdPlace": {
-        "title": "Tranh suất 3 • Trận 32",
-        "time": "T7 14/11 • 14:30",
-        "venue": "Sân 2 - Trung tâm VHTT-TT",
-        "teams": "Thua BK1 — Thua BK2"
+        "title": "Tranh Hạng Ba • Trận 32",
+        "time": "CN 22/11 • 09:00",
+        "venue": "Sân 2",
+        "teams": "Thua Bán kết 1 — Thua Bán kết 2",
+        "score": ""
       },
       "finals": {
         "title": "Vòng chung kết",
-        "venue": "Sân 2 - Nhà Thi Đấu",
-        "qualified": "Thắng Bán kết 1 • Thắng Bán kết 2 • Thắng Tranh suất 3"
+        "time": "CN 22/11 • 10:00",
+        "venue": "Sân 2",
+        "qualified": "Thắng Bán kết 1 — Thắng Bán kết 2",
+        "score": ""
       },
       "venueDetail": {
-        "name": "Sân 2 - Trung tâm VHTT-TT",
-        "address": "Đường Nguyễn Thị Minh Khai, TP. Long Khánh"
+        "name": "Sân 2 - Sân Cỏ Nhân Tạo QT",
+        "address": "SÂN CỎ NHÂN TẠO QT"
       }
     },
     "Sân 3": {
       "clusterName": "Sân 3",
+      "groupsCount": 1,
+      "format": "ROUND_ROBIN_KNOCKOUT",
+      "advanceRule": "TOP_2",
       "groups": {
-        "A": {
-          "title": "Bảng A",
-          "matchCount": "3 trận",
-          "teams": []
-        },
-        "D": {
-          "title": "Bảng D",
-          "matchCount": "3 trận",
-          "teams": []
-        },
-        "B": {
-          "title": "Bảng B",
-          "matchCount": "3 trận",
-          "teams": []
-        },
         "C": {
           "title": "Bảng C",
           "matchCount": "3 trận",
-          "teams": []
+          "teams": [
+            {
+              "stt": "1",
+              "code": "C1",
+              "name": "Đồng Nơ",
+              "points": "0đ"
+            },
+            {
+              "stt": "2",
+              "code": "C2",
+              "name": "Tân Bình",
+              "points": "0đ"
+            },
+            {
+              "stt": "3",
+              "code": "C3",
+              "name": "Hiệp Thành",
+              "points": "0đ"
+            }
+          ],
+          "matches": [
+            {
+              "id": "M1",
+              "time": "07:30",
+              "team1": "Tân Bình",
+              "team2": "Hiệp Thành",
+              "score": "",
+              "venue": "Sân 3",
+              "status": "SCHEDULED"
+            },
+            {
+              "id": "M2",
+              "time": "08:20",
+              "team1": "Đồng Nơ",
+              "team2": "Hiệp Thành",
+              "score": "",
+              "venue": "Sân 3",
+              "status": "SCHEDULED"
+            },
+            {
+              "id": "M3",
+              "time": "09:10",
+              "team1": "Đồng Nơ",
+              "team2": "Tân Bình",
+              "score": "",
+              "venue": "Sân 3",
+              "status": "SCHEDULED"
+            }
+          ],
+          "timeConfig": {
+            "startAm": "07:30",
+            "matchesAm": 3,
+            "startPm": "14:00",
+            "duration": 40,
+            "breakMin": 10
+          }
         }
       },
       "semiFinal1": {
         "title": "Bán kết 1 • Trận 15",
-        "time": "CN 08/11 • 08:00",
-        "venue": "Sân 3 - Nhà thi đấu Đa năng",
-        "teams": "Nhất A — Nhất D"
+        "time": "CN 22/11 • 07:00",
+        "venue": "Sân 3",
+        "teams": "Nhất Bảng C — Nhì Bảng D",
+        "score": ""
       },
       "semiFinal2": {
         "title": "Bán kết 2 • Trận 16",
-        "time": "CN 08/11 • 09:30",
-        "venue": "Sân 3 - Nhà thi đấu Đa năng",
-        "teams": "Nhất B — Nhất C"
+        "time": "CN 22/11 • 07:00",
+        "venue": "Sân 3",
+        "teams": "Nhất Bảng D — Nhì Bảng C",
+        "score": ""
       },
       "thirdPlace": {
-        "title": "Tranh suất 3 • Trận 17",
-        "time": "CN 08/11 • 14:00",
-        "venue": "Sân 3 - Nhà thi đấu Đa năng",
-        "teams": "Thua BK1 — Thua BK2"
+        "title": "Tranh Hạng Ba • Trận 17",
+        "time": "CN 22/11 • 09:00",
+        "venue": "Sân 3",
+        "teams": "Thua Bán kết 1 — Thua Bán kết 2",
+        "score": ""
       },
       "finals": {
         "title": "Vòng chung kết",
-        "venue": "Sân 3 - Nhà thi đấu Đa năng",
-        "qualified": "Thắng Bán kết 1 • Thắng Bán kết 2 • Thắng Tranh suất 3"
+        "time": "CN 22/11 • 10:00",
+        "venue": "Sân 3",
+        "qualified": "Thắng Bán kết 1 — Thắng Bán kết 2",
+        "score": ""
       },
       "venueDetail": {
-        "name": "Sân 3 - Nhà thi đấu Đa năng",
-        "address": "Đường Hùng Vương, TP. Đồng Xoài"
+        "name": "Sân 3 - Sân Cỏ Nhân Tạo QT",
+        "address": "SÂN CỎ NHÂN TẠO QT"
       }
     }
   },
@@ -343,5 +520,8 @@
     }
   ],
   "id": "giai-phong-trao-2026",
-  "slug": "giai-phong-trao-2026"
+  "slug": "giai-phong-trao-2026",
+  "githubRepo": "",
+  "githubBranch": "main",
+  "githubToken": ""
 }

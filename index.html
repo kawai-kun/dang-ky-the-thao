@@ -15,6 +15,7 @@
 
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
     <script>
       tailwind.config = {
         theme: {
@@ -1614,7 +1615,7 @@
                     class="px-2.5 py-1 rounded-[6px] bg-blue-600 hover:bg-blue-700 text-white font-bold text-[11px] flex items-center gap-1 cursor-pointer shadow-subtle"
                     title="Tải toàn bộ lịch thi đấu và sơ đồ nhánh đấu thành file PDF hoặc in giấy A4 để gửi cho các đoàn"
                   >
-                    <span>📄 Xuất File PDF / In Lịch Đấu</span>
+                    <span>📄 Tải Lịch Thi Đấu (PDF)</span>
                   </button>
                   <button
                     type="button"
@@ -1806,7 +1807,7 @@
                       </div>
                     </div>
                     <button type="button" onclick="openSchedulePrintModal()" class="px-2.5 py-1 rounded bg-[#06301a] hover:bg-[#0a4224] text-[#8be33a] font-bold text-[11px] flex items-center gap-1 cursor-pointer shadow-subtle border border-[#8be33a]/30" title="Xuất toàn bộ lịch thi đấu và sơ đồ nhánh thành file PDF hoặc in giấy A4">
-                      <span>📄 Xuất PDF / In A4</span>
+                      <span>📄 Tải File PDF (A4)</span>
                     </button>
                   </div>
                   <div id="adminKnockoutBranchContent">
@@ -2520,8 +2521,8 @@
           <div class="flex items-center gap-2">
             <span class="text-lg">📄</span>
             <div>
-              <h3 class="font-bold text-sm text-white">Lịch Thi Đấu & Sơ Đồ Nhánh Đấu (Bản In / Tải PDF)</h3>
-              <p class="text-[11px] text-zinc-300">File văn bản chuẩn ban hành gửi các đoàn, vận động viên và tổ trọng tài</p>
+              <h3 class="font-bold text-sm text-white">Lịch Thi Đấu & Sơ Đồ Nhánh Đấu (Tải File PDF)</h3>
+              <p class="text-[11px] text-zinc-300">Xuất và tải file PDF văn bản chính thức gửi các đoàn, vận động viên và tổ trọng tài</p>
             </div>
           </div>
           <div class="flex items-center gap-2">
@@ -2529,9 +2530,9 @@
               <span id="iconTogglePrintEdit">✏️</span>
               <span id="textTogglePrintEdit">Chỉnh Sửa Trước Khi In</span>
             </button>
-            <button onclick="triggerPrintSchedule()" class="px-3 py-1.5 rounded-[6px] bg-[#8be33a] hover:bg-[#9ef04a] text-[#06301a] font-black text-xs flex items-center gap-1.5 cursor-pointer shadow-sm">
-              <svg class="w-4 h-4 text-[#06301a]" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M6.72 13.829c-.24.03-.48.062-.72.096m.72-.096a42.415 42.415 0 0110.56 0m-10.56 0L6.34 18m10.94-4.171c.24.03.48.062.72.096m-.72-.096L17.66 18m0 0l.229 2.523a1.125 1.125 0 01-1.12 1.227H7.231c-.662 0-1.18-.568-1.12-1.227L6.34 18m11.318 0h1.091A2.25 2.25 0 0021 15.75V9.456c0-1.081-.768-2.015-1.837-2.175a48.055 48.055 0 00-1.913-.247M6.34 18H5.25A2.25 2.25 0 013 15.75V9.456c0-1.081.768-2.015 1.837-2.175a48.041 48.041 0 011.913-.247m10.5 0a48.536 48.536 0 00-10.5 0m10.5 0V3.375c0-.621-.504-1.125-1.125-1.125h-8.25c-.621 0-1.125.504-1.125 1.125v3.659M18 10.5h.008v.008H18V10.5zm-3 0h.008v.008H15V10.5z"/></svg>
-              <span>🖨️ In / Tải PDF (A4)</span>
+            <button id="btnDownloadPdf" type="button" onclick="downloadSchedulePdf()" class="px-3.5 py-1.5 rounded-[6px] bg-[#8be33a] hover:bg-[#9ef04a] text-[#06301a] font-black text-xs flex items-center gap-1.5 cursor-pointer shadow-sm transition-all" title="Tải trực tiếp file PDF tài liệu về máy tính của bạn">
+              <svg class="w-4 h-4 text-[#06301a]" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5M16.5 12L12 16.5m0 0L7.5 12m4.5 4.5V3"/></svg>
+              <span>📥 Tải File PDF (A4)</span>
             </button>
             <button onclick="closeSchedulePrintModal()" class="w-8 h-8 rounded-[6px] bg-white/10 hover:bg-white/20 text-white flex items-center justify-center cursor-pointer">✕</button>
           </div>
@@ -2779,184 +2780,376 @@
       /* ----------------------------------------------------
          2. CẤU HÌNH BAN TỔ CHỨC & LOCALSTORAGE
          ---------------------------------------------------- */
-      var STORAGE_KEY_CONFIG = 'sport_portal_config_v16';
+      var STORAGE_KEY_CONFIG = 'sport_portal_config_v17';
       var STORAGE_KEY_REGS = 'sport_portal_registrations_v15';
 
       var DEFAULT_CONFIG = {
-        id: 'giai-phong-trao-2026',
-        slug: 'giai-phong-trao-2026',
-        tenGiai: 'GIẢI THỂ THAO PHONG TRÀO NĂM 2026',
-        chuDe: 'CỔNG TIẾP NHẬN HỒ SƠ ĐĂNG KÝ VẬN ĐỘNG VIÊN TRỰC TUYẾN',
-        ngayKhaiMac: '07h30 • 15/11/2026',
-        diaDiem: 'Trung tâm Huấn luyện & Thi đấu TDTT',
-        hanChot: '2026-11-15T00:00',
-        hotline: '0984.724.131',
-        scriptUrl: '',
-        githubRepo: '',
-        githubBranch: 'main',
-        githubToken: '',
-        banners: [
-          {
-            id: 'b1',
-            title: 'GIẢI THỂ THAO PHONG TRÀO NĂM 2026',
-            subtitle: 'SÔI ĐỘNG - ĐOÀN KẾT - TRUNG THỰC - CAO THƯỢNG',
-            img: 'https://images.unsplash.com/photo-1461896836934-ffe607ba8211?auto=format&fit=crop&w=1600&q=80'
-          },
-          {
-            id: 'b2',
-            title: 'HỘI THAO THANH NIÊN - TRẺ KHỎE TIÊN PHONG',
-            subtitle: 'TRANH TÀI CÁC MÔN THỂ THAO ĐỈNH CAO VÀ NÂNG CAO THỂ LỰC',
-            img: 'https://images.unsplash.com/photo-1517649763962-0c623266ddc0?auto=format&fit=crop&w=1600&q=80'
-          },
-          {
-            id: 'b3',
-            title: 'BÓNG CHUYỀN & BÓNG ĐÁ - HÀNH TRÌNH TỎA SÁNG',
-            subtitle: 'CHÀO ĐÓN CÁC ĐỘI BÓNG VÀ VẬN ĐỘNG VIÊN XUẤT SẮC',
-            img: 'https://images.unsplash.com/photo-1546519638-68e109498ffc?auto=format&fit=crop&w=1600&q=80'
-          }
+        "id": "giai-phong-trao-2026",
+        "slug": "giai-phong-trao-2026",
+        "tenGiai": "GIẢI BÓNG ĐÁ \"VĂN HÓA - ĐOÀN KẾT\" LẦN THỨ I 2026",
+        "chuDe": "CỔNG TIẾP NHẬN HỒ SƠ ĐĂNG KÝ VẬN ĐỘNG VIÊN TRỰC TUYẾN",
+        "ngayKhaiMac": "07h30 • 21/11/2026",
+        "diaDiem": "SÂN CỎ NHÂN TẠO QT",
+        "hanChot": "2026-11-20T23:59",
+        "hotline": "0984.724.131",
+        "scriptUrl": "",
+        "githubRepo": "",
+        "githubBranch": "main",
+        "githubToken": "",
+        "banners": [
+                {
+                        "id": "b1",
+                        "title": "GIẢI BÓNG ĐÁ \"VĂN HÓA - ĐOÀN KẾT\" LẦN THỨ I 2026",
+                        "subtitle": "SÔI ĐỘNG - ĐOÀN KẾT - TRUNG THỰC - CAO THƯỢNG",
+                        "img": "https://images.unsplash.com/photo-1461896836934-ffe607ba8211?auto=format&fit=crop&w=1600&q=80"
+                },
+                {
+                        "id": "b2",
+                        "title": "HỘI THAO THANH NIÊN - TRẺ KHỎE TIÊN PHONG",
+                        "subtitle": "TRANH TÀI CÁC MÔN THỂ THAO ĐỈNH CAO VÀ NÂNG CAO THỂ LỰC",
+                        "img": "https://images.unsplash.com/photo-1517649763962-0c623266ddc0?auto=format&fit=crop&w=1600&q=80"
+                },
+                {
+                        "id": "b3",
+                        "title": "BÓNG CHUYỀN & BÓNG ĐÁ - HÀNH TRÌNH TỎA SÁNG",
+                        "subtitle": "CHÀO ĐÓN CÁC ĐỘI BÓNG VÀ VẬN ĐỘNG VIÊN XUẤT SẮC",
+                        "img": "https://images.unsplash.com/photo-1546519638-68e109498ffc?auto=format&fit=crop&w=1600&q=80"
+                }
         ],
-        scheduleData: {
-          'Sân 1': {
-            clusterName: 'Sân 1',
-            groupsCount: 1,
-            groups: {
-              'A': {
-                title: 'Bảng A',
-                matchCount: '3 trận',
-                teams: [
-                  { stt: '1', code: 'A1', name: 'Đội A1', points: '0đ' },
-                  { stt: '2', code: 'A2', name: 'Đội A2', points: '0đ' },
-                  { stt: '3', code: 'A3', name: 'Đội A3', points: '0đ' }
-                ],
-                matches: [
-                  { id: 'M1', time: '07:30', team1: 'Đội A1', team2: 'Đội A2', score: '', venue: 'Sân 1', status: 'SCHEDULED' },
-                  { id: 'M2', time: '08:20', team1: 'Đội A2', team2: 'Đội A3', score: '', venue: 'Sân 1', status: 'SCHEDULED' },
-                  { id: 'M3', time: '09:10', team1: 'Đội A3', team2: 'Đội A1', score: '', venue: 'Sân 1', status: 'SCHEDULED' }
-                ]
-              }
-            },
-            semiFinal1: {
-              title: 'Bán kết 1 • Trận 60',
-              time: 'CN 15/11 • 08:00',
-              venue: 'Sân 1',
-              teams: 'Nhất Bảng A — Nhì Bảng B'
-            },
-            semiFinal2: {
-              title: 'Bán kết 2 • Trận 61',
-              time: 'CN 15/11 • 09:15',
-              venue: 'Sân 1',
-              teams: 'Nhất Bảng B — Nhì Bảng A'
-            },
-            thirdPlace: {
-              title: 'Tranh Hạng Ba • Trận 62',
-              time: 'CN 15/11 • 14:00',
-              venue: 'Sân 1',
-              teams: 'Thua Bán kết 1 — Thua Bán kết 2'
-            },
-            finals: {
-              title: 'Vòng chung kết',
-              venue: 'Sân 1 - Khu thể thao',
-              qualified: 'Thắng Bán kết 1 • Thắng Bán kết 2'
-            },
-            venueDetail: {
-              name: 'Sân 1 - Khu thể thao',
-              address: 'Số 159 Cách Mạng Tháng 8, P. Quyết Thắng, TP. Biên Hòa, Đồng Nai'
-            }
-          },
-          'Sân 2': {
-            clusterName: 'Sân 2',
-            groupsCount: 1,
-            groups: {
-              'B': {
-                title: 'Bảng B',
-                matchCount: '3 trận',
-                teams: [
-                  { stt: '1', code: 'B1', name: 'Đội B1', points: '0đ' },
-                  { stt: '2', code: 'B2', name: 'Đội B2', points: '0đ' },
-                  { stt: '3', code: 'B3', name: 'Đội B3', points: '0đ' }
-                ],
-                matches: [
-                  { id: 'M1', time: '07:30', team1: 'Đội B1', team2: 'Đội B2', score: '', venue: 'Sân 2', status: 'SCHEDULED' },
-                  { id: 'M2', time: '08:20', team1: 'Đội B2', team2: 'Đội B3', score: '', venue: 'Sân 2', status: 'SCHEDULED' },
-                  { id: 'M3', time: '09:10', team1: 'Đội B3', team2: 'Đội B1', score: '', venue: 'Sân 2', status: 'SCHEDULED' }
-                ]
-              }
-            },
-            semiFinal1: {
-              title: 'Bán kết 1 • Trận 30',
-              time: 'T7 14/11 • 08:30',
-              venue: 'Sân 2',
-              teams: 'Nhất Bảng B — Nhì Bảng A'
-            },
-            semiFinal2: {
-              title: 'Bán kết 2 • Trận 31',
-              time: 'T7 14/11 • 09:45',
-              venue: 'Sân 2',
-              teams: 'Nhất Bảng A — Nhì Bảng B'
-            },
-            thirdPlace: {
-              title: 'Tranh Hạng Ba • Trận 32',
-              time: 'T7 14/11 • 14:30',
-              venue: 'Sân 2',
-              teams: 'Thua Bán kết 1 — Thua Bán kết 2'
-            },
-            finals: {
-              title: 'Vòng chung kết',
-              venue: 'Sân 2 - Nhà Thi Đấu',
-              qualified: 'Thắng Bán kết 1 • Thắng Bán kết 2'
-            },
-            venueDetail: {
-              name: 'Sân 2 - Trung tâm VHTT-TT',
-              address: 'Đường Nguyễn Thị Minh Khai, TP. Long Khánh'
-            }
-          },
-          'Sân 3': {
-            clusterName: 'Sân 3',
-            groupsCount: 1,
-            groups: {
-              'C': {
-                title: 'Bảng C',
-                matchCount: '3 trận',
-                teams: [
-                  { stt: '1', code: 'C1', name: 'Đội C1', points: '0đ' },
-                  { stt: '2', code: 'C2', name: 'Đội C2', points: '0đ' },
-                  { stt: '3', code: 'C3', name: 'Đội C3', points: '0đ' }
-                ],
-                matches: [
-                  { id: 'M1', time: '07:30', team1: 'Đội C1', team2: 'Đội C2', score: '', venue: 'Sân 3', status: 'SCHEDULED' },
-                  { id: 'M2', time: '08:20', team1: 'Đội C2', team2: 'Đội C3', score: '', venue: 'Sân 3', status: 'SCHEDULED' },
-                  { id: 'M3', time: '09:10', team1: 'Đội C3', team2: 'Đội C1', score: '', venue: 'Sân 3', status: 'SCHEDULED' }
-                ]
-              }
-            },
-            semiFinal1: {
-              title: 'Bán kết 1 • Trận 15',
-              time: 'CN 08/11 • 08:00',
-              venue: 'Sân 3',
-              teams: 'Nhất Bảng C — Nhì Bảng D'
-            },
-            semiFinal2: {
-              title: 'Bán kết 2 • Trận 16',
-              time: 'CN 08/11 • 09:30',
-              venue: 'Sân 3',
-              teams: 'Nhất Bảng D — Nhì Bảng C'
-            },
-            thirdPlace: {
-              title: 'Tranh Hạng Ba • Trận 17',
-              time: 'CN 08/11 • 14:00',
-              venue: 'Sân 3',
-              teams: 'Thua Bán kết 1 — Thua Bán kết 2'
-            },
-            finals: {
-              title: 'Vòng chung kết',
-              venue: 'Sân 3 - Nhà thi đấu',
-              qualified: 'Thắng Bán kết 1 • Thắng Bán kết 2'
-            },
-            venueDetail: {
-              name: 'Sân 3 - Nhà thi đấu Đa năng',
-              address: 'Đường Hùng Vương, TP. Đồng Xoài'
-            }
-          }
+        "scheduleData": {
+                "Sân 1": {
+                        "clusterName": "Sân 1",
+                        "groupsCount": 1,
+                        "format": "ROUND_ROBIN_KNOCKOUT",
+                        "advanceRule": "TOP_2",
+                        "groups": {
+                                "A": {
+                                        "title": "Bảng A",
+                                        "matchCount": "6 trận",
+                                        "teams": [
+                                                {
+                                                        "stt": "1",
+                                                        "code": "A1",
+                                                        "name": "Tân Minh",
+                                                        "points": "0đ"
+                                                },
+                                                {
+                                                        "stt": "2",
+                                                        "code": "A2",
+                                                        "name": "Tân Hiệp",
+                                                        "points": "0đ"
+                                                },
+                                                {
+                                                        "stt": "3",
+                                                        "code": "A3",
+                                                        "name": "Tàu Ô",
+                                                        "points": "0đ"
+                                                },
+                                                {
+                                                        "stt": "4",
+                                                        "code": "A4",
+                                                        "name": "Đồng Tâm",
+                                                        "points": "0đ"
+                                                }
+                                        ],
+                                        "matches": [
+                                                {
+                                                        "id": "M1",
+                                                        "time": "07:30",
+                                                        "team1": "Tân Minh",
+                                                        "team2": "Đồng Tâm",
+                                                        "score": "",
+                                                        "venue": "Sân 1",
+                                                        "status": "SCHEDULED"
+                                                },
+                                                {
+                                                        "id": "M2",
+                                                        "time": "08:20",
+                                                        "team1": "Tân Hiệp",
+                                                        "team2": "Tàu Ô",
+                                                        "score": "",
+                                                        "venue": "Sân 1",
+                                                        "status": "SCHEDULED"
+                                                },
+                                                {
+                                                        "id": "M3",
+                                                        "time": "09:10",
+                                                        "team1": "Tân Minh",
+                                                        "team2": "Tàu Ô",
+                                                        "score": "",
+                                                        "venue": "Sân 1",
+                                                        "status": "SCHEDULED"
+                                                },
+                                                {
+                                                        "id": "M4",
+                                                        "time": "10:00",
+                                                        "team1": "Đồng Tâm",
+                                                        "team2": "Tân Hiệp",
+                                                        "score": "",
+                                                        "venue": "Sân 1",
+                                                        "status": "SCHEDULED"
+                                                },
+                                                {
+                                                        "id": "M5",
+                                                        "time": "10:50",
+                                                        "team1": "Tân Minh",
+                                                        "team2": "Tân Hiệp",
+                                                        "score": "",
+                                                        "venue": "Sân 1",
+                                                        "status": "SCHEDULED"
+                                                },
+                                                {
+                                                        "id": "M6",
+                                                        "time": "11:40",
+                                                        "team1": "Tàu Ô",
+                                                        "team2": "Đồng Tâm",
+                                                        "score": "",
+                                                        "venue": "Sân 1",
+                                                        "status": "SCHEDULED"
+                                                }
+                                        ],
+                                        "timeConfig": {
+                                                "startAm": "07:30",
+                                                "matchesAm": 3,
+                                                "startPm": "14:00",
+                                                "duration": 40,
+                                                "breakMin": 10
+                                        }
+                                }
+                        },
+                        "semiFinal1": {
+                                "title": "Bán kết 1 • Trận 60",
+                                "time": "CN 22/11 • 07:00",
+                                "venue": "Sân 1",
+                                "teams": "Nhất Bảng A — Nhì Bảng B",
+                                "score": ""
+                        },
+                        "semiFinal2": {
+                                "title": "Bán kết 2 • Trận 61",
+                                "time": "CN 22/11 • 07:00",
+                                "venue": "Sân 1",
+                                "teams": "Nhất Bảng B — Nhì Bảng A",
+                                "score": ""
+                        },
+                        "thirdPlace": {
+                                "title": "Tranh Hạng Ba • Trận 62",
+                                "time": "CN 22/11 • 09:00",
+                                "venue": "Sân 1",
+                                "teams": "Thua Bán kết 1 — Thua Bán kết 2",
+                                "score": ""
+                        },
+                        "finals": {
+                                "title": "Vòng chung kết",
+                                "time": "CN 22/11 • 10:00",
+                                "venue": "Sân 1",
+                                "qualified": "Thắng Bán kết 1 — Thắng Bán kết 2",
+                                "score": ""
+                        },
+                        "venueDetail": {
+                                "name": "Sân 1 - Sân Cỏ Nhân Tạo QT",
+                                "address": "SÂN CỎ NHÂN TẠO QT"
+                        }
+                },
+                "Sân 2": {
+                        "clusterName": "Sân 2",
+                        "groupsCount": 1,
+                        "format": "ROUND_ROBIN_KNOCKOUT",
+                        "advanceRule": "TOP_2",
+                        "groups": {
+                                "B": {
+                                        "title": "Bảng B",
+                                        "matchCount": "3 trận",
+                                        "teams": [
+                                                {
+                                                        "stt": "1",
+                                                        "code": "B1",
+                                                        "name": "Đội B1",
+                                                        "points": "0đ"
+                                                },
+                                                {
+                                                        "stt": "2",
+                                                        "code": "B2",
+                                                        "name": "Đội B2",
+                                                        "points": "0đ"
+                                                },
+                                                {
+                                                        "stt": "3",
+                                                        "code": "B3",
+                                                        "name": "Đội B3",
+                                                        "points": "0đ"
+                                                }
+                                        ],
+                                        "matches": [
+                                                {
+                                                        "id": "M1",
+                                                        "time": "07:30",
+                                                        "team1": "Đội B1",
+                                                        "team2": "Đội B2",
+                                                        "score": "",
+                                                        "venue": "Sân 2",
+                                                        "status": "SCHEDULED"
+                                                },
+                                                {
+                                                        "id": "M2",
+                                                        "time": "08:20",
+                                                        "team1": "Đội B2",
+                                                        "team2": "Đội B3",
+                                                        "score": "",
+                                                        "venue": "Sân 2",
+                                                        "status": "SCHEDULED"
+                                                },
+                                                {
+                                                        "id": "M3",
+                                                        "time": "09:10",
+                                                        "team1": "Đội B3",
+                                                        "team2": "Đội B1",
+                                                        "score": "",
+                                                        "venue": "Sân 2",
+                                                        "status": "SCHEDULED"
+                                                }
+                                        ],
+                                        "timeConfig": {
+                                                "startAm": "07:30",
+                                                "matchesAm": 3,
+                                                "startPm": "14:00",
+                                                "duration": 40,
+                                                "breakMin": 10
+                                        }
+                                }
+                        },
+                        "semiFinal1": {
+                                "title": "Bán kết 1 • Trận 30",
+                                "time": "CN 22/11 • 07:00",
+                                "venue": "Sân 2",
+                                "teams": "Nhất Bảng B — Nhì Bảng A",
+                                "score": ""
+                        },
+                        "semiFinal2": {
+                                "title": "Bán kết 2 • Trận 31",
+                                "time": "CN 22/11 • 07:00",
+                                "venue": "Sân 2",
+                                "teams": "Nhất Bảng A — Nhì Bảng B",
+                                "score": ""
+                        },
+                        "thirdPlace": {
+                                "title": "Tranh Hạng Ba • Trận 32",
+                                "time": "CN 22/11 • 09:00",
+                                "venue": "Sân 2",
+                                "teams": "Thua Bán kết 1 — Thua Bán kết 2",
+                                "score": ""
+                        },
+                        "finals": {
+                                "title": "Vòng chung kết",
+                                "time": "CN 22/11 • 10:00",
+                                "venue": "Sân 2",
+                                "qualified": "Thắng Bán kết 1 — Thắng Bán kết 2",
+                                "score": ""
+                        },
+                        "venueDetail": {
+                                "name": "Sân 2 - Sân Cỏ Nhân Tạo QT",
+                                "address": "SÂN CỎ NHÂN TẠO QT"
+                        }
+                },
+                "Sân 3": {
+                        "clusterName": "Sân 3",
+                        "groupsCount": 1,
+                        "format": "ROUND_ROBIN_KNOCKOUT",
+                        "advanceRule": "TOP_2",
+                        "groups": {
+                                "C": {
+                                        "title": "Bảng C",
+                                        "matchCount": "3 trận",
+                                        "teams": [
+                                                {
+                                                        "stt": "1",
+                                                        "code": "C1",
+                                                        "name": "Đồng Nơ",
+                                                        "points": "0đ"
+                                                },
+                                                {
+                                                        "stt": "2",
+                                                        "code": "C2",
+                                                        "name": "Tân Bình",
+                                                        "points": "0đ"
+                                                },
+                                                {
+                                                        "stt": "3",
+                                                        "code": "C3",
+                                                        "name": "Hiệp Thành",
+                                                        "points": "0đ"
+                                                }
+                                        ],
+                                        "matches": [
+                                                {
+                                                        "id": "M1",
+                                                        "time": "07:30",
+                                                        "team1": "Tân Bình",
+                                                        "team2": "Hiệp Thành",
+                                                        "score": "",
+                                                        "venue": "Sân 3",
+                                                        "status": "SCHEDULED"
+                                                },
+                                                {
+                                                        "id": "M2",
+                                                        "time": "08:20",
+                                                        "team1": "Đồng Nơ",
+                                                        "team2": "Hiệp Thành",
+                                                        "score": "",
+                                                        "venue": "Sân 3",
+                                                        "status": "SCHEDULED"
+                                                },
+                                                {
+                                                        "id": "M3",
+                                                        "time": "09:10",
+                                                        "team1": "Đồng Nơ",
+                                                        "team2": "Tân Bình",
+                                                        "score": "",
+                                                        "venue": "Sân 3",
+                                                        "status": "SCHEDULED"
+                                                }
+                                        ],
+                                        "timeConfig": {
+                                                "startAm": "07:30",
+                                                "matchesAm": 3,
+                                                "startPm": "14:00",
+                                                "duration": 40,
+                                                "breakMin": 10
+                                        }
+                                }
+                        },
+                        "semiFinal1": {
+                                "title": "Bán kết 1 • Trận 15",
+                                "time": "CN 22/11 • 07:00",
+                                "venue": "Sân 3",
+                                "teams": "Nhất Bảng C — Nhì Bảng D",
+                                "score": ""
+                        },
+                        "semiFinal2": {
+                                "title": "Bán kết 2 • Trận 16",
+                                "time": "CN 22/11 • 07:00",
+                                "venue": "Sân 3",
+                                "teams": "Nhất Bảng D — Nhì Bảng C",
+                                "score": ""
+                        },
+                        "thirdPlace": {
+                                "title": "Tranh Hạng Ba • Trận 17",
+                                "time": "CN 22/11 • 09:00",
+                                "venue": "Sân 3",
+                                "teams": "Thua Bán kết 1 — Thua Bán kết 2",
+                                "score": ""
+                        },
+                        "finals": {
+                                "title": "Vòng chung kết",
+                                "time": "CN 22/11 • 10:00",
+                                "venue": "Sân 3",
+                                "qualified": "Thắng Bán kết 1 — Thắng Bán kết 2",
+                                "score": ""
+                        },
+                        "venueDetail": {
+                                "name": "Sân 3 - Sân Cỏ Nhân Tạo QT",
+                                "address": "SÂN CỎ NHÂN TẠO QT"
+                        }
+                }
         },
         sports: [
           Object.assign({ id: 'BONG_DA_7', status: 'OPEN' }, SPORT_PRESETS.BONG_DA_7),
@@ -6533,12 +6726,73 @@
         document.body.classList.remove('print-schedule');
       }
 
+      function downloadSchedulePdf() {
+        var area = document.getElementById('schedulePrintArea');
+        var btn = document.getElementById('btnDownloadPdf');
+        if (!area) return;
+
+        var originalBtnHtml = btn ? btn.innerHTML : '';
+        if (btn) {
+          btn.innerHTML = `
+            <svg class="animate-spin w-4 h-4 text-[#06301a]" fill="none" viewBox="0 0 24 24">
+              <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+              <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8H4z"></path>
+            </svg>
+            <span>Đang tạo file PDF...</span>
+          `;
+          btn.disabled = true;
+        }
+
+        // Tạm thời tắt chế độ chỉnh sửa để bản in không có viền thừa
+        var wasEditing = isSchedulePrintEditing;
+        if (wasEditing && typeof toggleSchedulePrintEditMode === 'function') {
+          toggleSchedulePrintEditMode();
+        }
+
+        var cleanTournTitle = (appConfig.tenGiai || 'Giai_The_Thao')
+          .replace(/[^a-zA-Z0-9_À-ɏḀ-ỿ]/g, '_')
+          .replace(/_+/g, '_')
+          .substring(0, 45);
+        var cleanCluster = (activeScheduleCluster || 'San_1').replace(/[^a-zA-Z0-9_]/g, '_');
+        var fileName = 'Lich_Thi_Dau_' + cleanTournTitle + '_' + cleanCluster + '.pdf';
+
+        if (typeof html2pdf !== 'undefined') {
+          var opt = {
+            margin:       [8, 8, 8, 8],
+            filename:     fileName,
+            image:        { type: 'jpeg', quality: 0.98 },
+            html2canvas:  { scale: 2, useCORS: true, logging: false },
+            jsPDF:        { unit: 'mm', format: 'a4', orientation: 'portrait' }
+          };
+
+          html2pdf().set(opt).from(area).save().then(function() {
+            if (btn) {
+              btn.innerHTML = '<span>✅ Đã tải file PDF thành công!</span>';
+              setTimeout(function() {
+                btn.innerHTML = originalBtnHtml;
+                btn.disabled = false;
+              }, 2500);
+            }
+          }).catch(function(err) {
+            console.error('Lỗi khi xuất PDF qua html2pdf:', err);
+            if (btn) {
+              btn.innerHTML = originalBtnHtml;
+              btn.disabled = false;
+            }
+            alert('Không thể tạo file PDF tự động: ' + (err.message || err));
+          });
+        } else {
+          // Fallback nếu thư viện chưa tải xong
+          alert('Đang nạp bộ tạo PDF, vui lòng thử lại sau vài giây!');
+          if (btn) {
+            btn.innerHTML = originalBtnHtml;
+            btn.disabled = false;
+          }
+        }
+      }
+
       function triggerPrintSchedule() {
-        document.body.classList.add('print-schedule');
-        window.print();
-        setTimeout(function() {
-          document.body.classList.remove('print-schedule');
-        }, 1000);
+        downloadSchedulePdf();
       }
 
       function renderScheduleDiagram(clusterKey) {

@@ -7205,20 +7205,19 @@
         var cleanCluster = toSafePdfSlug(window._currentPdfClusterKey || activeScheduleCluster || 'San_1') || 'San_1';
         var fileName = 'Lich_Thi_Dau_' + cleanTournTitle + '_' + cleanCluster + '.pdf';
 
-        // Tạo vùng dựng PDF độc lập ở ngoài màn hình (bề ngang chuẩn vùng nội dung A4: 660px)
+        // Tạo node nguồn PDF độc lập (không gắn trực tiếp vào body để tránh trùng ID với container của html2pdf)
         var oldStage = document.getElementById('pdfExportStage');
         if (oldStage && oldStage.parentNode) oldStage.parentNode.removeChild(oldStage);
 
         var exportStage = document.createElement('div');
         exportStage.id = 'pdfExportStage';
-        exportStage.style.cssText = 'position:absolute;left:0;top:0;width:660px;background:#ffffff;color:#000000;padding:0;margin:0;z-index:45;pointer-events:none;';
+        exportStage.style.cssText = 'width:100%;background:#ffffff;color:#000000;padding:0;margin:0;';
         exportStage.innerHTML = area.innerHTML;
 
         // Xóa banner hướng dẫn chỉnh sửa (.no-print) khỏi bản xuất PDF
         exportStage.querySelectorAll('.no-print').forEach(function(el) {
           if (el.parentNode) el.parentNode.removeChild(el);
         });
-        document.body.appendChild(exportStage);
 
         var nd30CssEl = document.getElementById('nd30PrintCssBlock');
         var nd30CssText = nd30CssEl ? nd30CssEl.textContent : '';
@@ -7226,18 +7225,15 @@
         var opt = {
           margin:       [14, 14, 14, 20],
           filename:     fileName,
-          image:        { type: 'jpeg', quality: 0.98 },
-          pagebreak:    { mode: ['avoid-all', 'css', 'legacy'] },
+          image:        { type: 'jpeg', quality: 0.92 },
+          pagebreak:    { mode: ['css', 'legacy'] },
           html2canvas:  {
-            scale: 2,
+            scale: 1.75,
             useCORS: false,
             allowTaint: false,
             imageTimeout: 1500,
-            x: 0,
-            y: 0,
             scrollX: 0,
             scrollY: 0,
-            windowWidth: 660,
             backgroundColor: '#ffffff',
             logging: false,
             ignoreElements: function(el) {
@@ -7245,7 +7241,10 @@
               var tag = el.tagName.toUpperCase();
               if (tag === 'SCRIPT' || tag === 'NOSCRIPT' || tag === 'VIDEO' || tag === 'IFRAME' || tag === 'IMG') return true;
               if (el.classList && el.classList.contains('no-print')) return true;
-              if (el.parentNode === document.body && el !== exportStage) return true;
+              // Chỉ giữ lại lớp overlay chứa container do html2pdf tự dựng trên body, bỏ qua toàn bộ giao diện nền của trang web
+              if (el.parentNode === document.body) {
+                return !(el.classList && el.classList.contains('html2pdf__overlay'));
+              }
               return false;
             },
             onclone: function(clonedDoc) {
@@ -7254,35 +7253,26 @@
                 if (node.parentNode) node.parentNode.removeChild(node);
               });
               var styleTag = clonedDoc.createElement('style');
-              styleTag.textContent = 'html,body{margin:0;padding:0;background:#ffffff;color:#000000;font-family:"Times New Roman",Times,serif;overflow:visible !important;max-width:none !important;} ' + nd30CssText;
+              styleTag.textContent = 'html,body{margin:0;padding:0;background:#ffffff;color:#000000;font-family:"Times New Roman",Times,serif;overflow:visible !important;max-width:none !important;} .html2pdf__overlay{position:fixed !important;top:0 !important;left:0 !important;opacity:1 !important;background:#ffffff !important;} .html2pdf__container{background:#ffffff !important;} ' + nd30CssText;
               clonedDoc.head.appendChild(styleTag);
 
               clonedDoc.documentElement.scrollTop = 0;
               clonedDoc.body.scrollTop = 0;
-
-              var clonedStage = clonedDoc.getElementById('pdfExportStage');
-              if (clonedStage) {
-                clonedStage.style.position = 'static';
-                clonedStage.style.left = '0';
-                clonedStage.style.top = '0';
-                clonedStage.style.width = '660px';
-                clonedStage.style.display = 'block';
-              }
             }
           },
           jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
         };
 
         var cleanupExport = function() {
-          if (exportStage && exportStage.parentNode) {
-            exportStage.parentNode.removeChild(exportStage);
-          }
+          document.querySelectorAll('.html2pdf__overlay').forEach(function(ov) {
+            if (ov && ov.parentNode) ov.parentNode.removeChild(ov);
+          });
         };
 
         var timeoutGuard = new Promise(function(_, reject) {
           setTimeout(function() {
-            reject(new Error('Quá thời gian xử lý PDF (15 giây). Vui lòng thử lại.'));
-          }, 15000);
+            reject(new Error('Quá thời gian xử lý PDF (45 giây). Vui lòng thử lại.'));
+          }, 45000);
         });
 
         Promise.race([html2pdf().set(opt).from(exportStage).save(), timeoutGuard])

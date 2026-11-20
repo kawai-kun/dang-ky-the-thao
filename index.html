@@ -1090,6 +1090,16 @@
             </button>
           </div>
 
+          <!-- Venue & Stage Filter Bar -->
+          <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2.5 pb-1 border-b border-[#8be33a]/10">
+            <div id="liveFixturesVenueTabs" class="flex items-center gap-1.5 overflow-x-auto pb-1 sm:pb-0 text-xs no-scrollbar">
+              <!-- Dynamically populated venue buttons: Tất cả, Sân 1, Sân 2... -->
+            </div>
+            <div id="liveFixturesStatsSummary" class="text-[11px] text-[#8be33a] font-mono font-semibold">
+              <!-- e.g. "Tổng cộng: 10 trận (Trận 1 → Trận 10)" -->
+            </div>
+          </div>
+
           <!-- Matches List Container -->
           <div id="liveFixturesContainer" class="space-y-3">
             <!-- Dynamically populated via renderLiveFixtures() -->
@@ -1811,6 +1821,20 @@
 
               <div class="flex flex-wrap items-center gap-2 w-full sm:w-auto">
                 <button
+                  onclick="openImportTeamsModal()"
+                  class="px-3 h-8 rounded-[8px] bg-amber-600 hover:bg-amber-700 text-white font-bold text-xs flex items-center justify-center gap-1.5 cursor-pointer shadow-subtle flex-1 sm:flex-initial"
+                  title="Nạp nhanh danh sách các đội từ tin nhắn Zalo hoặc file Google Drive / Google Sheets"
+                >
+                  <span>📥 Nạp Đội (Zalo / Drive)</span>
+                </button>
+                <button
+                  onclick="openManualAddTeamModal()"
+                  class="px-3 h-8 rounded-[8px] bg-blue-600 hover:bg-blue-700 text-white font-semibold text-xs flex items-center justify-center gap-1.5 cursor-pointer shadow-subtle flex-1 sm:flex-initial"
+                  title="Thêm nhanh một đội vào danh sách"
+                >
+                  <span>➕ Thêm Đội</span>
+                </button>
+                <button
                   onclick="exportRegistrationsToCSV()"
                   class="ui-button-default text-xs h-8 px-3 flex-1 sm:flex-initial justify-center"
                   title="Tải toàn bộ danh sách đăng ký về máy dạng CSV/Excel"
@@ -1929,6 +1953,14 @@
                   </button>
                   <button
                     type="button"
+                    onclick="openImportTeamsModal()"
+                    class="px-2.5 py-1 rounded-[6px] bg-amber-600 hover:bg-amber-700 text-white font-bold text-[11px] flex items-center gap-1.5 cursor-pointer shadow-subtle"
+                    title="Nạp nhanh danh sách các đội đăng ký qua Zalo hoặc link Google Drive / Google Sheets"
+                  >
+                    <span>📥 Nạp Đội (Zalo / Drive)</span>
+                  </button>
+                  <button
+                    type="button"
                     onclick="autoDrawPlaceholderTeams()"
                     class="px-2.5 py-1 rounded-[6px] bg-[#041a0f] hover:bg-[#072d1a] text-[#8be33a] font-bold text-[11px] flex items-center gap-1.5 cursor-pointer shadow-subtle border border-[#8be33a]/30"
                     title="Tạo sẵn các đội hạt giống (Đội A1, A2...) để lên lịch thi đấu và tính giờ trước khi các đội nộp hồ sơ"
@@ -1950,6 +1982,14 @@
                     title="Tính điểm, xếp hạng và đưa 2 đội đầu bảng vào Bán kết"
                   >
                     <span>⚡ Xếp Hạng & Vào Bán Kết</span>
+                  </button>
+                  <button
+                    type="button"
+                    onclick="adminSwitchToOngoingMatch()"
+                    class="px-2.5 py-1 rounded-[6px] bg-rose-600 hover:bg-rose-700 text-white font-bold text-[11px] flex items-center gap-1.5 cursor-pointer shadow-subtle"
+                    title="Khóa nhận đăng ký môn này và bắt đầu giải đấu (Hiển thị Lịch thi đấu ra trang chủ)"
+                  >
+                    <span>🔴 Bắt Đầu Thi Đấu (Hiện Lịch)</span>
                   </button>
                   <button
                     type="button"
@@ -2737,6 +2777,223 @@
           <button onclick="closeBatchTeamsDrawModal()" class="ui-button-secondary text-xs h-8 px-3">Hủy</button>
           <button onclick="processBatchTeamsDraw()" class="ui-button-default text-xs h-8 px-4 bg-[#06301a] hover:bg-[#0a4224] text-[#8be33a] font-bold">🎲 Bốc Thăm & Tạo Lịch Ngay</button>
         </div>
+      </div>
+    </div>
+
+    <!-- MODAL NẠP DANH SÁCH ĐỘI CHO BAN TỔ CHỨC (ZALO / GOOGLE DRIVE / GOOGLE SHEETS / EXCEL) -->
+    <div id="importTeamsModal" class="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm hidden flex items-center justify-center p-3 sm:p-5 overflow-y-auto">
+      <div class="bg-white rounded-[16px] max-w-2xl w-full p-5 sm:p-6 space-y-4 shadow-modal border border-zinc-200 text-xs my-auto">
+        <!-- Header -->
+        <div class="flex items-center justify-between border-b border-zinc-100 pb-3">
+          <div class="flex items-center gap-2.5">
+            <div class="w-9 h-9 rounded-[10px] bg-[#06301a] text-[#8be33a] flex items-center justify-center font-bold text-lg shadow-sm">
+              📥
+            </div>
+            <div>
+              <h3 class="font-bold text-sm sm:text-base text-zinc-900">Nạp Danh Sách Đội (Zalo / Google Drive / Google Sheets)</h3>
+              <p class="text-[11px] text-zinc-500">Dành riêng cho BTC nạp các đội đăng ký ngoại tuyến hoặc cập nhật từ file bảng tính</p>
+            </div>
+          </div>
+          <button onclick="closeImportTeamsModal()" class="text-zinc-400 hover:text-zinc-600 font-bold text-lg p-1 cursor-pointer">✕</button>
+        </div>
+
+        <!-- Mode Tabs -->
+        <div class="flex items-center gap-2 p-1 bg-zinc-100 rounded-[10px] font-semibold text-xs">
+          <button
+            id="tabBtnImportDrive"
+            type="button"
+            onclick="switchImportTab('DRIVE')"
+            class="flex-1 py-1.5 px-3 rounded-[8px] bg-white text-[#06301a] font-bold shadow-subtle flex items-center justify-center gap-1.5 transition-all cursor-pointer"
+          >
+            <span>🔗 Link Google Drive / Sheets</span>
+          </button>
+          <button
+            id="tabBtnImportZalo"
+            type="button"
+            onclick="switchImportTab('ZALO')"
+            class="flex-1 py-1.5 px-3 rounded-[8px] text-zinc-600 hover:text-zinc-900 font-medium flex items-center justify-center gap-1.5 transition-all cursor-pointer"
+          >
+            <span>💬 Dán từ Zalo / Excel</span>
+          </button>
+        </div>
+
+        <!-- TAB 1: GOOGLE DRIVE / GOOGLE SHEETS -->
+        <div id="importTabContent_DRIVE" class="space-y-3">
+          <div class="space-y-1">
+            <label class="block font-semibold text-zinc-700">Đường link Google Sheets hoặc Google Drive chứa danh sách đội:</label>
+            <div class="flex gap-2">
+              <input
+                type="url"
+                id="importGSheetUrl"
+                placeholder="https://docs.google.com/spreadsheets/d/1BxiMVs0XRA5n.../edit#gid=0"
+                class="flex-1 p-2.5 rounded-[8px] border border-zinc-300 font-mono text-xs focus:ring-1 focus:ring-[#06301a]"
+              />
+              <button
+                type="button"
+                id="btnFetchGSheet"
+                onclick="fetchAndParseGoogleSheet()"
+                class="px-4 py-2 rounded-[8px] bg-[#06301a] hover:bg-[#0a4224] text-[#8be33a] font-bold text-xs flex items-center gap-1.5 cursor-pointer flex-shrink-0 shadow-sm"
+              >
+                <span>🔄 Tải Dữ Liệu</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- Quick instructions for Google Sheet sharing -->
+          <div class="p-3 rounded-[10px] bg-amber-50/80 border border-amber-200 text-amber-950 text-[11px] space-y-1">
+            <div class="font-bold text-amber-900 flex items-center gap-1">
+              <span>💡 Hướng dẫn lấy link Google Sheets:</span>
+            </div>
+            <p>1. Mở file Google Sheet của bạn &gt; Nhấn nút <strong>"Chia sẻ"</strong> (Share) ở góc trên bên phải.</p>
+            <p>2. Tại mục Quyền truy cập chung, chọn <strong>"Bất kỳ ai có đường liên kết"</strong> (Anyone with link) &gt; Sao chép liên kết rồi dán vào ô trên.</p>
+            <p class="text-zinc-600 italic">* Mẹo: Nếu file chưa mở quyền hoặc bị mạng chặn tải trực tiếp, bạn hãy dùng tab <strong>"Dán từ Zalo / Excel"</strong> bên cạnh để copy-paste chỉ mất 3 giây!</p>
+          </div>
+        </div>
+
+        <!-- TAB 2: DÁN NHANH TỪ ZALO / EXCEL -->
+        <div id="importTabContent_ZALO" class="space-y-3 hidden">
+          <div class="space-y-1">
+            <div class="flex items-center justify-between">
+              <label class="block font-semibold text-zinc-700">Dán nội dung tin nhắn Zalo hoặc các cột từ Excel:</label>
+              <span id="importPastedCountBadge" class="text-[11px] font-bold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded border border-emerald-200">
+                0 đội hợp lệ
+              </span>
+            </div>
+            <textarea
+              id="importZaloTextarea"
+              rows="6"
+              oninput="handleZaloPasteInput()"
+              placeholder="Dán danh sách các đội vào đây. Hỗ trợ đa dạng cách nhập:
+
+Cách 1 (Mỗi dòng 1 tên đội):
+Xã Tân Minh
+Xã Tân Hiệp
+Thị trấn Tân Khai
+THPT Tân Phú
+
+Cách 2 (Định dạng có Người đại diện / SĐT):
+Xã Tân Minh | Thầy Lê Văn Hùng | 0912345678
+Xã Tân Hiệp | Anh Tuấn | 0987654321
+
+Cách 3: Copy từ file Excel / Google Sheets rồi dán thẳng vào ô này."
+              class="w-full p-2.5 rounded-[8px] border border-zinc-300 font-mono text-xs focus:ring-1 focus:ring-[#06301a]"
+            ></textarea>
+          </div>
+        </div>
+
+        <!-- Common Options (Môn thi đấu, Trạng thái duyệt) -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 p-3 rounded-[10px] bg-zinc-50 border border-zinc-200">
+          <div>
+            <label class="block text-[11px] font-semibold text-zinc-700 mb-1">Gán cho Môn Thi Đấu:</label>
+            <select id="importTargetSportSelect" class="w-full px-2.5 py-1.5 rounded-[6px] border border-zinc-300 text-xs bg-white font-medium text-zinc-800">
+              <!-- Dynamically populated from appConfig.sports -->
+            </select>
+          </div>
+          <div>
+            <label class="block text-[11px] font-semibold text-zinc-700 mb-1">Trạng thái hồ sơ:</label>
+            <div class="flex items-center gap-2 pt-1">
+              <label class="inline-flex items-center gap-1.5 cursor-pointer text-xs font-semibold text-emerald-700">
+                <input type="checkbox" id="importAutoApproveCheck" checked class="w-4 h-4 text-emerald-600 rounded" />
+                <span>✓ Duyệt hợp lệ ngay vào danh sách chính thức</span>
+              </label>
+            </div>
+          </div>
+        </div>
+
+        <!-- Live Preview Box -->
+        <div id="importPreviewContainer" class="space-y-2 hidden">
+          <div class="flex items-center justify-between">
+            <span class="font-bold text-zinc-800 text-xs flex items-center gap-1">
+              <span>📋 Bảng xem trước danh sách đội nhận diện:</span>
+              <span id="importPreviewTotal" class="text-emerald-600 font-mono font-bold">(0)</span>
+            </span>
+            <span class="text-[11px] text-zinc-400">Kiểm tra thông tin trước khi nạp</span>
+          </div>
+          <div class="max-h-44 overflow-y-auto border border-zinc-200 rounded-[8px]">
+            <table class="w-full text-left text-xs border-collapse">
+              <thead class="bg-zinc-100 text-zinc-700 font-semibold sticky top-0 border-b border-zinc-200">
+                <tr>
+                  <th class="p-2 text-center w-10">STT</th>
+                  <th class="p-2">Tên Đội / Đơn Vị</th>
+                  <th class="p-2">Đại Diện / Trưởng Đoàn</th>
+                  <th class="p-2">Số ĐT</th>
+                </tr>
+              </thead>
+              <tbody id="importPreviewTableBody" class="divide-y divide-zinc-200 bg-white"></tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- Footer Actions -->
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 pt-3 border-t border-zinc-100">
+          <span class="text-[11px] text-zinc-500">Các đội sau khi nạp sẽ hiển thị trong Tab Duyệt Hồ Sơ và có thể bốc thăm ngay.</span>
+          <div class="flex items-center justify-end gap-2">
+            <button type="button" onclick="closeImportTeamsModal()" class="ui-button-secondary text-xs h-8 px-3">Đóng</button>
+            <button
+              id="btnConfirmImport"
+              type="button"
+              onclick="executeConfirmImportTeams()"
+              class="px-4 h-8 rounded-[8px] bg-[#06301a] hover:bg-[#0a4224] text-[#8be33a] font-bold text-xs flex items-center gap-1.5 cursor-pointer shadow-sm transition-all"
+            >
+              <span>💾 Xác Nhận Nạp Đội</span>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- MODAL THÊM 1 ĐỘI THỦ CÔNG CHO BTC -->
+    <div id="manualAddTeamModal" class="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm hidden flex items-center justify-center p-3 sm:p-5 overflow-y-auto">
+      <div class="bg-white rounded-[16px] max-w-lg w-full p-5 space-y-4 shadow-modal border border-zinc-200 text-xs my-auto">
+        <div class="flex items-center justify-between border-b border-zinc-100 pb-3">
+          <div class="flex items-center gap-2">
+            <div class="w-8 h-8 rounded-[8px] bg-blue-600 text-white flex items-center justify-center font-bold text-sm">➕</div>
+            <div>
+              <h3 class="font-bold text-sm text-zinc-900">Thêm Đội Bóng / Đơn Vị Thủ Công</h3>
+              <p class="text-[11px] text-zinc-500">Nhập thông tin đội đăng ký trực tiếp hoặc qua điện thoại</p>
+            </div>
+          </div>
+          <button onclick="closeManualAddTeamModal()" class="text-zinc-400 hover:text-zinc-600 font-bold text-base cursor-pointer">✕</button>
+        </div>
+
+        <form onsubmit="handleManualAddTeamSubmit(event)" class="space-y-3">
+          <div>
+            <label class="block font-semibold text-zinc-700 mb-1">Tên Đội / Đơn Vị / CLB <span class="text-rose-500">*</span>:</label>
+            <input type="text" id="manualTeamName" required placeholder="Ví dụ: Đội bóng Xã Tân Minh" class="w-full p-2 rounded-[8px] border border-zinc-300 font-medium text-xs focus:ring-1 focus:ring-blue-600" />
+          </div>
+
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+            <div>
+              <label class="block text-[11px] font-semibold text-zinc-700 mb-0.5">Môn Thi Đấu:</label>
+              <select id="manualTeamSportSelect" class="w-full px-2 py-1.5 rounded border border-zinc-300 text-xs bg-white font-medium"></select>
+            </div>
+            <div>
+              <label class="block text-[11px] font-semibold text-zinc-700 mb-0.5">Màu áo thi đấu:</label>
+              <input type="text" id="manualTeamColor" placeholder="Đỏ / Xanh / Vàng..." class="w-full px-2 py-1.5 rounded border border-zinc-300 text-xs" />
+            </div>
+          </div>
+
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+            <div>
+              <label class="block text-[11px] font-semibold text-zinc-700 mb-0.5">Trưởng đoàn / HLV:</label>
+              <input type="text" id="manualTeamLeader" placeholder="Họ và tên người đại diện" class="w-full px-2 py-1.5 rounded border border-zinc-300 text-xs" />
+            </div>
+            <div>
+              <label class="block text-[11px] font-semibold text-zinc-700 mb-0.5">Số điện thoại Zalo:</label>
+              <input type="tel" id="manualTeamPhone" placeholder="0912.xxx.xxx" class="w-full px-2 py-1.5 rounded border border-zinc-300 text-xs" />
+            </div>
+          </div>
+
+          <div>
+            <label class="block text-[11px] font-semibold text-zinc-700 mb-0.5">Danh sách VĐV (tùy chọn, mỗi dòng 1 VĐV):</label>
+            <textarea id="manualTeamAthletes" rows="3" placeholder="Nguyễn Văn A&#10;Trần Văn B&#10;Lê Văn C..." class="w-full p-2 rounded-[8px] border border-zinc-300 font-mono text-xs"></textarea>
+          </div>
+
+          <div class="flex justify-end gap-2 pt-2 border-t border-zinc-100">
+            <button type="button" onclick="closeManualAddTeamModal()" class="ui-button-secondary text-xs h-8 px-3">Hủy</button>
+            <button type="submit" class="px-4 h-8 rounded-[8px] bg-blue-600 hover:bg-blue-700 text-white font-bold text-xs cursor-pointer shadow-sm">💾 Lưu Đội Vào Hệ Thống</button>
+          </div>
+        </form>
       </div>
     </div>
 
@@ -7335,7 +7592,7 @@
             return `
               <div class="flex items-center justify-between gap-1 text-[11px] py-1 px-1.5 bg-zinc-50 rounded border border-zinc-200/70">
                 <div class="flex items-center gap-1.5 truncate">
-                  <span class="font-mono font-bold text-[#06301a] bg-[#8be33a]/30 px-1 py-0.5 rounded text-[10px]">${m.time || '07:30'}</span>
+                  <span class="font-mono font-bold text-[#06301a] bg-[#8be33a]/30 px-1.5 py-0.5 rounded text-[10px]">Trận ${idx + 1}: ${m.time || '07:30'}</span>
                   <span class="text-zinc-700 truncate font-medium">${m.team1} vs ${m.team2}</span>
                 </div>
                 <div class="flex items-center gap-1 flex-shrink-0">
@@ -7694,18 +7951,42 @@
         var clSelect = document.getElementById('adminScheduleClusterSelect');
         var venueKey = clSelect ? clSelect.value : 'Sân 1';
 
-        var list = (appConfig.hoSoDangKy || []).map(function(h) {
-          return h.tenDoan || h.tenDonVi;
-        }).filter(function(v, idx, arr) {
+        var regs = loadRegistrations();
+        var activeSportId = appConfig.activeSport || (appConfig.sports && appConfig.sports[0] ? appConfig.sports[0].id : '');
+
+        var list = regs.filter(function(r) {
+          var st = r.status || 'PENDING';
+          if (st === 'REJECTED') return false;
+          if (!r.donVi || !r.donVi.trim()) return false;
+          if (r.sportId && activeSportId && r.sportId !== activeSportId) return false;
+          return true;
+        }).map(function(r) {
+          return r.donVi.trim();
+        });
+
+        // Nếu lọc theo môn không có thì lấy tất cả các đội hợp lệ
+        if (list.length === 0) {
+          list = regs.filter(function(r) {
+            return r.donVi && r.donVi.trim() && r.status !== 'REJECTED';
+          }).map(function(r) { return r.donVi.trim(); });
+        }
+
+        // Dự phòng danh sách cũ nếu có
+        if (list.length === 0 && appConfig.hoSoDangKy && appConfig.hoSoDangKy.length > 0) {
+          list = appConfig.hoSoDangKy.map(function(h) { return h.tenDoan || h.tenDonVi; }).filter(Boolean);
+        }
+
+        // Loại bỏ trùng tên
+        list = list.filter(function(v, idx, arr) {
           return v && arr.indexOf(v) === idx;
         });
 
         if (list.length === 0) {
-          var usePlaceholder = confirm('CHƯA CÓ HỒ SƠ ĐĂNG KÝ TRÊN HỆ THỐNG!\n\nBạn có muốn tự động tạo các ĐỘI MẪU (Đội A1, A2, A3...) để lên lịch và tính giờ thi đấu trước không?\n\n- Bấm OK để Tạo Đội Mẫu Ngay.\n- Bấm Cancel nếu bạn muốn dán danh sách tên đơn vị có sẵn (mở Dán DS Đội).');
-          if (usePlaceholder) {
-            autoDrawPlaceholderTeams();
+          var useImport = confirm('CHƯA CÓ HỒ SƠ ĐĂNG KÝ TRÊN HỆ THỐNG!\n\nBạn có muốn nạp nhanh danh sách đội từ Zalo hoặc Google Drive / Sheets không?\n\n- Bấm OK để mở "Nạp Đội (Zalo / Drive)".\n- Bấm Cancel nếu bạn muốn Tạo Đội Mẫu (Đội A1, A2...) để lên lịch trước.');
+          if (useImport) {
+            openImportTeamsModal();
           } else {
-            openBatchTeamsDrawModal();
+            autoDrawPlaceholderTeams();
           }
           return;
         }
@@ -8287,11 +8568,470 @@
         }
       }
 
+      // =========================================================
+      // CHỨC NĂNG NẠP ĐỘI CHO BAN TỔ CHỨC (ZALO / GOOGLE DRIVE / SHEETS / THÊM TAY)
+      // =========================================================
+      var parsedImportTeamsList = [];
+
+      function openImportTeamsModal() {
+        var modal = document.getElementById('importTeamsModal');
+        if (!modal) return;
+
+        // Điền danh sách môn thi đấu
+        var sportSelect = document.getElementById('importTargetSportSelect');
+        if (sportSelect) {
+          sportSelect.innerHTML = '';
+          (appConfig.sports || []).forEach(function(s) {
+            var opt = document.createElement('option');
+            opt.value = s.id;
+            opt.textContent = s.name;
+            if (s.id === appConfig.activeSport) opt.selected = true;
+            sportSelect.appendChild(opt);
+          });
+        }
+
+        // Đặt lại các trường nhập liệu
+        var gsheetInput = document.getElementById('importGSheetUrl');
+        if (gsheetInput) gsheetInput.value = '';
+        var zaloArea = document.getElementById('importZaloTextarea');
+        if (zaloArea) zaloArea.value = '';
+        parsedImportTeamsList = [];
+        renderImportPreviewTable();
+
+        switchImportTab('DRIVE');
+        modal.classList.remove('hidden');
+      }
+
+      function closeImportTeamsModal() {
+        var modal = document.getElementById('importTeamsModal');
+        if (modal) modal.classList.add('hidden');
+      }
+
+      function switchImportTab(tab) {
+        var btnDrive = document.getElementById('tabBtnImportDrive');
+        var btnZalo = document.getElementById('tabBtnImportZalo');
+        var contentDrive = document.getElementById('importTabContent_DRIVE');
+        var contentZalo = document.getElementById('importTabContent_ZALO');
+
+        if (tab === 'DRIVE') {
+          if (btnDrive) btnDrive.className = 'flex-1 py-1.5 px-3 rounded-[8px] bg-white text-[#06301a] font-bold shadow-subtle flex items-center justify-center gap-1.5 transition-all cursor-pointer';
+          if (btnZalo) btnZalo.className = 'flex-1 py-1.5 px-3 rounded-[8px] text-zinc-600 hover:text-zinc-900 font-medium flex items-center justify-center gap-1.5 transition-all cursor-pointer';
+          if (contentDrive) contentDrive.classList.remove('hidden');
+          if (contentZalo) contentZalo.classList.add('hidden');
+        } else {
+          if (btnZalo) btnZalo.className = 'flex-1 py-1.5 px-3 rounded-[8px] bg-white text-[#06301a] font-bold shadow-subtle flex items-center justify-center gap-1.5 transition-all cursor-pointer';
+          if (btnDrive) btnDrive.className = 'flex-1 py-1.5 px-3 rounded-[8px] text-zinc-600 hover:text-zinc-900 font-medium flex items-center justify-center gap-1.5 transition-all cursor-pointer';
+          if (contentZalo) contentZalo.classList.remove('hidden');
+          if (contentDrive) contentDrive.classList.add('hidden');
+        }
+      }
+
+      function handleZaloPasteInput() {
+        var area = document.getElementById('importZaloTextarea');
+        if (!area) return;
+        var text = area.value.trim();
+        parsedImportTeamsList = parseZaloOrPastedLines(text);
+        renderImportPreviewTable();
+      }
+
+      function parseZaloOrPastedLines(rawText) {
+        if (!rawText) return [];
+        var lines = rawText.split('\n');
+        var result = [];
+
+        lines.forEach(function(line) {
+          var clean = line.trim();
+          if (!clean) return;
+
+          // Bỏ qua các dòng tiêu đề nếu có
+          if (/^(STT|DANH SÁCH|DANH SACH|CÁC ĐỘI|TÊN ĐỘI|DON VI|ĐƠN VỊ)/i.test(clean) && clean.length < 30) return;
+
+          // Bỏ số thứ tự đầu dòng (1. 2. 1- 2- Đội 1:...)
+          clean = clean.replace(/^(Đội\s*\d+[\s:.-]*|\d+[\s\t]*[./\-)\]:]\s*)/i, '').trim();
+          if (!clean) return;
+
+          var parts = [];
+          if (clean.includes('\t')) {
+            parts = clean.split('\t').map(function(p) { return p.trim(); });
+          } else if (clean.includes('|')) {
+            parts = clean.split('|').map(function(p) { return p.trim(); });
+          } else if (clean.includes(' - ')) {
+            parts = clean.split(' - ').map(function(p) { return p.trim(); });
+          } else if (clean.includes(';')) {
+            parts = clean.split(';').map(function(p) { return p.trim(); });
+          } else {
+            parts = [clean];
+          }
+
+          var teamName = parts[0] || '';
+          var leader = parts[1] || '';
+          var phone = parts[2] || '';
+
+          // Nhận diện nếu cột 2 là số điện thoại
+          if (leader && /^[0-9+().\s-]{8,15}$/.test(leader) && !phone) {
+            phone = leader;
+            leader = '';
+          }
+
+          if (teamName) {
+            result.push({
+              teamName: teamName,
+              leader: leader || 'Ban Tổ Chức',
+              phone: phone || ''
+            });
+          }
+        });
+
+        return result;
+      }
+
+      async function fetchAndParseGoogleSheet() {
+        var input = document.getElementById('importGSheetUrl');
+        var btn = document.getElementById('btnFetchGSheet');
+        if (!input || !input.value.trim()) {
+          alert('Vui lòng dán đường link Google Sheets vào ô trước khi bấm tải!');
+          return;
+        }
+
+        var url = input.value.trim();
+        var match = url.match(/\/d\/([a-zA-Z0-9-_]+)/);
+        if (!match || !match[1]) {
+          alert('Đường link Google Sheets không đúng định dạng!\nLink chuẩn dạng: https://docs.google.com/spreadsheets/d/.../edit');
+          return;
+        }
+
+        var sheetId = match[1];
+        var csvUrls = [
+          'https://docs.google.com/spreadsheets/d/' + sheetId + '/gviz/tq?tqx=out:csv',
+          'https://docs.google.com/spreadsheets/d/' + sheetId + '/export?format=csv'
+        ];
+
+        var oldBtnHtml = btn ? btn.innerHTML : '';
+        if (btn) {
+          btn.innerHTML = '<span>⏳ Đang tải...</span>';
+          btn.disabled = true;
+        }
+
+        var successText = null;
+
+        for (var i = 0; i < csvUrls.length; i++) {
+          try {
+            var res = await fetch(csvUrls[i]);
+            if (res.ok) {
+              successText = await res.text();
+              if (successText && successText.length > 5) break;
+            }
+          } catch (e) {
+            // tiếp tục thử link kế tiếp
+          }
+        }
+
+        if (btn) {
+          btn.innerHTML = oldBtnHtml;
+          btn.disabled = false;
+        }
+
+        if (successText) {
+          parsedImportTeamsList = parseCsvData(successText);
+          renderImportPreviewTable();
+          if (parsedImportTeamsList.length > 0) {
+            alert('🎉 Đã tải thành công ' + parsedImportTeamsList.length + ' đội từ Google Sheet!\nBạn hãy kiểm tra bảng xem trước bên dưới và bấm "Xác Nhận Nạp Đội".');
+          } else {
+            alert('Đã kết nối được file Google Sheet nhưng chưa tìm thấy dòng dữ liệu đội bóng nào hợp lệ.');
+          }
+        } else {
+          // Bị CORS hoặc file riêng tư
+          var switchTab = confirm('⚠️ Không thể tải trực tiếp file Google Sheet do:\n1. File chưa mở quyền "Bất kỳ ai có đường liên kết đều có thể xem".\n2. Hoặc bị chính sách bảo mật trình duyệt chặn tải trực tiếp (CORS).\n\n👉 GIẢI PHÁP SIÊU NHANH:\nBạn chỉ cần mở Google Sheet, nhấn Ctrl+A rồi Ctrl+C, sau đó chuyển sang tab "Dán từ Zalo / Excel" và bấm Ctrl+V để nạp ngay tức thì!\n\nBấm OK để chuyển sang tab "Dán từ Zalo / Excel" ngay.');
+          if (switchTab) {
+            switchImportTab('ZALO');
+            var zArea = document.getElementById('importZaloTextarea');
+            if (zArea) zArea.focus();
+          }
+        }
+      }
+
+      function parseCsvData(csvText) {
+        var lines = csvText.split(/\r?\n/).filter(function(l) { return l.trim().length > 0; });
+        if (lines.length === 0) return [];
+
+        var parsedRows = lines.map(function(line) {
+          var row = [];
+          var inQuotes = false;
+          var curVal = '';
+          for (var i = 0; i < line.length; i++) {
+            var char = line[i];
+            if (char === '"' || char === "'") {
+              inQuotes = !inQuotes;
+            } else if (char === ',' && !inQuotes) {
+              row.push(curVal.trim().replace(/^["']|["']$/g, ''));
+              curVal = '';
+            } else {
+              curVal += char;
+            }
+          }
+          row.push(curVal.trim().replace(/^["']|["']$/g, ''));
+          return row;
+        });
+
+        if (parsedRows.length === 0) return [];
+
+        // Tìm dòng tiêu đề
+        var headerIdx = 0;
+        var nameCol = 0;
+        var leaderCol = -1;
+        var phoneCol = -1;
+
+        for (var r = 0; r < Math.min(3, parsedRows.length); r++) {
+          var row = parsedRows[r];
+          for (var c = 0; c < row.length; c++) {
+            var cell = (row[c] || '').toLowerCase();
+            if (cell.includes('tên đội') || cell.includes('đơn vị') || cell.includes('clb') || cell.includes('đoàn')) {
+              nameCol = c;
+              headerIdx = r + 1;
+            }
+            if (cell.includes('trưởng đoàn') || cell.includes('hlv') || cell.includes('đại diện') || cell.includes('liên hệ')) {
+              leaderCol = c;
+              headerIdx = r + 1;
+            }
+            if (cell.includes('sđt') || cell.includes('điện thoại') || cell.includes('phone') || cell.includes('zalo')) {
+              phoneCol = c;
+              headerIdx = r + 1;
+            }
+          }
+          if (headerIdx > 0) break;
+        }
+
+        var results = [];
+        for (var r = headerIdx; r < parsedRows.length; r++) {
+          var row = parsedRows[r];
+          var teamName = row[nameCol] || (row[0] && !/^\d+$/.test(row[0]) ? row[0] : row[1]);
+          if (!teamName || teamName.length < 2) continue;
+          if (/^(stt|thứ tự|tổng|ghi chú)$/i.test(teamName.trim())) continue;
+
+          var leader = leaderCol >= 0 ? (row[leaderCol] || '') : (row[nameCol + 1] || '');
+          var phone = phoneCol >= 0 ? (row[phoneCol] || '') : (row[nameCol + 2] || '');
+
+          results.push({
+            teamName: teamName.trim(),
+            leader: leader.trim() || 'Ban Tổ Chức',
+            phone: phone.trim() || ''
+          });
+        }
+        return results;
+      }
+
+      function renderImportPreviewTable() {
+        var tbody = document.getElementById('importPreviewTableBody');
+        var box = document.getElementById('importPreviewContainer');
+        var badge = document.getElementById('importPastedCountBadge');
+        var total = document.getElementById('importPreviewTotal');
+        if (!tbody || !box) return;
+
+        if (badge) badge.textContent = parsedImportTeamsList.length + ' đội hợp lệ';
+        if (total) total.textContent = '(' + parsedImportTeamsList.length + ')';
+
+        if (parsedImportTeamsList.length === 0) {
+          box.classList.add('hidden');
+          tbody.innerHTML = '';
+          return;
+        }
+
+        box.classList.remove('hidden');
+        tbody.innerHTML = parsedImportTeamsList.map(function(item, idx) {
+          return `
+            <tr class="hover:bg-zinc-50">
+              <td class="p-2 text-center font-mono font-bold text-zinc-500">${idx + 1}</td>
+              <td class="p-2 font-bold text-zinc-900">${item.teamName}</td>
+              <td class="p-2 text-zinc-700">${item.leader || '—'}</td>
+              <td class="p-2 font-mono text-zinc-600">${item.phone || '—'}</td>
+            </tr>
+          `;
+        }).join('');
+      }
+
+      function executeConfirmImportTeams() {
+        if (!parsedImportTeamsList || parsedImportTeamsList.length === 0) {
+          alert('Chưa có đội nào trong danh sách nhận diện!\nVui lòng dán danh sách từ Zalo hoặc tải từ Google Sheet trước.');
+          return;
+        }
+
+        var sportSelect = document.getElementById('importTargetSportSelect');
+        var chosenSportId = sportSelect ? sportSelect.value : (appConfig.activeSport || (appConfig.sports && appConfig.sports[0] ? appConfig.sports[0].id : ''));
+        var chosenSport = (appConfig.sports || []).find(function(s) { return s.id === chosenSportId; }) || (appConfig.sports && appConfig.sports[0]);
+        var autoApproveCheck = document.getElementById('importAutoApproveCheck');
+        var isApproved = autoApproveCheck ? autoApproveCheck.checked : true;
+
+        var regs = loadRegistrations();
+        var nowStr = (new Date()).toLocaleString('vi-VN');
+
+        var addedCount = 0;
+        parsedImportTeamsList.forEach(function(item, idx) {
+          var code = 'DK-BTC-' + Math.random().toString(36).substr(2, 6).toUpperCase();
+          regs.push({
+            code: code,
+            sportId: chosenSport ? chosenSport.id : 'SPORT',
+            sportName: chosenSport ? chosenSport.name : 'Môn Thi Đấu',
+            donVi: item.teamName,
+            truongDoan: item.leader || 'Đại diện BTC',
+            sdt: item.phone || '',
+            mauAo: 'Tự do',
+            time: nowStr,
+            status: isApproved ? 'APPROVED' : 'PENDING',
+            athletes: []
+          });
+
+          if (!appConfig.hoSoDangKy) appConfig.hoSoDangKy = [];
+          appConfig.hoSoDangKy.push({
+            maHoSo: code,
+            tenDonVi: item.teamName,
+            tenDoan: item.teamName,
+            truongDoan: item.leader || 'Đại diện BTC',
+            sdt: item.phone || ''
+          });
+          addedCount++;
+        });
+
+        saveRegistrations(regs);
+        saveAppConfig(appConfig);
+
+        updateTopStats();
+        renderAdminDataTable();
+        renderSportsGrid(currentCategory);
+
+        closeImportTeamsModal();
+        alert('🎉 ĐÃ NẠP THÀNH CÔNG ' + addedCount + ' ĐỘI VÀO HỆ THỐNG!\n- Các đội đã được lưu vào mục "Duyệt Hồ Sơ Đăng Ký".\n- Bạn có thể vào Tab Lịch Thi Đấu bấm "⚡ Bốc Thăm Từ Hồ Sơ Đăng Ký" để chia bảng và xếp lịch ngay.');
+      }
+
+      // THÊM ĐỘI THỦ CÔNG
+      function openManualAddTeamModal() {
+        var modal = document.getElementById('manualAddTeamModal');
+        if (!modal) return;
+        var sSelect = document.getElementById('manualTeamSportSelect');
+        if (sSelect) {
+          sSelect.innerHTML = '';
+          (appConfig.sports || []).forEach(function(s) {
+            var opt = document.createElement('option');
+            opt.value = s.id;
+            opt.textContent = s.name;
+            if (s.id === appConfig.activeSport) opt.selected = true;
+            sSelect.appendChild(opt);
+          });
+        }
+        var nameInput = document.getElementById('manualTeamName');
+        if (nameInput) nameInput.value = '';
+        var leaderInput = document.getElementById('manualTeamLeader');
+        if (leaderInput) leaderInput.value = '';
+        var phoneInput = document.getElementById('manualTeamPhone');
+        if (phoneInput) phoneInput.value = '';
+        var colorInput = document.getElementById('manualTeamColor');
+        if (colorInput) colorInput.value = '';
+        var athArea = document.getElementById('manualTeamAthletes');
+        if (athArea) athArea.value = '';
+
+        modal.classList.remove('hidden');
+      }
+
+      function closeManualAddTeamModal() {
+        var modal = document.getElementById('manualAddTeamModal');
+        if (modal) modal.classList.add('hidden');
+      }
+
+      function handleManualAddTeamSubmit(e) {
+        if (e) e.preventDefault();
+        var nameInput = document.getElementById('manualTeamName');
+        var teamName = nameInput ? nameInput.value.trim() : '';
+        if (!teamName) {
+          alert('Vui lòng nhập tên Đội / Đơn Vị!');
+          return;
+        }
+
+        var sSelect = document.getElementById('manualTeamSportSelect');
+        var chosenSportId = sSelect ? sSelect.value : (appConfig.activeSport || '');
+        var chosenSport = (appConfig.sports || []).find(function(s) { return s.id === chosenSportId; }) || (appConfig.sports && appConfig.sports[0]);
+
+        var leader = document.getElementById('manualTeamLeader') ? document.getElementById('manualTeamLeader').value.trim() : '';
+        var phone = document.getElementById('manualTeamPhone') ? document.getElementById('manualTeamPhone').value.trim() : '';
+        var color = document.getElementById('manualTeamColor') ? document.getElementById('manualTeamColor').value.trim() : '';
+        var athText = document.getElementById('manualTeamAthletes') ? document.getElementById('manualTeamAthletes').value.trim() : '';
+
+        var athletes = [];
+        if (athText) {
+          athletes = athText.split('\n').map(function(line) {
+            var n = line.trim();
+            return n ? { name: n } : null;
+          }).filter(Boolean);
+        }
+
+        var regs = loadRegistrations();
+        var code = 'DK-BTC-' + Math.random().toString(36).substr(2, 6).toUpperCase();
+        var nowStr = (new Date()).toLocaleString('vi-VN');
+
+        regs.push({
+          code: code,
+          sportId: chosenSport ? chosenSport.id : 'SPORT',
+          sportName: chosenSport ? chosenSport.name : 'Môn Thi Đấu',
+          donVi: teamName,
+          truongDoan: leader || 'Ban Tổ Chức',
+          sdt: phone || '',
+          mauAo: color || 'Tự do',
+          time: nowStr,
+          status: 'APPROVED',
+          athletes: athletes
+        });
+
+        if (!appConfig.hoSoDangKy) appConfig.hoSoDangKy = [];
+        appConfig.hoSoDangKy.push({
+          maHoSo: code,
+          tenDonVi: teamName,
+          tenDoan: teamName,
+          truongDoan: leader || 'Ban Tổ Chức',
+          sdt: phone || ''
+        });
+
+        saveRegistrations(regs);
+        saveAppConfig(appConfig);
+
+        updateTopStats();
+        renderAdminDataTable();
+        renderSportsGrid(currentCategory);
+
+        closeManualAddTeamModal();
+        alert('🎉 Đã thêm đội "' + teamName + '" vào hệ thống thành công với trạng thái ĐÃ DUYỆT!');
+      }
+
+      function adminSwitchToOngoingMatch() {
+        var activeSportId = appConfig.activeSport || (appConfig.sports && appConfig.sports[0] ? appConfig.sports[0].id : '');
+        var sport = (appConfig.sports || []).find(function(s) { return s.id === activeSportId; }) || (appConfig.sports && appConfig.sports[0]);
+        if (!sport) {
+          alert('Không tìm thấy môn thi đấu!');
+          return;
+        }
+
+        if (!confirm('Bạn có chắc chắn muốn KẾT THÚC ĐĂNG KÝ và BẮT ĐẦU THI ĐẤU môn "' + sport.name + '" không?\n\n- Hệ thống sẽ chuyển trạng thái sang "🔴 Đang thi đấu".\n- Hiển thị lịch thi đấu tuần tự từ Trận 1 đến Trận cuối cùng ra ngoài trang chủ.')) return;
+
+        sport.status = 'IN_PROGRESS';
+        saveAppConfig(appConfig);
+        renderAdminSportsTable();
+        renderSportsGrid(currentCategory);
+        updateTopStats();
+        renderOngoingShowcase();
+        alert('🏆 Đã chuyển môn "' + sport.name + '" sang trạng thái ĐANG THI ĐẤU!\nLịch thi đấu tuần tự từ Trận 1 đến Trận cuối cùng đã được hiển thị trên trang chủ.');
+      }
+
+      var currentLiveVenueFilter = 'ALL';
+
+      function setOngoingVenueFilter(vKey) {
+        currentLiveVenueFilter = vKey;
+        renderOngoingShowcase();
+      }
+
       function renderOngoingShowcase() {
         var section = document.getElementById('ongoingTournamentsSection');
         var container = document.getElementById('ongoingCardsContainer');
         var countBadge = document.getElementById('ongoingCountBadge');
         var fixturesContainer = document.getElementById('liveFixturesContainer');
+        var venueTabsContainer = document.getElementById('liveFixturesVenueTabs');
+        var statsSummaryEl = document.getElementById('liveFixturesStatsSummary');
         if (!container || !section) return;
 
         var isDeadlinePassed = new Date(appConfig.hanChot).getTime() <= new Date().getTime();
@@ -8354,29 +9094,67 @@
           container.appendChild(card);
         });
 
-        // TỔNG HỢP LỊCH THI ĐẤU TỪ TOÀN BỘ CÁC SÂN & BẢNG
+        // TỔNG HỢP & SẮP XẾP LỊCH THI ĐẤU TUẦN TỰ (TRẬN 1 ĐẾN TRẬN CUỐI CÙNG)
         if (fixturesContainer) {
-          var realMatches = [];
           var schedData = appConfig.scheduleData || {};
+          var venueKeys = Object.keys(schedData);
+          if (venueKeys.length === 0) {
+            venueKeys = ['Sân 1'];
+          }
 
-          Object.keys(schedData).forEach(function(cKey) {
+          // Cập nhật các tab Lọc theo Sân
+          if (venueTabsContainer) {
+            venueTabsContainer.innerHTML = '';
+            var allBtn = document.createElement('button');
+            allBtn.type = 'button';
+            allBtn.onclick = function() { setOngoingVenueFilter('ALL'); };
+            allBtn.className = (currentLiveVenueFilter === 'ALL')
+              ? 'px-3 py-1 rounded-full bg-[#8be33a] text-[#06301a] font-bold text-xs shadow-sm cursor-pointer whitespace-nowrap'
+              : 'px-3 py-1 rounded-full bg-[#041a0f] text-zinc-300 hover:text-white border border-zinc-700 font-medium text-xs cursor-pointer whitespace-nowrap';
+            allBtn.innerHTML = '⚡ Tất cả các sân';
+            venueTabsContainer.appendChild(allBtn);
+
+            venueKeys.forEach(function(vKey) {
+              var btn = document.createElement('button');
+              btn.type = 'button';
+              btn.onclick = function() { setOngoingVenueFilter(vKey); };
+              btn.className = (currentLiveVenueFilter === vKey)
+                ? 'px-3 py-1 rounded-full bg-[#8be33a] text-[#06301a] font-bold text-xs shadow-sm cursor-pointer whitespace-nowrap'
+                : 'px-3 py-1 rounded-full bg-[#041a0f] text-zinc-300 hover:text-white border border-zinc-700 font-medium text-xs cursor-pointer whitespace-nowrap';
+              btn.innerHTML = '🏟️ ' + vKey;
+              venueTabsContainer.appendChild(btn);
+            });
+          }
+
+          // XÂY DỰNG DANH SÁCH CÁC TRẬN ĐẤU SẮP XẾP CHUẨN TỪ TRẬN 1 ĐẾN TRẬN CUỐI
+          var structuredVenueBlocks = [];
+          var totalMatchesCount = 0;
+
+          var targetVenues = (currentLiveVenueFilter === 'ALL') ? venueKeys : [currentLiveVenueFilter];
+
+          targetVenues.forEach(function(cKey) {
             var vData = schedData[cKey];
             if (!vData) return;
 
+            var venueMatches = [];
+            var matchSeq = 1;
+
+            // 1. Các trận Vòng Bảng
             if (vData.groups) {
               Object.keys(vData.groups).forEach(function(gKey) {
                 var grp = vData.groups[gKey];
                 if (grp && grp.matches && Array.isArray(grp.matches)) {
                   grp.matches.forEach(function(m) {
                     if (m && m.team1 && m.team2) {
-                      realMatches.push({
+                      venueMatches.push({
+                        matchNumber: matchSeq++,
                         time: m.time || '07:30',
-                        sportName: grp.title || ('Bảng ' + gKey),
+                        stageType: 'GROUP',
+                        stageName: (grp.title || ('Bảng ' + gKey)) + ' • Vòng Bảng',
                         team1: m.team1,
                         team2: m.team2,
                         score: m.score || '',
-                        venue: m.venue || cKey,
-                        stage: cKey + ' • Bảng ' + gKey
+                        venue: m.venue || cKey
                       });
                     }
                   });
@@ -8384,77 +9162,182 @@
               });
             }
 
-            if (vData.semiFinal1 && vData.semiFinal1.time && vData.semiFinal1.teams) {
-              realMatches.push({
-                time: vData.semiFinal1.time.includes('•') ? vData.semiFinal1.time.split('•')[1].trim() : vData.semiFinal1.time,
-                sportName: vData.semiFinal1.title || 'Bán kết 1',
-                team1: vData.semiFinal1.teams.split('—')[0] ? vData.semiFinal1.teams.split('—')[0].trim() : 'Nhất A',
-                team2: vData.semiFinal1.teams.split('—')[1] ? vData.semiFinal1.teams.split('—')[1].trim() : 'Nhì B',
+            // Sắp xếp các trận vòng bảng theo thời gian
+            venueMatches.sort(function(a, b) {
+              var tA = a.time.replace(/[^0-9:]/g, '');
+              var tB = b.time.replace(/[^0-9:]/g, '');
+              return tA.localeCompare(tB);
+            });
+            // Đánh lại số thứ tự Trận 1, 2, 3... cho vòng bảng
+            venueMatches.forEach(function(m, idx) {
+              m.matchNumber = idx + 1;
+            });
+            matchSeq = venueMatches.length + 1;
+
+            // 2. Bán Kết 1
+            if (vData.semiFinal1 && vData.semiFinal1.teams) {
+              var bk1Teams = vData.semiFinal1.teams;
+              var bk1T1 = bk1Teams.split('—')[0] ? bk1Teams.split('—')[0].trim() : (bk1Teams.split('-')[0] ? bk1Teams.split('-')[0].trim() : 'Nhất Bảng A');
+              var bk1T2 = bk1Teams.split('—')[1] ? bk1Teams.split('—')[1].trim() : (bk1Teams.split('-')[1] ? bk1Teams.split('-')[1].trim() : 'Nhì Bảng B');
+              var bk1Time = vData.semiFinal1.time ? (vData.semiFinal1.time.includes('•') ? vData.semiFinal1.time.split('•')[1].trim() : vData.semiFinal1.time) : '08:00';
+              venueMatches.push({
+                matchNumber: matchSeq++,
+                time: bk1Time,
+                fullTime: vData.semiFinal1.time || bk1Time,
+                stageType: 'SEMI',
+                stageName: 'Bán Kết 1 (Vòng Loại Trực Tiếp)',
+                team1: bk1T1,
+                team2: bk1T2,
                 score: vData.semiFinal1.score || '',
-                venue: vData.semiFinal1.venue || cKey,
-                stage: cKey + ' • Bán Kết 1'
+                venue: vData.semiFinal1.venue || cKey
               });
             }
-            if (vData.semiFinal2 && vData.semiFinal2.time && vData.semiFinal2.teams) {
-              realMatches.push({
-                time: vData.semiFinal2.time.includes('•') ? vData.semiFinal2.time.split('•')[1].trim() : vData.semiFinal2.time,
-                sportName: vData.semiFinal2.title || 'Bán kết 2',
-                team1: vData.semiFinal2.teams.split('—')[0] ? vData.semiFinal2.teams.split('—')[0].trim() : 'Nhất B',
-                team2: vData.semiFinal2.teams.split('—')[1] ? vData.semiFinal2.teams.split('—')[1].trim() : 'Nhì A',
+
+            // 3. Bán Kết 2
+            if (vData.semiFinal2 && vData.semiFinal2.teams) {
+              var bk2Teams = vData.semiFinal2.teams;
+              var bk2T1 = bk2Teams.split('—')[0] ? bk2Teams.split('—')[0].trim() : (bk2Teams.split('-')[0] ? bk2Teams.split('-')[0].trim() : 'Nhất Bảng B');
+              var bk2T2 = bk2Teams.split('—')[1] ? bk2Teams.split('—')[1].trim() : (bk2Teams.split('-')[1] ? bk2Teams.split('-')[1].trim() : 'Nhì Bảng A');
+              var bk2Time = vData.semiFinal2.time ? (vData.semiFinal2.time.includes('•') ? vData.semiFinal2.time.split('•')[1].trim() : vData.semiFinal2.time) : '09:15';
+              venueMatches.push({
+                matchNumber: matchSeq++,
+                time: bk2Time,
+                fullTime: vData.semiFinal2.time || bk2Time,
+                stageType: 'SEMI',
+                stageName: 'Bán Kết 2 (Vòng Loại Trực Tiếp)',
+                team1: bk2T1,
+                team2: bk2T2,
                 score: vData.semiFinal2.score || '',
-                venue: vData.semiFinal2.venue || cKey,
-                stage: cKey + ' • Bán Kết 2'
+                venue: vData.semiFinal2.venue || cKey
               });
             }
-            if (vData.thirdPlace && vData.thirdPlace.time && vData.thirdPlace.teams) {
-              realMatches.push({
-                time: vData.thirdPlace.time.includes('•') ? vData.thirdPlace.time.split('•')[1].trim() : vData.thirdPlace.time,
-                sportName: vData.thirdPlace.title || 'Tranh Hạng Ba',
-                team1: vData.thirdPlace.teams.split('—')[0] ? vData.thirdPlace.teams.split('—')[0].trim() : 'Thua BK1',
-                team2: vData.thirdPlace.teams.split('—')[1] ? vData.thirdPlace.teams.split('—')[1].trim() : 'Thua BK2',
-                score: '',
-                venue: vData.thirdPlace.venue || cKey,
-                stage: cKey + ' • Tranh Hạng Ba'
+
+            // 4. Tranh Hạng Ba
+            if (vData.thirdPlace && vData.thirdPlace.teams) {
+              var thTeams = vData.thirdPlace.teams;
+              var thT1 = thTeams.split('—')[0] ? thTeams.split('—')[0].trim() : (thTeams.split('-')[0] ? thTeams.split('-')[0].trim() : 'Thua Bán kết 1');
+              var thT2 = thTeams.split('—')[1] ? thTeams.split('—')[1].trim() : (thTeams.split('-')[1] ? thTeams.split('-')[1].trim() : 'Thua Bán kết 2');
+              var thTime = vData.thirdPlace.time ? (vData.thirdPlace.time.includes('•') ? vData.thirdPlace.time.split('•')[1].trim() : vData.thirdPlace.time) : '14:00';
+              venueMatches.push({
+                matchNumber: matchSeq++,
+                time: thTime,
+                fullTime: vData.thirdPlace.time || thTime,
+                stageType: 'THIRD',
+                stageName: 'Tranh Hạng Ba (Huy Chương Đồng 🥉)',
+                team1: thT1,
+                team2: thT2,
+                score: vData.thirdPlace.score || '',
+                venue: vData.thirdPlace.venue || cKey
               });
             }
+
+            // 5. Trận Chung Kết (Tranh Cúp Vô Địch 🏆)
+            if (vData.finals) {
+              var finTeams = vData.finals.qualified || 'Thắng Bán kết 1 — Thắng Bán kết 2';
+              var finT1 = 'Thắng Bán kết 1';
+              var finT2 = 'Thắng Bán kết 2';
+              if (finTeams.includes('—')) {
+                var p = finTeams.split('—'); finT1 = p[0].trim(); finT2 = p[1].trim();
+              } else if (finTeams.includes(' - ')) {
+                var p = finTeams.split(' - '); finT1 = p[0].trim(); finT2 = p[1].trim();
+              } else if (finTeams.includes('•')) {
+                var p = finTeams.split('•'); finT1 = p[0].trim(); finT2 = p[1].trim();
+              }
+              var finTime = vData.finals.time ? (vData.finals.time.includes('•') ? vData.finals.time.split('•')[1].trim() : vData.finals.time) : '15:30';
+              venueMatches.push({
+                matchNumber: matchSeq++,
+                isFinal: true,
+                time: finTime,
+                fullTime: vData.finals.time || finTime,
+                stageType: 'FINAL',
+                stageName: 'Vòng Chung Kết (Tranh Cúp Vô Địch 🏆)',
+                team1: finT1,
+                team2: finT2,
+                score: vData.finals.score || '',
+                venue: vData.finals.venue || cKey
+              });
+            }
+
+            totalMatchesCount += venueMatches.length;
+            structuredVenueBlocks.push({
+              venueName: cKey,
+              matches: venueMatches
+            });
           });
 
-          realMatches.sort(function(a, b) {
-            var timeA = a.time.replace(/[^0-9:]/g, '');
-            var timeB = b.time.replace(/[^0-9:]/g, '');
-            return timeA.localeCompare(timeB);
-          });
+          // Cập nhật thống kê số trận
+          if (statsSummaryEl) {
+            statsSummaryEl.textContent = 'Tổng số: ' + totalMatchesCount + ' trận (Sắp xếp từ Trận 1 → Trận cuối)';
+          }
 
           fixturesContainer.innerHTML = '';
-          if (realMatches.length === 0) {
+
+          if (totalMatchesCount === 0) {
             fixturesContainer.innerHTML = `
               <div class="p-6 rounded-[12px] bg-[#041a0f]/80 border border-zinc-800 text-center space-y-1">
                 <div class="text-amber-400 font-bold text-xs uppercase tracking-wider">Chưa có lịch thi đấu được công bố</div>
                 <div class="text-[11px] text-zinc-400">Ban Tổ Chức sẽ cập nhật thời gian, sân thi đấu và các cặp trận ngay sau khi bốc thăm chia bảng.</div>
               </div>
             `;
-          } else {
-            realMatches.forEach(function(m) {
+            return;
+          }
+
+          // Hiển thị từng cụm sân và các trận theo thứ tự tuần tự từ Trận 1 đến Trận cuối
+          structuredVenueBlocks.forEach(function(block) {
+            if (structuredVenueBlocks.length > 1) {
+              var venueHeader = document.createElement('div');
+              venueHeader.className = 'flex items-center justify-between px-3 py-2 rounded-[8px] bg-[#041a0f] border border-[#8be33a]/25 text-[#8be33a] font-bold text-xs mt-2';
+              venueHeader.innerHTML = `
+                <div class="flex items-center gap-2">
+                  <span>🏟️</span>
+                  <span class="uppercase tracking-wide text-white">LỊCH THI ĐẤU: ${block.venueName}</span>
+                </div>
+                <span class="text-[11px] text-zinc-400 font-mono font-medium">${block.matches.length} trận (Trận 1 → Trận ${block.matches.length})</span>
+              `;
+              fixturesContainer.appendChild(venueHeader);
+            }
+
+            block.matches.forEach(function(m) {
+              var isFinal = m.stageType === 'FINAL';
+              var isThird = m.stageType === 'THIRD';
+              var isSemi = m.stageType === 'SEMI';
+
+              var cardBg = isFinal
+                ? 'bg-gradient-to-r from-[#0a3820] to-[#124227] border-amber-400/80 shadow-[0_0_15px_rgba(251,191,36,0.25)]'
+                : (isThird ? 'bg-[#072415] border-amber-600/40' : (isSemi ? 'bg-[#072415] border-blue-500/40' : 'bg-[#041a0f]/90 border-zinc-800 hover:border-[#8be33a]/40'));
+
+              var badgeHtml = isFinal
+                ? `<span class="px-2 py-0.5 rounded-[6px] bg-amber-400 text-[#06301a] font-black text-[11px] tracking-wide shadow-sm flex-shrink-0 animate-pulse">👑 CHUNG KẾT 🏆</span>`
+                : (isThird
+                  ? `<span class="px-2 py-0.5 rounded-[6px] bg-amber-600/30 text-amber-300 border border-amber-500/40 font-bold text-[10px] flex-shrink-0">🥉 TRANH HẠNG 3</span>`
+                  : (isSemi
+                    ? `<span class="px-2 py-0.5 rounded-[6px] bg-blue-500/20 text-blue-300 border border-blue-400/40 font-bold text-[10px] flex-shrink-0">⚡ BÁN KẾT</span>`
+                    : `<span class="px-2 py-0.5 rounded-[6px] bg-[#072415] border border-[#8be33a]/30 text-[#8be33a] font-mono font-bold text-[11px] flex-shrink-0">TRẬN ${m.matchNumber}</span>`
+                  ));
+
               var row = document.createElement('div');
-              row.className = 'p-3.5 rounded-[12px] bg-[#041a0f]/90 border border-zinc-800 hover:border-[#8be33a]/40 transition-all flex flex-col md:flex-row md:items-center justify-between gap-3 text-xs';
+              row.className = `p-3 sm:p-3.5 rounded-[12px] ${cardBg} border transition-all flex flex-col md:flex-row md:items-center justify-between gap-3 text-xs`;
               row.innerHTML = `
                 <div class="flex items-center gap-3 min-w-0">
-                  <div class="px-2.5 py-1.5 rounded-[8px] bg-[#072415] border border-[#8be33a]/30 text-[#8be33a] font-mono font-bold text-xs text-center flex-shrink-0 w-24 shadow-sm">
-                    ${m.time}
-                    <span class="text-[10px] text-zinc-400 block font-normal truncate">${m.sportName}</span>
+                  <div class="flex flex-col items-center justify-center gap-0.5 flex-shrink-0 w-24">
+                    ${badgeHtml}
+                    <span class="font-mono font-bold text-[#8be33a] text-xs pt-1">${m.time}</span>
                   </div>
-                  <div class="space-y-0.5 min-w-0">
+
+                  <div class="space-y-1 min-w-0 flex-1">
                     <div class="flex items-center gap-2 sm:gap-3 text-sm font-bold text-white truncate">
-                      <span class="text-zinc-100 truncate">${m.team1}</span>
+                      <span class="${isFinal ? 'text-amber-200 font-black' : 'text-zinc-100'} truncate">${m.team1}</span>
                       <span class="px-2 py-0.5 rounded ${m.score ? 'bg-amber-400 text-[#041a0f] font-black shadow-sm' : 'bg-zinc-800 text-amber-400 font-mono'} text-xs flex-shrink-0">
                         ${m.score ? m.score : 'VS'}
                       </span>
-                      <span class="text-zinc-100 truncate">${m.team2}</span>
+                      <span class="${isFinal ? 'text-amber-200 font-black' : 'text-zinc-100'} truncate">${m.team2}</span>
                     </div>
-                    <div class="text-[11px] text-zinc-400 flex items-center gap-1.5 truncate">
-                      <span class="text-amber-400 font-semibold flex-shrink-0">${m.stage}</span>
+
+                    <div class="text-[11px] text-zinc-400 flex flex-wrap items-center gap-1.5 truncate">
+                      <span class="${isFinal ? 'text-amber-400 font-bold' : 'text-zinc-300 font-medium'} flex-shrink-0">${m.stageName}</span>
                       <span>•</span>
-                      <span class="truncate text-zinc-300 font-medium">${m.venue}</span>
+                      <span class="truncate text-zinc-300 font-semibold">${m.venue}</span>
+                      ${m.score ? '<span class="text-emerald-400 font-bold">• ✓ Đã kết thúc</span>' : '<span class="text-zinc-500 font-normal">• Sắp diễn ra</span>'}
                     </div>
                   </div>
                 </div>
@@ -8463,16 +9346,16 @@
                   <button
                     type="button"
                     onclick="openScheduleModal()"
-                    class="text-[#8be33a] hover:text-white font-bold text-xs flex items-center gap-1 cursor-pointer"
+                    class="text-[#8be33a] hover:text-white font-bold text-xs flex items-center gap-1 cursor-pointer transition-colors"
                   >
-                    <span>Xem sơ đồ nhánh</span>
+                    <span>Xem sơ đồ</span>
                     <span>→</span>
                   </button>
                 </div>
               `;
               fixturesContainer.appendChild(row);
             });
-          }
+          });
         }
       }
 
